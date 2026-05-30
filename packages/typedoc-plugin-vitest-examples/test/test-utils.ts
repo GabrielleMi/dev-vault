@@ -7,7 +7,7 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
 export async function createTestApp() {
   const entryPoint = path.resolve(__dirname, 'fixtures/source.ts').replace(/\\/g, '/');
-  const tsconfig = path.resolve(__dirname, '../tsconfig.json').replace(/\\/g, '/');
+  const tsconfig = path.resolve(__dirname, './tsconfig.json').replace(/\\/g, '/');
 
   const app = await Application.bootstrapWithPlugins({
     entryPoints: [entryPoint],
