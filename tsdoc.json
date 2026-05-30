@@ -1,0 +1,13 @@
+{
+    "extends": ["typedoc/tsdoc.json"],
+    "tagDefinitions": [
+        {
+            "tagName": "@examplesFromTests",
+            "syntaxKind": "block"
+        },
+        {
+            "tagName": "@isTestExample",
+            "syntaxKind": "block"
+        }
+    ]
+}

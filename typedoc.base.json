@@ -1,0 +1,10 @@
+{
+    "$schema": "https://typedoc.org/schema.json",
+    "includeVersion": true,
+    "navigation": {
+        "includeGroups": true,
+        "includeCategories": true,
+        "includeFolders": true
+    },
+    "categorizeByGroup": true
+}

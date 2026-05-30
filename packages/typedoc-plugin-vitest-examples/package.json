@@ -1,0 +1,41 @@
+{
+  "name": "@dev-vault/typedoc-plugin-vitest-examples",
+  "version": "0.1.0-alpha",
+  "description": "TypeDoc plugin to pull examples from Vitest test files.",
+  "main": "dist/index.js",
+  "module": "dist/index.js",
+  "type": "module",
+  "types": "dist/index.d.ts",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "scripts": {
+    "build": "tsc -b",
+    "prepare": "pnpm build",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:ci": "vitest run --coverage",
+    "prepublishOnly": "pnpm run build"
+  },
+  "keywords": [
+    "typedoc",
+    "plugin",
+    "vitest",
+    "documentation"
+  ],
+  "author": "GabrielleMi",
+  "license": "MIT",
+  "publishConfig": {
+    "access": "public"
+  },
+  "devDependencies": {
+    "@types/node": "^25.9.1",
+    "typedoc": "^0.28.19",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.7"
+  },
+  "peerDependencies": {
+    "typedoc": "0.28.x"
+  }
+}

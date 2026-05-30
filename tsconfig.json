@@ -1,0 +1,14 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "forceConsistentCasingInFileNames": true,
+    "sourceMap": true,
+    "baseUrl": ".",
+  },
+  "include": [],
+  "exclude": ["node_modules", "**/dist", "**/build"],
+  "references": [
+    { "path": "./packages/utils" },
+    { "path": "./packages/typedoc-plugin-vitest-examples" }
+  ]
+}
