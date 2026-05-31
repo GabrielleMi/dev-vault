@@ -27,10 +27,13 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Build packages
-        run: pnpm build
+        run: pnpm -w build
 
-      - name: Build docs
-        run: pnpm docs
+      - name: Clean docs output
+        run: pnpm run docs:clean
+
+      - name: Build docs (TypeDoc)
+        run: pnpm exec typedoc --entryPoints "packages/*/src/index.ts" --entryPointStrategy expand --tsconfig tsconfig.json --out docs
 
       - name: Deploy to GitHub Pages
         uses: JamesIves/github-pages-deploy-action@v4.6.8
