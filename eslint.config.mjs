@@ -5,6 +5,27 @@ import json from '@eslint/json';
 import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
 
+const styleConfig = stylistic.configs.customize({
+  arrayBracketSpacing: ['always', { singleValue: false }],
+  arrayElementNewline: ['consistent', { multiline: true }],
+  arrowSpacing: { before: false, after: false },
+  arrowParens: true,
+  braceStyle: '1tbs',
+  commaDangle: 'never',
+  dotLocation: 'property',
+  eolLast: true,
+  indent: 2,
+  objectCurlySpacing: 'always',
+  operatorLinebreak: 'before',
+  noMixedOperators: true,
+  semi: true,
+  semiSpacing: { before: false, after: true },
+  switchColonSpacing: { after: true, before: false },
+  templateCurlySpacing: 'never',
+  quoteProps: 'as-needed',
+  quotes: 'single'
+});
+
 export default defineConfig([
   {
     ignores: [
@@ -17,26 +38,10 @@ export default defineConfig([
       '**/*.min.js'
     ]
   },
-  stylistic.configs.customize({
-    arrayBracketSpacing: ['always', { singleValue: false }],
-    arrayElementNewline: ['consistent', { multiline: true }],
-    arrowSpacing: { before: false, after: false },
-    arrowParens: true,
-    braceStyle: '1tbs',
-    commaDangle: 'never',
-    dotLocation: 'property',
-    eolLast: true,
-    indent: 2,
-    objectCurlySpacing: 'always',
-    operatorLinebreak: 'before',
-    noMixedOperators: true,
-    semi: true,
-    semiSpacing: { before: false, after: true },
-    switchColonSpacing: { after: true, before: false },
-    templateCurlySpacing: 'never',
-    quoteProps: 'as-needed',
-    quotes: 'single'
-  }),
+  {
+    ...styleConfig,
+    ignores: ['**/*.json']
+  },
   {
     files: ['**/*.{js,mjs,cjs,ts,mts,cts,jsx,tsx}'],
     languageOptions: { globals: { ...globals.browser, ...globals.node } },
