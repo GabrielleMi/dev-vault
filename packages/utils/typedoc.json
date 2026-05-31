@@ -1,7 +1,4 @@
 {
-    "extends": ["../../typedoc.base.json"],
+    "name": "Javascript Utils",
     "entryPoints": ["src/index.ts"],
-    "jsDocCompatibility": {
-        "exampleTag": false
-    }
 }

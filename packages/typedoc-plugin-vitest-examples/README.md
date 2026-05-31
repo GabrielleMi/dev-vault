@@ -1,4 +1,3 @@
-# typedoc-plugin-vitest-examples
 A TypeDoc plugin that transforms your Vitest tests into live documentation examples.
 
 Note: This project is in Alpha.
@@ -12,7 +11,9 @@ pnpm add -D typedoc-plugin-vitest-examples
 ```
 
 ## Usage
-### 1. In your source code
+### 1. In your typedoc.json
+
+### 2. In your source code
 Add the `@examplesFromTests` tag followed by the relative path to the corresponding test file:
 
 ```typeScript
@@ -25,7 +26,7 @@ export const splitInChunks = <T,>(value: T[], chunkSize: number): T[][] => {
 };
 ```
 
-### 2. In your test file
+### 3. In your test file
 Use the `@isTestExample` tag in the comments preceding your `it` or `test` blocks to mark them for extraction. By default, the plugin associates the example with the function whose name matches the surrounding `describe` block. You can optionally add a title after the tag.
 
 ```typeScript
@@ -47,6 +48,7 @@ You can explicitly bind a test to a function by providing its name in square bra
 it('should perform a specific task', () => {
   expect(myFunctionName()).toBe(true);
 });
+```
 
 ## How it works
 The plugin scans test files for blocks marked with `@isTestExample`.

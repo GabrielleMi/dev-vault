@@ -1,5 +1,3 @@
-# @dev-vault/utils
-
 A collection of utility functions and constants designed for personal projects. This library is an experimental project provided as-is.
 
 ## Installation

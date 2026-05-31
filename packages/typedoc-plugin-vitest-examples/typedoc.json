@@ -1,0 +1,5 @@
+{
+    "name": "Typedoc Plugin Vitest Examples",
+    "entryPoints": ["./src/index.ts"],
+    "entryPointStrategy": "expand"
+}

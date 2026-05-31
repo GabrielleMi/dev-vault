@@ -3,6 +3,9 @@
   "version": "0.1.0-alpha",
   "description": "TypeDoc plugin to pull examples from Vitest test files.",
   "main": "dist/index.js",
+  "exports": {
+    ".": "./dist/index.js"
+  },
   "module": "dist/index.js",
   "type": "module",
   "types": "dist/index.d.ts",
@@ -31,11 +34,8 @@
   },
   "devDependencies": {
     "@types/node": "^25.9.1",
-    "typedoc": "^0.28.19",
     "typescript": "^6.0.3",
-    "vitest": "^4.1.7"
-  },
-  "peerDependencies": {
-    "typedoc": "0.28.x"
+    "vitest": "^4.1.7",
+    "typedoc": "^0.28.19"
   }
 }

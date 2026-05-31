@@ -78,3 +78,5 @@ export function load(app: Application) {
     }
   });
 }
+
+export default load;

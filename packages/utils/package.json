@@ -28,9 +28,7 @@
     "clean": "rm -rf dist tsconfig.tsbuildinfo",
     "test": "vitest",
     "test:watch": "vitest watch",
-    "test:ci": "vitest run --coverage",
-    "docs": "typedoc --out docs",
-    "docs:watch": "concurrently \"typedoc --out docs --watch\" \"http-server docs -o\""
+    "test:ci": "vitest run --coverage"
   },
   "keywords": [
     "utilities",
@@ -42,8 +40,6 @@
   "devDependencies": {
     "@dev-vault/typedoc-plugin-vitest-examples": "workspace:^0.1.0-alpha",
     "@vitest/coverage-v8": "^4.1.7",
-    "concurrently": "^10.0.0",
-    "http-server": "^14.1.1",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7"
   }
