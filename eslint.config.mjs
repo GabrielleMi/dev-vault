@@ -25,6 +25,7 @@ export default defineConfig([
     braceStyle: '1tbs',
     commaDangle: 'never',
     dotLocation: 'property',
+    eolLast: true,
     indent: 2,
     objectCurlySpacing: 'always',
     operatorLinebreak: 'before',

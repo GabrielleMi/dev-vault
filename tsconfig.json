@@ -3,7 +3,7 @@
   "compilerOptions": {
     "forceConsistentCasingInFileNames": true,
     "sourceMap": true,
-    "baseUrl": ".",
+    "baseUrl": "."
   },
   "include": [],
   "exclude": ["node_modules", "**/dist", "**/build"],

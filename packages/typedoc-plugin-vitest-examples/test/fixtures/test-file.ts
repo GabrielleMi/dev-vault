@@ -1,5 +1,9 @@
 import { addNumbers, concatStrings } from './source';
 
+it('should be ignored by plugin', () => {
+  expect(1).toBe(1);
+});
+
 describe('addNumbers', () => {
   // @isTestExample Usage of addNumbers
   it('should add two numbers correctly', () => {

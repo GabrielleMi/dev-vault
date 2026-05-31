@@ -74,7 +74,7 @@ export function processReflectionTests(
 
       const isTest = callName === 'test' || callName === 'it';
 
-      if (isTest && ts.isStringLiteral(node.arguments[0])) {
+      if (!isTest || !ts.isStringLiteral(node.arguments[0])) {
         return;
       }
 
