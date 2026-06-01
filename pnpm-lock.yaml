@@ -62,9 +62,6 @@ importers:
 
   packages/utils:
     devDependencies:
-      '@dev-vault/typedoc-plugin-vitest-examples':
-        specifier: workspace:^0.1.0-alpha
-        version: link:../typedoc-plugin-vitest-examples
       '@vitest/coverage-v8':
         specifier: ^4.1.7
         version: 4.1.7(vitest@4.1.7)

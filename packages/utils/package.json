@@ -38,7 +38,6 @@
   ],
   "license": "MIT",
   "devDependencies": {
-    "@dev-vault/typedoc-plugin-vitest-examples": "workspace:^0.1.0-alpha",
     "@vitest/coverage-v8": "^4.1.7",
     "typescript": "^6.0.3",
     "vitest": "^4.1.7"
