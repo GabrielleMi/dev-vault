@@ -1,0 +1,4 @@
+{
+    "name": "Javascript Utils",
+    "entryPoints": ["src/index.ts"]
+}

@@ -1,0 +1,38 @@
+{
+  "name": "dev-vault",
+  "version": "0.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module",
+  "scripts": {
+    "release": "pnpm build && changeset publish",
+    "build": "pnpm --filter \"@dev-vault/*\" run build",
+    "clean": "tsc -b --clean",
+    "test": "pnpm -r test",
+    "docs:build": "typedoc",
+    "docs:clean": "node -e \"const fs = require('fs'); ['docs', 'node_modules/.cache/typedoc'].forEach(p => fs.rmSync(p, { recursive: true, force: true }));\"",
+    "docs:watch": "typedoc --entryPointStrategy expand --watch",
+    "serve:docs": "http-server docs -p 8080 -o -c 0",
+    "dev:docs": "concurrently \"pnpm run docs:watch\" \"pnpm run serve:docs\"",
+    "lint": "eslint .",
+    "lint:fix": "eslint . --fix"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "packageManager": "pnpm@10.11.0",
+  "devDependencies": {
+    "@changesets/cli": "^2.31.0",
+    "@eslint/json": "^2.0.0",
+    "@eslint/js": "^10.0.1",
+    "@stylistic/eslint-plugin": "^5.10.0",
+    "concurrently": "^10.0.0",
+    "eslint": "^10.4.1",
+    "globals": "^17.6.0",
+    "http-server": "^14.1.1",
+    "typedoc": "^0.28.19",
+    "typedoc-plugin-merge-modules": "^7.0.0",
+    "typescript": "^6.0.3",
+    "typescript-eslint": "^8.60.0"
+  }
+}

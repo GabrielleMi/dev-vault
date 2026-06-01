@@ -1,0 +1,21 @@
+{
+  "extends": "./tsconfig.base.json",
+  "compilerOptions": {
+    "composite": false,
+    "noEmit": true
+  },
+  "include": [
+    "packages/utils/src/**/*.ts",
+    "packages/typedoc-plugin-vitest-examples/src/**/*.ts"
+  ],
+  "exclude": [
+    "**/node_modules",
+    "**/*.test.ts",
+    "**/test",
+    "**/fixtures"
+  ],
+  "references": [
+    { "path": "./packages/utils" },
+    { "path": "./packages/typedoc-plugin-vitest-examples" }
+  ]
+}

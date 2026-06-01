@@ -1,0 +1,20 @@
+{
+    "entryPoints": [
+        "packages/*"
+    ],
+    "name": "Dev Vault",
+    "entryPointStrategy": "packages",
+    "includeVersion": false,
+    "excludeExternals": true,
+    "excludeInternal": true,
+    "cleanOutputDir": true,
+    "navigation": {
+        "includeGroups": true,
+        "includeFolders": true,
+        "includeCategories": true
+    },
+    "categorizeByGroup": true,
+    "plugin": [
+        "@dev-vault/typedoc-plugin-vitest-examples"
+    ]
+}

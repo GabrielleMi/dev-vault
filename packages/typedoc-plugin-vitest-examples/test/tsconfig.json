@@ -1,0 +1,21 @@
+{
+  "extends": "../tsconfig.json",
+  "compilerOptions": {
+    "module": "esnext",
+    "moduleResolution": "bundler",
+    "strict": false,
+    "noImplicitAny": false,
+    "checkJs": true,
+    "allowJs": true,
+    "types": ["vitest/globals"],
+    "noEmit": true,
+    "rootDir": "../"
+  },
+  "include": [
+    "**/*.ts",
+    "**/*.js",
+    "../src/**/*.ts",
+    "../src/**/*.js"
+  ],
+  "exclude": ["node_modules", "dist"]
+}

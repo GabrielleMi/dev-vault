@@ -1,0 +1,43 @@
+name: Deploy Docs
+
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+  build-docs:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set up Node
+        uses: actions/setup-node@v4
+        with:
+          node-version: "20"
+
+      - name: Install pnpm
+        uses: pnpm/action-setup@v4
+        with:
+          version: 10.11.0
+
+      - name: Install dependencies
+        run: pnpm install --frozen-lockfile
+
+      - name: Build packages
+        run: pnpm -w build
+
+      - name: Clean docs output
+        run: pnpm run docs:clean
+
+      - name: Build docs (TypeDoc)
+        run: pnpm exec typedoc --entryPoints "packages/*/src/index.ts" --entryPointStrategy expand --tsconfig tsconfig.json --out docs
+
+      - name: Deploy to GitHub Pages
+        uses: JamesIves/github-pages-deploy-action@v4.6.8
+        with:
+          branch: gh-pages
+          folder: docs
+          single-commit: true
