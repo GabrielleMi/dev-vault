@@ -28,7 +28,7 @@ jobs:
         with:
           node-version: 20
           registry-url: 'https://npm.pkg.github.com'
-          scope: '@dev-vault'
+          scope: '@GabrielleMi'
 
       - name: Install pnpm
         uses: pnpm/action-setup@v4
@@ -37,7 +37,7 @@ jobs:
 
       - name: Configure npm registry
         run: |
-          echo "@dev-vault:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "@GabrielleMi:registry=https://npm.pkg.github.com" >> .npmrc
           echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN  }}" >> .npmrc
           echo "always-auth=true" >> .npmrc
 

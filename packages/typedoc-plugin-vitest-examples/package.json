@@ -1,5 +1,5 @@
 {
-  "name": "@dev-vault/typedoc-plugin-vitest-examples",
+  "name": "@GabrielleMi/typedoc-plugin-vitest-examples",
   "version": "0.1.0",
   "description": "TypeDoc plugin to pull examples from Vitest test files.",
   "main": "dist/index.js",

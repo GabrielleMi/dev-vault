@@ -1,5 +1,5 @@
 {
-  "name": "@dev-vault/utils",
+  "name": "@GabrielleMi/utils",
   "version": "0.1.0",
   "description": "Helper functions and tools for my playground.",
   "main": "dist/index.js",
