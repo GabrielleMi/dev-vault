@@ -39,13 +39,6 @@ jobs:
       - name: Build all workspace packages
         run: pnpm build
 
-      - name: Setup npm registry for GitHub Packages
-        run: |
-          echo "@dev-vault:registry=https://npm.pkg.github.com" >> ~/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.npmrc
-          pnpm config set registry https://npm.pkg.github.com
-          pnpm config set //npm.pkg.github.com/:_authToken ${{ secrets.GITHUB_TOKEN }}
-
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
         with:

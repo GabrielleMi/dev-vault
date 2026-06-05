@@ -4,7 +4,8 @@
   "description": "Helper functions and tools for my playground.",
   "main": "dist/index.js",
   "publishConfig": {
-    "registry": "https://npm.pkg.github.com"
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
   },
   "type": "module",
   "files": [
