@@ -35,6 +35,12 @@ jobs:
         with:
           version: 10.11.0
 
+      - name: Configure npm registry
+        run: |
+          npm config set @dev-vault:registry https://npm.pkg.github.com
+          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
+          npm config set always-auth true
+
       - name: Install dependencies
         run: pnpm install
         env:
@@ -42,11 +48,6 @@ jobs:
 
       - name: Build all workspace packages
         run: pnpm build
-
-      - name: Configure npm registry
-        run: |
-          echo "@dev-vault:registry=https://npm.pkg.github.com" > .npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
