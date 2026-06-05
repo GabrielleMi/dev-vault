@@ -37,9 +37,9 @@ jobs:
 
       - name: Configure npm registry
         run: |
-          npm config set @dev-vault:registry https://npm.pkg.github.com
-          npm config set //npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}
-          npm config set always-auth true
+          echo "@dev-vault:registry=https://npm.pkg.github.com" >> .npmrc
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> .npmrc
+          echo "always-auth=true" >> .npmrc
 
       - name: Install dependencies
         run: pnpm install
