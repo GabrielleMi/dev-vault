@@ -39,12 +39,10 @@ jobs:
       - name: Build all workspace packages
         run: pnpm build
 
-      - name: Setup GitHub Packages auth
+      - name: Setup GitHub Packages credentials
         run: |
-          mkdir -p ~/.pnpm-home
-          echo "@dev-vault:registry=https://npm.pkg.github.com" > ~/.pnpm-home/.npmrc
-          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> ~/.pnpm-home/.npmrc
-          cat ~/.pnpm-home/.npmrc >> ~/.npmrc
+          mkdir -p $PNPM_HOME
+          echo "//npm.pkg.github.com/:_authToken=${{ secrets.GITHUB_TOKEN }}" >> $PNPM_HOME/.npmrc
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
