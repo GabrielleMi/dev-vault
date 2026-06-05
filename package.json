@@ -6,7 +6,7 @@
   "type": "module",
   "scripts": {
     "release": "pnpm build && changeset publish",
-    "build": "pnpm --filter \"@dev-vault/*\" run build",
+    "build": "pnpm --filter \"@GabrielleMi/*\" run build",
     "clean": "tsc -b --clean",
     "test": "pnpm -r test",
     "docs:build": "typedoc",

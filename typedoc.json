@@ -15,6 +15,6 @@
     },
     "categorizeByGroup": true,
     "plugin": [
-        "@dev-vault/typedoc-plugin-vitest-examples"
+        "@GabrielleMi/typedoc-plugin-vitest-examples"
     ]
 }

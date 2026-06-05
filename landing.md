@@ -5,8 +5,8 @@ Welcome to the official documentation for **Dev Vault**. This space centralizes 
 ## 📦 Packages
 Each module is documented individually. The sections below to access technical details:
 
-* **[@dev-vault/utils](packages/utils/README.md)**: A collection of transversal utility functions.
-* **[@dev-vault/typedoc-plugin-vitest-examples](packages/typedoc-plugin-vitest-examples/README.md)**: A plugin for extracting and validating Vitest code examples directly within the documentation.
+* **[@Gabrielle/utils](packages/utils/README.md)**: A collection of transversal utility functions.
+* **[@Gabrielle/typedoc-plugin-vitest-examples](packages/typedoc-plugin-vitest-examples/README.md)**: A plugin for extracting and validating Vitest code examples directly within the documentation.
 
 ---
 
@@ -14,5 +14,5 @@ Each module is documented individually. The sections below to access technical d
 To integrate the tools, install the desired package:
 
 ```bash
-pnpm add -D @dev-vault/typedoc-plugin-vitest-examples
+pnpm add @GabrielleMi/typedoc-plugin-vitest-examples
 ```
