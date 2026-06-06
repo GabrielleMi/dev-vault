@@ -8,31 +8,48 @@ export type Falsy = null | undefined | '' | false | 0;
  *
  * @examplesFromTests ../test/is.test.js
  */
-export const isObject = (value: unknown): value is Record<string, unknown> => {
+export function isObject(value: unknown): value is Record<string, unknown> {
   return typeof value === OBJECT && value !== null && !Array.isArray(value);
-};
+}
 
 /**
  * Checks if a value is null of undefined
  */
-export const isNil = (value: unknown): value is null | undefined => {
+export function isNil(value: unknown): value is null | undefined {
   return value === undefined || value === null;
-};
+}
 
-export const isNumber = (value: unknown): value is number => typeof value === NUMBER;
-export const isString = (value: unknown): value is string => typeof value === STRING;
-export const isArray = (value: unknown): value is unknown[] => Array.isArray(value);
+export function isNumber(value: unknown): value is number {
+  return typeof value === NUMBER;
+}
+
+export function isString(value: unknown): value is string {
+  return typeof value === STRING;
+}
+
+export function isArray(value: unknown): value is unknown[] {
+  return Array.isArray(value);
+}
+
 // eslint-disable-next-line @typescript-eslint/no-unsafe-function-type
-export const isFn = (value: unknown): value is Function => typeof value === FUNCTION;
-export const isBigInt = (value: unknown): value is bigint => typeof value === BIGINT;
-export const isBool = (value: unknown): value is boolean => typeof value === BOOLEAN;
+export function isFn(value: unknown): value is Function {
+  return typeof value === FUNCTION;
+}
+
+export function isBigInt(value: unknown): value is bigint {
+  return typeof value === BIGINT;
+}
+
+export function isBool(value: unknown): value is boolean {
+  return typeof value === BOOLEAN;
+}
 
 /**
  * Checks if a value is empty depending on their type.
  *
  * @examplesFromTests ../test/is.test.js
  */
-export const isEmpty = (value: unknown) => {
+export function isEmpty(value: unknown) {
   if (Array.isArray(value)) {
     return value.length === 0;
   }
@@ -46,20 +63,20 @@ export const isEmpty = (value: unknown) => {
   }
 
   return !value;
-};
+}
 
 /**
- * Checks the type of a value is primitive.
+ * Checks if the type of a value is primitive.
  *
  * @examplesFromTests ../test/is.test.js
  */
-export const isPrimitive = (value: unknown): value is Primitive => {
+export function isPrimitive(value: unknown): value is Primitive {
   if (value === null) {
     return true;
   }
 
   return typeof value !== OBJECT && typeof value !== FUNCTION;
-};
+}
 
 /**
  * Checks if two values are essentially the same.
@@ -68,7 +85,7 @@ export const isPrimitive = (value: unknown): value is Primitive => {
  *
  * @examplesFromTests ../test/is.test.js
  */
-export const isEquivalent = (a: unknown, b: unknown) => {
+export function isEquivalent(a: unknown, b: unknown) {
   if (a === b) {
     return true;
   }
@@ -111,4 +128,4 @@ export const isEquivalent = (a: unknown, b: unknown) => {
   }
 
   return false;
-};
+}

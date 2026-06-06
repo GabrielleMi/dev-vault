@@ -1,7 +1,8 @@
 {
     "entryPoints": [
-        "packages/*"
+      "packages/*"
     ],
+    "customCss": "docs-src/theme.css",
     "name": "Dev Vault",
     "entryPointStrategy": "packages",
     "includeVersion": false,
@@ -9,12 +10,15 @@
     "excludeInternal": true,
     "cleanOutputDir": true,
     "navigation": {
-        "includeGroups": true,
-        "includeFolders": true,
-        "includeCategories": true
+      "includeGroups": true,
+      "includeFolders": false,
+      "includeCategories": true
     },
-    "categorizeByGroup": true,
+    "categoryOrder": ["Packages", "*"],
+    "defaultCategory": "Packages",
     "plugin": [
-        "@GabrielleMi/typedoc-plugin-vitest-examples"
+      "@GabrielleMi/typedoc-plugin-vitest-examples",
+      "typedoc-plugin-mdn-links",
+      "./docs-src/rename-modules.cjs"
     ]
 }

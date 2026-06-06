@@ -5,6 +5,10 @@ export type CSPSelf = '\'self\'';
 export type CSPNone = '\'none\'';
 export type CSPAll = '*';
 
+/**
+ * Represents valid sources for CSP directives.
+ * Can be a keyword, a nonce, a hash, or a URL.
+ */
 export type CSPSource = CSPSelf
   | '\'unsafe-inline\''
   | '\'unsafe-eval\''
@@ -19,140 +23,118 @@ export type FrameAncestorSource = CSPSelf | CSPNone | CSPAll | string;
 
 export type CSPDirectiveList = CSPSource[];
 
-export type CSP = {
+/**
+ * Represents the Content Security Policy (CSP) directives configuration.
+ */
+export interface CSP {
   /**
-     * The HTTP Content-Security-Policy (CSP) default-src directive serves
-     * as a fallback for the other CSP fetch directives.
-     * For each of the following directives that are absent,
-     * the user agent looks for the default-src directive and uses this value for it
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/default-src}
-     */
+   * Fallback for other CSP fetch directives.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src | MDN}
+   */
   'default-src'?: CSPDirectiveList;
 
   /**
-     * The HTTP Content-Security-Policy base-uri restricts the URLs which can be used in a document's `<base>` element.
-     * If this value is absent, then any URI is allowed.
-     * If this directive is absent, the user agent will use the value in the `<base>` element.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri}
-     */
+   * Restricts the URLs which can be used in a document's `<base>` element.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/base-uri | MDN}
+   *
+   * @default Allows any URI.
+   */
   'base-uri'?: CSPDirectiveList;
+
   /**
-     * @deprecated This feature is no longer recommended.
-     * Though some browsers might still support it, it may have already been removed from the relevant web standards,
-     * may be in the process of being dropped, or may only be kept for compatibility purposes.
-     * Be aware that this feature may cease to work at any time.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/block-all-mixed-content}
-     */
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/block-all-mixed-content | MDN}
+   *
+   * @deprecated This feature is no longer recommended.
+   */
   'block-all-mixed-content'?: true;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) child-src directive defines the valid sources for web workers and
-     * nested browsing contexts loaded using elements such as `<frame>` and `<iframe>`.
-     * For workers, non-compliant requests are treated as fatal network errors by the user agent.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src}
-     */
+   * Defines valid sources for web workers and nested browsing contexts.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src | MDN}
+   */
   'child-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) connect-src restricts the URLs loaded using script interfaces.
-     * The following APIs are controlled by this directive:
-     * The ping attribute in `<a>` elements
-     * - fetch()
-     * - XMLHttpRequest
-     * - WebSocket
-     * - EventSource
-     * - Navigator.sendBeacon()
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src}
-     */
+   * Restricts the URLs which can be loaded using script interfaces (fetch, XHR, WebSockets).
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src | MDN}
+   */
   'connect-src'?: CSPDirectiveList;
+
   /**
-     * @experimental
-     * The HTTP Content-Security-Policy (CSP) fenced-frame-src directive specifies valid sources for nested
-     * browsing contexts loaded into `<fencedframe>` elements.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/fenced-frame-src}
-     */
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/fenced-frame-src | MDN}
+   *
+   * @experimental
+   * Specifies valid sources for nested browsing contexts loaded into `<fencedframe>` elements.
+   */
   'fenced-frame-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) font-src specifies valid sources for fonts loaded using @font-face.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/font-src}
-     */
+   * Specifies valid sources for fonts loaded using `@font-face`.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/font-src | MDN}
+   */
   'font-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) form-action directive restricts the URLs which can be used
-     * as the target of form submissions from a given context.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/form-action}
-     */
+   * Restricts the URLs which can be used as the target of form submissions.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/form-action | MDN}
+   */
   'form-action'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) frame-ancestors directive specifies valid parents that may embed
-     * a page using `<frame>`, `<iframe>`, `<object>`, or `<embed>`.
-     * Setting this directive to 'none' is similar to X-Frame-Options: deny (which is also supported in older browsers).
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors}
-     */
+   * Specifies valid parents that may embed a page.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors | MDN}
+   */
   'frame-ancestors'?: FrameAncestorSource[];
+
   /**
-     * The HTTP Content-Security-Policy (CSP) frame-src directive specifies valid sources for
-     * nested browsing contexts loading using elements such as `<frame>` and `<iframe>`.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/frame-src}
-     */
+   * Specifies valid sources for nested browsing contexts (`<frame>`, `<iframe>`).
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src | MDN}
+   */
   'frame-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy img-src directive specifies valid sources of images and favicons.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/img-src}
-     */
+   * Specifies valid sources of images and favicons.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/img-src | MDN}
+   */
   'img-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy manifest-src directive specifies which manifest can be applied to the resource.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Reference/Headers/Content-Security-Policy/manifest-src}
-     */
+   * Specifies which manifest can be applied to the resource.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/manifest-src | MDN}
+   */
   'manifest-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) script-src directive specifies valid sources for JavaScript.
-     * This includes not only URLs loaded directly into `<script>` elements, but also things like
-     * inline script event handlers (onclick) and XSLT stylesheets which can trigger script execution.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src}
-     */
+   * Specifies valid sources for JavaScript.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src | MDN}
+   */
   'script-src'?: CSPDirectiveList;
+
   /**
-     * The HTTP Content-Security-Policy (CSP) style-src directive specifies valid sources for stylesheets.
-     *
-     * {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src}
-     */
+   * Specifies valid sources for stylesheets.
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src | MDN}
+   */
   'style-src'?: CSPDirectiveList;
-};
+}
 
 /**
- * Generates a Content Security Policy (CSP) header string from a simple, type-safe object.
- * Skip the headaches of manual CSP string formatting.
- *
- * @param config A {@link CSP} object defining the Content Security Policy directives. Empty or `null`/`undefined` directives are omitted.
- * `true` values for directives (like `block-all-mixed-content`) will include the directive name without sources.
- * @returns A ready-to-use CSP string for HTTP headers.
+ * Generates a Content Security Policy (CSP) header string from a simple object.
+ * @param config A {@link CSP} object defining the directives.
+ * @returns A formatted CSP string for HTTP headers.
  *
  * @examplesFromTests ../test/csp.test.js
  */
 export function buildCSP(config: CSP) {
-  return Object.entries(config).reduce((csp, [policy, value]) => {
+  return Object.entries(config).reduce((csp, [ policy, value ]) => {
     if (value === true) {
-      return safeJoin([csp, policy], '; ');
+      return safeJoin([ csp, policy ], '; ');
     }
 
     if (isEmpty(value)) {
       return csp;
     }
 
-    const policyContent = isArray(value) ? safeJoin(value, ' ') : String(value);
+    const policyContent = isArray(value) ? safeJoin(value as CSPDirectiveList, ' ') : String(value);
 
     return safeJoin([
       csp,

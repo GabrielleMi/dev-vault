@@ -3,9 +3,9 @@ import { splitInChunks } from '../src/array.js';
 
 describe('safeArray', () => {
   it('should return the array itself if the value is an array', () => {
-    const arr = ['a', 'b', 'c'];
+    const arr = [ 'a', 'b', 'c' ];
     expect(safeArray(arr)).toBe(arr);
-    expect(safeArray([1, 2])).toEqual([1, 2]);
+    expect(safeArray([ 1, 2 ])).toEqual([ 1, 2 ]);
   });
 
   it('should return an empty array if the value is null', () => {
@@ -43,10 +43,10 @@ describe('safeArray', () => {
 
 describe('toArray', () => {
   it('should return the array itself if the value is an array', () => {
-    const arr = [1, 2, 3];
+    const arr = [ 1, 2, 3 ];
     expect(toArray(arr)).toBe(arr);
-    expect(toArray(['a', 'b'])).toEqual(['a', 'b']);
-    expect(toArray([null, undefined, 0, false, ''])).toEqual([null, undefined, 0, false, '']);
+    expect(toArray([ 'a', 'b' ])).toEqual([ 'a', 'b' ]);
+    expect(toArray([ null, undefined, 0, false, '' ])).toEqual([ null, undefined, 0, false, '' ]);
   });
 
   it('should return an empty array if the value is null', () => {
@@ -105,72 +105,62 @@ describe('toArray', () => {
 describe('splitInChunks', () => {
   // @isTestExample Splitting an array
   it('should split an array into even chunks', () => {
-    const arr = [1, 2, 3, 4, 5, 6];
-    const expected = [[1, 2], [3, 4], [5, 6]];
-    expect(splitInChunks(arr, 2)).toEqual(expected);
+    const arr = [ 1, 2, 3, 4, 5, 6 ];
+    expect(splitInChunks(arr, 2)).toEqual([ [ 1, 2 ], [ 3, 4 ], [ 5, 6 ] ]);
   });
 
   it('should split an array into uneven chunks (last chunk smaller)', () => {
-    const arr = [1, 2, 3, 4, 5];
-    const expected = [[1, 2], [3, 4], [5]];
+    const arr = [ 1, 2, 3, 4, 5 ];
+    const expected = [ [ 1, 2 ], [ 3, 4 ], [5] ];
     expect(splitInChunks(arr, 2)).toEqual(expected);
   });
 
   it('should handle a chunkSize equal to the array length', () => {
-    const arr = ['a', 'b', 'c'];
-    const expected = [['a', 'b', 'c']];
-    expect(splitInChunks(arr, 3)).toEqual(expected);
+    const arr = [ 'a', 'b', 'c' ];
+    expect(splitInChunks(arr, 3)).toEqual([[ 'a', 'b', 'c' ]]);
   });
 
   it('should handle a chunkSize larger than the array length', () => {
-    const arr = [10, 20];
-    const expected = [[10, 20]];
-    expect(splitInChunks(arr, 5)).toEqual(expected);
+    const arr = [ 10, 20 ];
+    expect(splitInChunks(arr, 5)).toEqual([[ 10, 20 ]]);
   });
 
   it('should return chunks where each contains only one element when chunkSize is 1', () => {
-    const arr = ['x', 'y', 'z'];
-    const expected = [['x'], ['y'], ['z']];
-    expect(splitInChunks(arr, 1)).toEqual(expected);
+    const arr = [ 'x', 'y', 'z' ];
+    expect(splitInChunks(arr, 1)).toEqual([ ['x'], ['y'], ['z'] ]);
   });
 
   it('should return an empty array when the input array is empty', () => {
-    const arr = [];
-    expect(splitInChunks(arr, 3)).toEqual([]);
+    expect(splitInChunks([], 3)).toEqual([]);
   });
 
   it('should return an empty array when value is null (runtime behavior check)', () => {
-    const arr = null;
-    const expected = [];
-    expect(splitInChunks(arr, 3)).toEqual(expected);
+    expect(splitInChunks(null, 3)).toEqual([]);
   });
 
   it('should return an empty array when value is undefined (runtime behavior check)', () => {
-    const arr = undefined;
-    const expected = [];
-    expect(splitInChunks(arr, 3)).toEqual(expected);
+    expect(splitInChunks(undefined, 3)).toEqual([]);
   });
 
-  // @isTestExample Invalid chunk value (not)
+  // @isTestExample Invalid chunk value (0 or lower)
   it('should return the original array as a single chunk when chunkSize is 0', () => {
-    const arr = [1, 2, 3];
+    const arr = [ 1, 2, 3 ];
     const chunkSize = 0;
-    const expected = [[1, 2, 3]];
     // @ts-expect-error test
-    expect(splitInChunks(arr, chunkSize)).toEqual(expected);
+    expect(splitInChunks(arr, chunkSize)).toEqual([[ 1, 2, 3 ]]);
   });
 
   it('should return the original array as a single chunk when chunkSize is negative', () => {
-    const arr = ['a', 'b'];
+    const arr = [ 'a', 'b' ];
     const chunkSize = -5;
-    const expected = [['a', 'b']];
+    const expected = [[ 'a', 'b' ]];
     // @ts-expect-error test
     expect(splitInChunks(arr, chunkSize)).toEqual(expected);
   });
 
   it('should work correctly with an array of strings', () => {
-    const arr = ['apple', 'banana', 'cherry', 'date', 'elderberry'];
-    const expected = [['apple', 'banana'], ['cherry', 'date'], ['elderberry']];
+    const arr = [ 'apple', 'banana', 'cherry', 'date', 'elderberry' ];
+    const expected = [ [ 'apple', 'banana' ], [ 'cherry', 'date' ], ['elderberry'] ];
     expect(splitInChunks(arr, 2)).toEqual(expected);
   });
 
@@ -179,14 +169,14 @@ describe('splitInChunks', () => {
     const obj2 = { id: 2, name: 'Bob' };
     const obj3 = { id: 3, name: 'Charlie' };
     const obj4 = { id: 4, name: 'David' };
-    const arr = [obj1, obj2, obj3, obj4];
-    const expected = [[obj1, obj2, obj3], [obj4]];
+    const arr = [ obj1, obj2, obj3, obj4 ];
+    const expected = [ [ obj1, obj2, obj3 ], [obj4] ];
     expect(splitInChunks(arr, 3)).toEqual(expected);
   });
 
   it('should work correctly with a mixed array', () => {
-    const arr = [1, 'two', true, { four: 4 }];
-    const expected = [[1, 'two'], [true, { four: 4 }]];
+    const arr = [ 1, 'two', true, { four: 4 } ];
+    const expected = [ [ 1, 'two' ], [ true, { four: 4 } ] ];
     expect(splitInChunks(arr, 2)).toEqual(expected);
   });
 });

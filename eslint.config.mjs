@@ -1,27 +1,17 @@
 import { defineConfig } from 'eslint/config';
 import globals from 'globals';
 import js from '@eslint/js';
+import jsdoc from 'eslint-plugin-jsdoc';
 import json from '@eslint/json';
 import stylistic from '@stylistic/eslint-plugin';
 import tseslint from 'typescript-eslint';
 
 const styleConfig = stylistic.configs.customize({
-  arrayBracketSpacing: ['always', { singleValue: false }],
-  arrayElementNewline: ['consistent', { multiline: true }],
-  arrowSpacing: { before: false, after: false },
   arrowParens: true,
   braceStyle: '1tbs',
   commaDangle: 'never',
-  dotLocation: 'property',
-  eolLast: true,
   indent: 2,
-  objectCurlySpacing: 'always',
-  operatorLinebreak: 'before',
-  noMixedOperators: true,
   semi: true,
-  semiSpacing: { before: false, after: true },
-  switchColonSpacing: { after: true, before: false },
-  templateCurlySpacing: 'never',
   quoteProps: 'as-needed',
   quotes: 'single'
 });
@@ -35,7 +25,8 @@ export default defineConfig([
       '**/docs/**',
       '**/build/**',
       '**/coverage/**',
-      '**/*.min.js'
+      '**/*.min.js',
+      '**/website/**'
     ]
   },
   {
@@ -50,16 +41,35 @@ export default defineConfig([
     },
     extends: ['js/recommended'],
     rules: {
-      camelcase: ['error', {
-        ignoreDestructuring: true,
-        ignoreImports: true,
-        ignoreGlobals: true
-      }],
+      '@stylistic/arrow-spacing': [ 'error', { before: true, after: true } ],
+      '@stylistic/array-bracket-spacing': [ 'error', 'always', { singleValue: false } ],
+      '@stylistic/array-bracket-newline': [ 'error', { multiline: true } ],
+      '@stylistic/array-element-newline': [ 'error', { consistent: true, multiline: true } ],
+      '@stylistic/dot-location': [ 'error', 'property' ],
+      '@stylistic/eol-last': [ 'error', 'always' ],
+      '@stylistic/implicit-arrow-linebreak': [ 'error', 'beside' ],
+      '@stylistic/no-extra-semi': 'error',
+      '@stylistic/object-curly-spacing': [ 'error', 'always' ],
+      '@stylistic/operator-linebreak': [ 'error', 'before' ],
+      '@stylistic/no-mixed-operators': 'error',
+      '@stylistic/no-trailing-spaces': [ 'error', { ignoreComments: true } ],
+      '@stylistic/template-curly-spacing': [ 'error', 'never' ],
+      '@stylistic/semi-spacing': [ 'error', { before: false, after: true } ],
+      '@stylistic/switch-colon-spacing': [ 'error', { after: true, before: false } ],
+
+      camelcase: [
+        'error',
+        {
+          ignoreDestructuring: true,
+          ignoreImports: true,
+          ignoreGlobals: true
+        }
+      ],
       curly: 'error',
-      'max-depth': ['error', 4],
-      'max-params': ['error', 3],
+      'max-depth': [ 'error', 4 ],
+      'max-params': [ 'error', 3 ],
       'no-alert': 'error',
-      'no-console': ['error', { allow: ['warn', 'error'] }],
+      'no-console': [ 'error', { allow: [ 'warn', 'error' ] } ],
       'no-duplicate-imports': 'error',
       'no-else-return': 'error',
       'no-lonely-if': 'error',
@@ -74,7 +84,7 @@ export default defineConfig([
           ignoreCase: true,
           ignoreDeclarationSort: false,
           ignoreMemberSort: false,
-          memberSyntaxSortOrder: ['none', 'all', 'multiple', 'single'],
+          memberSyntaxSortOrder: [ 'none', 'all', 'multiple', 'single' ],
           allowSeparatedGroups: false
         }
       ],
@@ -95,6 +105,19 @@ export default defineConfig([
           argsIgnorePattern: '^_',
           varsIgnorePattern: '^_',
           caughtErrorsIgnorePattern: '^_'
+        }
+      ]
+    }
+  },
+  {
+    files: ['**/*.{ts,mts,cts,tsx,js,mjs,cjs,jsx}'],
+    plugins: { jsdoc },
+    rules: {
+      'jsdoc/sort-tags': [
+        'error',
+        {
+          tagSequence: [{ tags: [ 'group', 'category', 'remarks', 'alpha', 'template', 'param', 'returns', 'throws', 'example', 'see' ] }],
+          alphabetizeExtras: true
         }
       ]
     }

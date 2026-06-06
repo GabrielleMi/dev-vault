@@ -6,7 +6,7 @@ function hasMultipleLines(str: string): boolean {
 
 function skipLine(str: string): boolean {
   const noSpaceStr = str.replaceAll(' ', '');
-  const forbidden = ['eslint-disable', '@ts-'];
+  const forbidden = [ 'eslint-disable', '@ts-' ];
   return forbidden.some((marker) => noSpaceStr.includes(marker));
 }
 

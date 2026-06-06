@@ -60,7 +60,7 @@ export function load(app: Application) {
 
       const absoluteTestFilePath = path.resolve(sourceFileDir, relativeTestFilePath);
 
-      app.logger.info(log(`Found ${EXAMPLE_FROM_TESTS_TAG} tag on ${declarationReflection.name}. Attempting to pull examples from: ${absoluteTestFilePath}`));
+      app.logger.verbose(log(`Found ${EXAMPLE_FROM_TESTS_TAG} tag on ${declarationReflection.name}. Attempting to pull examples from: ${absoluteTestFilePath}`));
 
       if (!fs.existsSync(absoluteTestFilePath)) {
         app.logger.error(log(`Test file not found at: ${absoluteTestFilePath} for ${declarationReflection.name}. Please verify the path in the @examplesFromTests tag.`));
@@ -70,7 +70,7 @@ export function load(app: Application) {
       const addedExamplesCount = processReflectionTests(app, declarationReflection, absoluteTestFilePath);
 
       if (addedExamplesCount > 0) {
-        app.logger.info(log(`Successfully added ${addedExamplesCount} examples to ${declarationReflection.name}.`));
+        app.logger.verbose(log(`Successfully added ${addedExamplesCount} examples to ${declarationReflection.name}.`));
         removeTestTag(declarationReflection);
       } else {
         app.logger.warn(log(`No ${EXAMPLE_ALLOWED_TAG} tests found for "${declarationReflection.name}" in "${absoluteTestFilePath}". Ensure test file path and tags are correct.`));

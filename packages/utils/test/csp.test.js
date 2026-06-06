@@ -5,7 +5,7 @@ describe('buildCSP', () => {
   it('should generate a basic CSP string', () => {
     const config = {
       'default-src': ['\'self\''],
-      'script-src': ['\'unsafe-inline\'', '\'unsafe-eval\'']
+      'script-src': [ '\'unsafe-inline\'', '\'unsafe-eval\'' ]
     };
 
     expect(buildCSP(config)).toBe('default-src \'self\'; script-src \'unsafe-inline\' \'unsafe-eval\'');

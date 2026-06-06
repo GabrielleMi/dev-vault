@@ -1,13 +1,13 @@
 /**
  * Utility functions
- * @packageDocumentation
- *
  * @remarks
  * This library is an experimental project.
- *
  * @alpha
+ *
+ * @packageDocumentation
  */
 
+/** @category Constants */
 export {
   STRING,
   NUMBER,
@@ -38,13 +38,17 @@ export {
   HTTP_CODES
 } from './constants.js';
 
+/** @category Array */
 export {
   safeArray,
   toArray,
   isIncluded,
-  splitInChunks
+  splitInChunks,
+
+  type AssertArray
 } from './array.js';
 
+/** @category Security */
 export {
   buildCSP,
 
@@ -57,6 +61,7 @@ export {
   type FrameAncestorSource
 } from './csp.js';
 
+/** @category Validation */
 export {
   isObject,
   isEmpty,
@@ -74,23 +79,32 @@ export {
   type Falsy
 } from './is.js';
 
+/** @category Serialization */
 export {
   safeStringify,
   safeParse
 } from './json.js';
 
+/** @category Cloning */
 export {
   cloneDeep
 } from './misc.js';
 
+/** @category Math */
 export {
   safeDivide
 } from './number.js';
 
+/** @category Objects */
 export {
   getDeepEntry
 } from './object.js';
 
+export {
+  ChainPromise
+} from './promises.js';
+
+/** @category Search */
 export {
   search,
 
@@ -98,6 +112,7 @@ export {
   type SearchKeyConfig
 } from './search.js';
 
+/** @category Sort */
 export {
   sort,
 
@@ -108,17 +123,22 @@ export {
   type SortConfigs
 } from './sort.js';
 
+/** @category Strings */
 export {
   safeJoin,
+  normalizeStr,
   isStrEqualCi
 } from './string.js';
 
+/** @category Time */
 export {
   convertTimeUnit,
 
   type ConvertableTimeUnit
 } from './time.js';
 
+/** @category Types */
 export {
-  type Positive
+  type Positive,
+  type AssertPositive
 } from './types.js';

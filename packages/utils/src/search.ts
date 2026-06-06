@@ -3,18 +3,42 @@ import { getDeepEntry } from './object.js';
 import { normalizeStr } from './string.js';
 import { safeDivide } from './number.js';
 
-export type SearchKeyConfig = {
+/**
+ * Configuration for a specific key in a search operation.
+ */
+export interface SearchKeyConfig {
+  /** 
+   * Whether the search on this specific key should be case-sensitive.
+   * @default false
+   */
   isCaseSensitive?: boolean;
-  weight?: number;
-  key: string;
-};
 
+  /** 
+   * The relative importance of this key. 
+   * Higher values give this key more influence in the match quality.
+   * @default 1
+   */
+  weight?: number;
+
+  /** 
+   * The object path to search within (e.g., 'user.name'). 
+   */
+  key: string;
+}
+
+/**
+ * A search key defined either as a string path or a {@link SearchKeyConfig}.
+ */
 export type SearchKey = SearchKeyConfig | string;
 
 /**
- * @author Gustav Anderson
- * @private
+ * Calculates the Levenshtein distance between two strings.
+ * Used to determine the minimum number of single-character edits required to change one word into the other.
+ *
  * @see {@link https://stackoverflow.com/questions/18516942/fastest-general-purpose-levenshtein-javascript-implementation}
+ *
+ * @author Gustav Anderson
+ * @internal
  */
 export function getLevenshteinDistance(s: string, t: string): number {
   if (s === t) {
@@ -98,6 +122,9 @@ export function getLevenshteinDistance(s: string, t: string): number {
   return h as number;
 }
 
+/**
+ * @internal
+ */
 const getKeyConfig = (searchKey: SearchKey) => {
   if (isString(searchKey)) {
     return {
@@ -113,19 +140,38 @@ const getKeyConfig = (searchKey: SearchKey) => {
 };
 
 /**
- * Function to search an array.
- * @param arr Array to search
- * @param configs Configure how the array should be searched
+ * Performs a search operation on an array of objects.
+ * Supports fuzzy matching and specific field targeting.
+ *
+ * @returns A search chain object with a `with` method to provide search inputs.
+ * @example
+ * ```typescript
+ * const result = search(data, { keys: ['name'], threshold: 0.8 })
+ * .with('searchTerm');
+ * ```
  */
-export const search = <T extends object[]>(
+export function search<T extends object[]>(
+  /** The array of objects to search. */
   arr: T,
+  /** Configuration object defining keys to search, threshold for fuzzy matching, etc. */
   configs: {
+    /** The keys to search. */
     keys: SearchKey[];
+    /** Whether the search should be case-sensitive. */
     isCaseSensitive?: boolean;
+    /** The threshold for fuzzy matching (between 0 and 1). */
     threshold?: number;
+    /** The locale for normalization. */
     locale?: Intl.LocalesArgument;
   }
-) => {
+): {
+  /**
+   * Provides the search inputs and returns the filtered array.
+   * @param searchInputs - The terms to search for.
+   * @returns The filtered array of objects.
+   */
+  with(...searchInputs: string[]): T;
+} {
   const keysToSearch = configs?.keys || [];
   const isFuzzy = isNumber(configs?.threshold) && configs.threshold > 0;
   const isGlobalCaseSensitive = configs?.isCaseSensitive;
@@ -185,4 +231,4 @@ export const search = <T extends object[]>(
       }) as T;
     }
   };
-};
+}
