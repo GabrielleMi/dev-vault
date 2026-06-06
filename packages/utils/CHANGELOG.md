@@ -1,5 +1,12 @@
 # @dev-vault/utils
 
+## 0.2.0
+
+### Minor Changes
+
+- d95b0ff: Added utility functions: Introduced normalizeString for robust string processing and ChainPromise to facilitate the sequencing of asynchronous operations.
+  Documentation updates: Added better descriptions and standardized tags
+
 ## 0.1.0
 
 ### Minor Changes

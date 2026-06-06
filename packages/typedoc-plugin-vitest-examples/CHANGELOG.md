@@ -1,5 +1,12 @@
 # @dev-vault/typedoc-plugin-vitest-examples
 
+## 0.1.1
+
+### Patch Changes
+
+- d95b0ff: Improved output cleanliness: Switched logger.log to logger.verbose to reduce noise during documentation generation.
+  Fixed example title rendering: Corrected the extraction logic to ensure custom example titles are displayed correctly.
+
 ## 0.1.0
 
 ### Minor Changes
