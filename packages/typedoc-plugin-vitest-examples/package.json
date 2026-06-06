@@ -1,6 +1,6 @@
 {
   "name": "@GabrielleMi/typedoc-plugin-vitest-examples",
-  "version": "0.1.0",
+  "version": "0.1.1",
   "description": "TypeDoc plugin to pull examples from Vitest test files.",
   "main": "dist/index.js",
   "exports": {
