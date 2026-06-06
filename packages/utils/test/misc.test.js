@@ -3,7 +3,7 @@ import { cloneDeep } from '../src';
 describe('cloneDeep', () => {
   describe('arrays', () => {
     it('should be deep cloned', () => {
-      const original = [1, 2, [3, 4]];
+      const original = [ 1, 2, [ 3, 4 ] ];
       const cloned = cloneDeep(original);
 
       expect(cloned).toEqual(original);
@@ -116,9 +116,9 @@ describe('cloneDeep', () => {
 
       // @ts-expect-error testing
       const original = new Map([
-        ['key1', 'value1'],
-        [2, objInMap],
-        [objInMap, 3]
+        [ 'key1', 'value1' ],
+        [ 2, objInMap ],
+        [ objInMap, 3 ]
       ]);
       const cloned = cloneDeep(original);
 
@@ -133,7 +133,7 @@ describe('cloneDeep', () => {
 
     it('should deep clone Set objects', () => {
       const objInSet = { val: 1 };
-      const original = new Set([1, 'a', objInSet]);
+      const original = new Set([ 1, 'a', objInSet ]);
       const cloned = cloneDeep(original);
 
       expect(cloned).toEqual(original);
@@ -257,8 +257,8 @@ describe('cloneDeep', () => {
           prop2: new Date('2023-01-01'),
           prop3: { subProp: /regex/i }
         },
-        new Map([['mKey', { mVal: 1 }]]),
-        new Set([10, { sVal: 20 }])
+        new Map([[ 'mKey', { mVal: 1 } ]]),
+        new Set([ 10, { sVal: 20 } ])
       ],
       settings: {
         enabled: true,

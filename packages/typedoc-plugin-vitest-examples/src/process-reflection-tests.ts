@@ -87,20 +87,23 @@ export function processReflectionTests(
       const exampleTestComment = findExampleTestComment(precedingComments, sourceFile);
 
       if (exampleTestComment) {
-        app.logger.info(log(`---- ${EXAMPLE_ALLOWED_TAG} found for '${testTitle}'. Extracting code.`));
+        app.logger.verbose(log(`---- ${EXAMPLE_ALLOWED_TAG} found for '${testTitle}'. Extracting code.`));
 
         if (isFunctionLike(callbackArg)) {
-          const exampleTextCommentTitle = exampleTestComment.split(`${EXAMPLE_ALLOWED_TAG}`)[1]?.trim();
-          const bracketMatch = exampleTextCommentTitle.match(/^\[([^\]]+)\]\s*(.*)/);
+          const exampleText = exampleTestComment.split(EXAMPLE_ALLOWED_TAG)[1]?.trim() || '';
+          const bracketMatch = exampleText.match(/^\[([^\]]+)\]\s*(.*)/);
           const targetFunctionName = bracketMatch ? bracketMatch[1] : null;
+          const rawTitle = bracketMatch ? bracketMatch[2] : exampleText;
+          const exampleTitle = rawTitle.trim() || testTitle;
 
-          const isTarget = targetFunctionName ? targetFunctionName === reflection.name : hasDescribe;
+          const isTarget = targetFunctionName
+            ? targetFunctionName === reflection.name
+            : hasDescribe;
 
           if (!isTarget) {
             return;
           }
 
-          const exampleTitle = bracketMatch ? (bracketMatch[2] || testTitle) : testTitle;
           const transformedCodeString = extractTestCode(sourceFile, testFileContent, callbackArg.body);
 
           if (!reflection.comment) {
@@ -111,22 +114,20 @@ export function processReflectionTests(
           const existingComment = reflection.comment.blockTags.find((tag) => tag.tag === commentName);
 
           if (existingComment && existingComment.content.length > 0) {
-            app.logger.info(log(`----- Merging examples with the same name "${commentName}"`));
+            app.logger.verbose(log(`----- Merging examples with the same name "${commentName}"`));
             const last = existingComment.content.at(existingComment.content.length - 1);
             // eslint-disable-next-line no-useless-escape
             const newText = `${last!.text.replace(/(\n\`\`\`)(?!.*\1)/, '')}\n\n${transformedCodeString}\n\`\`\``;
 
             existingComment.content.at(existingComment.content.length - 1)!.text = newText;
           } else {
-            const newExampleTag = new CommentTag(commentName, [
-              { kind: 'code', text: `\`\`\`${codeLanguage}\n${transformedCodeString}\n\`\`\`` }
-            ]);
+            const newExampleTag = new CommentTag(commentName, [{ kind: 'code', text: `\`\`\`${codeLanguage}\n${transformedCodeString}\n\`\`\`` }]);
             reflection.comment.blockTags.push(newExampleTag);
-            app.logger.info(`DEBUG: Tags après push: ${reflection.comment.blockTags.length}`);
+            app.logger.verbose(`DEBUG: Tags après push: ${reflection.comment.blockTags.length}`);
           }
 
           examplesAdded++;
-          app.logger.info(log(`----- Added example "${testTitle}" to ${reflection.name}.`));
+          app.logger.verbose(log(`----- Added example "${testTitle}" to ${reflection.name}.`));
         } else {
           app.logger.warn(log(`----- Could not extract code for test "${testTitle}" (callback is not a function expression/arrow function).`));
         }

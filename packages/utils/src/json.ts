@@ -1,15 +1,35 @@
 import { isBigInt, isFn, isObject, isString } from './is.js';
 import { getDeepEntry } from './object.js';
 
+/**
+ * @internal
+ * @useDeclaredType
+ */
 type StringifyParams = Parameters<typeof JSON.stringify>;
-type StringifyReplacerParams = StringifyParams[1] | ((key: string, value: unknown) => unknown);
+/**
+ * @internal
+ * @useDeclaredType
+ */
 type ParseParams = Parameters<typeof JSON.parse>;
+/**
+ * @internal
+ * @useDeclaredType
+ */
 type ParseReviverParams = Parameters<Required<ParseParams>[1]>;
 
 const CIRCULAR_PATH_PREFIX = '$:~' as const;
+
+/**
+ * @internal
+ * Checks if a string represents a circular reference pointer.
+ */
 const isCircularPath = (value: unknown): value is `${typeof CIRCULAR_PATH_PREFIX}${string}` => isString(value) && value.startsWith(CIRCULAR_PATH_PREFIX);
 
-function handleReplace(replacer?: StringifyReplacerParams) {
+/**
+ * @internal
+ * Custom replacer for JSON.stringify to handle circular dependencies and BigInt.
+ */
+function handleReplace(replacer?: StringifyParams[1] | ((key: string, value: unknown) => unknown)) {
   const objectPaths = new Map();
   const visitedObjects = new Map();
   let init: unknown = null;
@@ -18,7 +38,6 @@ function handleReplace(replacer?: StringifyReplacerParams) {
     if (Array.isArray(replacer)) {
       return replacer.includes(key) ? undefined : value;
     }
-
     return isFn(replacer) ? replacer(key, value) : value;
   };
 
@@ -53,17 +72,30 @@ function handleReplace(replacer?: StringifyReplacerParams) {
 
     return replace(key, finalValue);
   };
-};
+}
 
 /**
- * JSON.stringify, but it doesn't throw. Safely stringifies circular paths and bigints.
- *
- * @see
- * {@link safeParse} for safe parsing
+ * A safe version of {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify|JSON.stringify} that prevents circular dependency errors
+ * and serializes `BigInt` values.
+ * @remarks
+ * Circular references are replaced with a path string prefixed by `$:~`.
+ * `BigInt` values are serialized as `BigInt(value)`.
+ * If stringification fails, returns `undefined` instead of throwing.
+ * @param value - The value to stringify
+ * @param replacer - A function or array to transform the results, same as {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/stringify#replacer | JSON.stringify}
+ * @param space - Adds indentation/whitespace to the output.
+ * @returns The JSON string or `undefined` if an error occurs.
+ * @example
+ * ```typescript
+ * const obj = { a: 1n };
+ * obj.self = obj;
+ * safeStringify(obj); // '{"a":"BigInt(1)","self":"$:~"}'
+ * ```
+ * @see {@link safeParse} for safe parsing.
  */
 export function safeStringify(
   value: StringifyParams[0],
-  replacer?: StringifyReplacerParams,
+  replacer?: StringifyParams[1] | ((key: string, value: unknown) => unknown),
   space?: StringifyParams[2]
 ): undefined | string {
   if (!value) {
@@ -77,6 +109,10 @@ export function safeStringify(
   }
 }
 
+/**
+ * @internal
+ * Recursively resolves circular paths back to object references.
+ */
 function resolveReferences(root: Record<string, unknown>) {
   const visited = new WeakSet();
 
@@ -102,31 +138,43 @@ function resolveReferences(root: Record<string, unknown>) {
   walk(root);
 }
 
+/**
+ * @internal
+ * Custom reviver for JSON.parse to restore BigInt and circular references.
+ */
 function handleRevive(reviver?: ParseParams[1]) {
   const revive = (key: ParseReviverParams[0], val: ParseReviverParams[1]) => {
-    if (reviver) {
-      return reviver(key, val);
-    }
-
-    return val;
+    return reviver ? reviver(key, val) : val;
   };
 
   return function (key: string, val: unknown) {
     if (isString(val) && val.startsWith('BigInt(')) {
       const number = val.replace(/^BigInt\(|\)$/g, '');
-
       return revive(key, BigInt(number));
     }
-
     return revive(key, val);
   };
 }
 
 /**
- * JSON.parse, but it doesn't throw. Parses back circular paths and bigint safely.
+ * A safe version of {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse|JSON.parse} that handles circular references and `BigInt` values
+ * serialized by {@link safeStringify}.
  *
- * @see
- * {@link safeStringify} for safe JSON.stringify
+ * @remarks
+ * If the input string is invalid JSON, the function returns the provided `fallback`
+ * value instead of throwing an error.
+ * @param value - The JSON string to parse.
+ * @param fallback - The value to return if parsing fails.
+ * @param reviver - A transformation function, same as {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/JSON/parse#reviver | JSON.parse}.
+ * @returns The parsed object or the fallback value.
+ * @example
+ * ```typescript
+ * const json = '{"a":"BigInt(1)","self":"$:~"}';
+ * const obj = safeParse(json);
+ * console.log(obj.a); // 1n
+ * console.log(obj.self === obj); // true
+ * ```
+ * @see {@link safeStringify} for safe JSON stringification.
  */
 export function safeParse(
   value: ParseParams[0],

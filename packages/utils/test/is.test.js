@@ -9,7 +9,7 @@ describe('isEmpty', () => {
 
     it('should return false for a non-empty array', () => {
       expect(isEmpty([1])).toBe(false);
-      expect(isEmpty(['a', 'b'])).toBe(false);
+      expect(isEmpty([ 'a', 'b' ])).toBe(false);
       expect(isEmpty([null])).toBe(false);
     });
   });
@@ -207,7 +207,7 @@ describe('isPrimitive', () => {
   // @isTestExample Non Primitives
   it('should return false for an array', () => {
     expect(isPrimitive([])).toBe(false);
-    expect(isPrimitive([1, 2])).toBe(false);
+    expect(isPrimitive([ 1, 2 ])).toBe(false);
   });
 
   // @isTestExample Non Primitives
@@ -303,16 +303,16 @@ describe('isEquivalent', () => {
 
   // @isTestExample Arrays
   it('should return true for equivalent simple arrays', () => {
-    expect(isEquivalent([1, 2, 3], [1, 2, 3])).toBe(true);
-    expect(isEquivalent(['a', 'b'], ['a', 'b'])).toBe(true);
+    expect(isEquivalent([ 1, 2, 3 ], [ 1, 2, 3 ])).toBe(true);
+    expect(isEquivalent([ 'a', 'b' ], [ 'a', 'b' ])).toBe(true);
   });
 
   it('should return false for arrays with different values', () => {
-    expect(isEquivalent([1, 2, 3], [1, 2, 4])).toBe(false);
+    expect(isEquivalent([ 1, 2, 3 ], [ 1, 2, 4 ])).toBe(false);
   });
 
   it('should return false for arrays with different lengths', () => {
-    expect(isEquivalent([1, 2, 3], [1, 2])).toBe(false);
+    expect(isEquivalent([ 1, 2, 3 ], [ 1, 2 ])).toBe(false);
   });
 
   it('should handle empty arrays correctly', () => {
@@ -333,34 +333,34 @@ describe('isEquivalent', () => {
   });
 
   it('should return true for equivalent nested arrays', () => {
-    expect(isEquivalent([1, [2, 3], 4], [1, [2, 3], 4])).toBe(true);
+    expect(isEquivalent([ 1, [ 2, 3 ], 4 ], [ 1, [ 2, 3 ], 4 ])).toBe(true);
   });
 
   it('should return false for different nested arrays', () => {
-    expect(isEquivalent([1, [2, 3], 4], [1, [2, 4], 4])).toBe(false);
+    expect(isEquivalent([ 1, [ 2, 3 ], 4 ], [ 1, [ 2, 4 ], 4 ])).toBe(false);
   });
 
   it('should return true for equivalent objects containing arrays', () => {
-    const obj1 = { data: [1, { id: 'abc' }, 3], name: 'test' };
-    const obj2 = { data: [1, { id: 'abc' }, 3], name: 'test' };
+    const obj1 = { data: [ 1, { id: 'abc' }, 3 ], name: 'test' };
+    const obj2 = { data: [ 1, { id: 'abc' }, 3 ], name: 'test' };
     expect(isEquivalent(obj1, obj2)).toBe(true);
   });
 
   it('should return false for objects containing different arrays', () => {
-    const obj1 = { data: [1, { id: 'abc' }, 3], name: 'test' };
-    const obj2 = { data: [1, { id: 'xyz' }, 3], name: 'test' };
+    const obj1 = { data: [ 1, { id: 'abc' }, 3 ], name: 'test' };
+    const obj2 = { data: [ 1, { id: 'xyz' }, 3 ], name: 'test' };
     expect(isEquivalent(obj1, obj2)).toBe(false);
   });
 
   it('should return true for equivalent arrays containing objects', () => {
-    const arr1 = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
-    const arr2 = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
+    const arr1 = [ { id: 1, value: 'a' }, { id: 2, value: 'b' } ];
+    const arr2 = [ { id: 1, value: 'a' }, { id: 2, value: 'b' } ];
     expect(isEquivalent(arr1, arr2)).toBe(true);
   });
 
   it('should return false for arrays containing different objects', () => {
-    const arr1 = [{ id: 1, value: 'a' }, { id: 2, value: 'b' }];
-    const arr2 = [{ id: 1, value: 'a' }, { id: 2, value: 'c' }];
+    const arr1 = [ { id: 1, value: 'a' }, { id: 2, value: 'b' } ];
+    const arr2 = [ { id: 1, value: 'a' }, { id: 2, value: 'c' } ];
     expect(isEquivalent(arr1, arr2)).toBe(false);
   });
 
@@ -391,9 +391,9 @@ describe('isEquivalent', () => {
         name: 'Alice',
         settings: { notifications: true, theme: 'dark' }
       },
-      permissions: ['read', 'write'],
+      permissions: [ 'read', 'write' ],
       status: 'active',
-      tags: ['premium', 'verified']
+      tags: [ 'premium', 'verified' ]
     };
 
     const data2 = {
@@ -402,9 +402,9 @@ describe('isEquivalent', () => {
         name: 'Alice',
         settings: { theme: 'dark', notifications: true } // Different key order in settings
       },
-      permissions: ['read', 'write'],
+      permissions: [ 'read', 'write' ],
       status: 'active',
-      tags: ['premium', 'verified']
+      tags: [ 'premium', 'verified' ]
     };
 
     const data3 = {
@@ -413,9 +413,9 @@ describe('isEquivalent', () => {
         name: 'Bob', // Different name
         settings: { notifications: true, theme: 'dark' }
       },
-      permissions: ['read', 'write'],
+      permissions: [ 'read', 'write' ],
       status: 'active',
-      tags: ['premium', 'verified']
+      tags: [ 'premium', 'verified' ]
     };
 
     const data4 = {
@@ -424,9 +424,9 @@ describe('isEquivalent', () => {
         name: 'Alice',
         settings: { notifications: true, theme: 'light' }
       },
-      permissions: ['read', 'write'],
+      permissions: [ 'read', 'write' ],
       status: 'active',
-      tags: ['premium', 'verified']
+      tags: [ 'premium', 'verified' ]
     };
 
     const data5 = {
@@ -437,7 +437,7 @@ describe('isEquivalent', () => {
       },
       permissions: ['read'],
       status: 'active',
-      tags: ['premium', 'verified']
+      tags: [ 'premium', 'verified' ]
     };
 
     expect(isEquivalent(data1, data2)).toBe(true);

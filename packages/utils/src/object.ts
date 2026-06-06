@@ -1,12 +1,19 @@
 import { isObject } from './is.js';
 
 /**
- * Returns an object entry using dot notation. Can retrieve nested arrays values as well.
- * If the exact index is not found, will return undefined.
+ * Retrieves a nested value from an object using a dot-notation string.
+ * Supports both standard property access (`a.b.c`) and array index access (`a.b[0]`).
+ *
+ * @returns The found value, or `undefined` if the path does not exist.
  *
  * @examplesFromTests ../test/object.test.js
  */
-export const getDeepEntry = <T extends object>(object: T, key: string): T | unknown | undefined => {
+export function getDeepEntry<T extends object>(
+  /** The source object to query. */
+  object: T,
+  /** The path string using dot notation (e.g., `'user.address.street'`, `'items[0].name'`). */
+  key: string
+): T | unknown | undefined {
   if (!key) {
     return object;
   }
@@ -22,7 +29,7 @@ export const getDeepEntry = <T extends object>(object: T, key: string): T | unkn
     return;
   }
 
-  for (const [, match1, match2] of keyMatches) {
+  for (const [ , match1, match2 ] of keyMatches) {
     const key = match1 || match2;
     let nextVal;
 
@@ -40,4 +47,4 @@ export const getDeepEntry = <T extends object>(object: T, key: string): T | unkn
   }
 
   return val;
-};
+}

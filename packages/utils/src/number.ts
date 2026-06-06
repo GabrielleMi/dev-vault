@@ -1,40 +1,32 @@
 /**
- * Returns 0 when a number or the other is 0 before performing a division.
+ * Returns 0 when a number or the other is 0 or non-finite before performing a division.
+ * This prevents `NaN`, `Infinity`, or `-Infinity` results.
  *
+ * @returns The result of the division, or 0 if unsafe.
  * @example Standard Division
- * ```javascript
- * 6 / 2; // returns 3
- * safeDivide(6, 2); // returns 3
+ * ```typescript
+ * safeDivide(6, 2); // 3
  * ```
- *
- * @example Handling 0
- * ```javascript
- * 0 / 0; // returns NaN
- * safeDivide(0, 0); // returns 0
- *
- * 1 / 0; // returns Infinity
- * safeDivide(1, 0); // returns 0
+ * @example Handling 0 and NaN
+ * ```typescript
+ * safeDivide(0, 0); // 0
+ * safeDivide(NaN, 1); // 0
  * ```
- *
- * @example Handling NaN
- * ```javascript
- * NaN / 1 // returns NaN
- * safeDivide(NaN, 1); // returns 0
- *
- * NaN / NaN; // returns NaN
- * safeDivide(NaN, NaN); // returns 0
- * ```
- *
  * @example Handling Infinity
- * ```javascript
+ * ```typescript
  * Infinity / 2; // returns Infinity
- * safeDivide(Infinity, 2); // returns 0
+ * safeDivide(Infinity, 2); // 0
  *
  * Infinity / Infinity; // returns NaN
  * safeDivide(Infinity, Infinity); // returns 0
  * ```
  */
-export const safeDivide = (a: number, b: number) => {
+export function safeDivide(
+  /** The dividend */
+  a: number,
+  /** The divisor */
+  b: number
+) {
   if (
     !Number.isFinite(a)
     || !Number.isFinite(b)
@@ -45,8 +37,25 @@ export const safeDivide = (a: number, b: number) => {
   }
 
   return a / b;
-};
+}
 
-export function clamp(nb: number, min: number, max: number) {
+/**
+ * Constrains a number between a minimum and a maximum value.
+ *
+ * @returns The clamped value.
+ * @example
+ * ```typescript
+ * clamp(10, 0, 5); // 5
+ * clamp(-5, 0, 5); // 0
+ * ```
+ */
+export function clamp(
+  /** The number to clamp. */
+  nb: number,
+  /** The lower bound. */
+  min: number,
+  /** The upper bound. */
+  max: number
+) {
   return Math.min(Math.max(nb, min), max);
-};
+}

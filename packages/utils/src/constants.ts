@@ -1,125 +1,38 @@
 /**
- * @groupDescription Constants
- * A list of often used constants.
- */
-
-/**
- * @categoryDescription Typing
- * Constants for typeof.
+ * @categoryDescription Constants
  * @showCategories
  */
 
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const STRING = 'string' as const;
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const NUMBER = 'number' as const;
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const OBJECT = 'object' as const;
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const BOOLEAN = 'boolean' as const;
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const BIGINT = 'bigint' as const;
-/**
- * @group Constants
- * @category Typing
- */
+/** @category Constants */
 export const FUNCTION = 'function' as const;
 
-/**
- * @group Constants
- * @category Time
- */
 export const MS_PER_SEC = 1000;
-
-/**
- * @group Constants
- * @category Time
- */
 export const SEC_PER_MIN = 60;
-
-/**
- * @group Constants
- * @category Time
- */
 export const MIN_PER_HOUR = 60;
-
-/**
- * @group Constants
- * @category Time
- */
 export const HOURS_PER_DAY = 24;
-
-/**
- * @group Constants
- * @category Time
- */
 export const DAYS_PER_WEEK = 7;
-
-/**
- * @group Constants
- * @category Time
- */
 export const MONTHS_PER_YEAR = 12;
 
-/**
- * @group Constants
- * @category Time
- */
 export const MILLISECOND = 'MS';
-/**
- * @group Constants
- * @category Time
- */
 export const SECOND = 'SEC';
-/**
- * @group Constants
- * @category Time
- */
 export const MINUTE = 'MIN';
-/**
- * @group Constants
- * @category Time
- */
 export const HOUR = 'HOUR';
-/**
- * @group Constants
- * @category Time
- */
 export const DAY = 'DAY';
-/**
- * @group Constants
- * @category Time
- */
 export const WEEK = 'WEEK';
-/**
- * @group Constants
- * @category Time
- */
 export const MONTH = 'MONTH';
-/**
- * @group Constants
- * @category Time
- */
 export const YEAR = 'YEAR';
 
 /**
- * @group Constants
- * @category Time
  * @private
  */
 export const TIME_UNIT_CONVERSION = {
@@ -131,43 +44,21 @@ export const TIME_UNIT_CONVERSION = {
   [WEEK]: MS_PER_SEC * SEC_PER_MIN * MIN_PER_HOUR * HOURS_PER_DAY * DAYS_PER_WEEK
 };
 
-/**
- * @group Constants
- * @category HTTP
- */
 export const GET = 'GET';
-/**
- * @group Constants
- * @category HTTP
- */
 export const POST = 'POST';
-/**
- * @group Constants
- * @category HTTP
- */
 export const PATCH = 'PATCH';
-/**
- * @group Constants
- * @category HTTP
- */
 export const DELETE = 'DELETE';
 
 /**
+ * @category Constants
  * @remarks
- * The status code of a response is a three-digit integer code that describes the result of the request and
- * the semantics of the response, including whether the request was successful and what content is enclosed (if any).
- * All valid status codes are within the range of 100 to 599, inclusive.
- *
  * - 1xx (Informational): The request was received, continuing process
  * - 2xx (Successful): The request was successfully received, understood, and accepted
  * - 3xx (Redirection): Further action needs to be taken in order to complete the request
  * - 4xx (Client Error): The request contains bad syntax or cannot be fulfilled
  * - 5xx (Server Error): The server failed to fulfill an apparently valid request
- *
  * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status}
  * @see {@link https://httpwg.org/specs/rfc9110.html#overview.of.status.codes}
- * @group Constants
- * @category HTTP
  */
 export const HTTP_CODES = Object.freeze({
   /**
@@ -176,10 +67,10 @@ export const HTTP_CODES = Object.freeze({
      */
   OK: 200,
   /**
-     * The HTTP 201 Created successful response status code indicates that the HTTP request has led to
-     * the creation of a resource. This status code is commonly sent as the result of a POST request.
-     * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201}
-     */
+    * The HTTP 201 Created successful response status code indicates that the HTTP request has led to
+    * the creation of a resource. This status code is commonly sent as the result of a POST request.
+    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Status/201}
+    */
   CREATED: 201,
   /**
     * The HTTP 204 No Content successful response status code indicates that a request has succeeded,

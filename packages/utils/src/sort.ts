@@ -2,25 +2,54 @@ import { isFn, isString } from './is.js';
 import { getDeepEntry } from './object.js';
 import { safeStringify } from './json.js';
 
-export type SortKeyConfig = {
+/**
+ * Configuration for a specific sort key.
+ */
+export interface SortKeyConfig {
+  /** Enables descending order for this specific key. */
   isDesc?: true;
-  key: SortKeyStr;
+  /** The object path to sort by. */
+  key: string;
+  /** A specific collator to override the global one. */
   collator?: Intl.Collator;
-};
+}
 
+/**
+ * Custom comparator function for sorting.
+ * @template T - The type of elements being compared.
+ */
 export type SortKeyFn<T> = (a: T, b: T) => number;
 
+/**
+ * Simple property key string for sorting.
+ */
 export type SortKeyStr = string;
 
+/**
+ * Defines a sort criteria.
+ * Can be a string (property path), a comparator function, or a {@link SortKeyConfig}.
+ * @template T - The type of elements in the array.
+ */
 export type SortKey<T> = SortKeyStr | SortKeyFn<T> | SortKeyConfig;
 
-export type SortConfigs = {
+/**
+ * Global configuration for sorting operations.
+ */
+export interface SortConfigs {
+  /** The locale used for string comparison. */
   locale?: Intl.LocalesArgument;
+  /** Enables descending order globally. */
   isDesc?: true;
+  /** A pre-configured Collator instance. */
   collator?: Intl.Collator;
+  /** Options passed to the internal Intl.Collator. */
   options?: Intl.CollatorOptions;
-};
+}
 
+/**
+ * @internal
+ * Internal cache for reusable Collator instances.
+ */
 class CollatorCache {
   cache: Map<string, Intl.Collator>;
 
@@ -44,10 +73,22 @@ const getDirection = (isDesc?: boolean) => isDesc ? -1 : 1;
 
 /**
  * Function used to sort arrays of objects.
+ * 
+ * @param arr The array of objects to sort.
+ * @param configs Global sorting configurations including locale and collator options.
  *
  * @examplesFromTests ../test/sort.test.js
  */
-export const sort = <T extends object[]>(arr: T, configs?: SortConfigs) => {
+export function sort<T extends object[]>(
+  arr: T,
+  configs?: SortConfigs
+): {
+  /**
+   * Sort the table by key.
+   * @returns The sorted table.
+   */
+  by(...keys: SortKey<(T[number])>[]): T;
+} {
   const locale = configs?.locale;
   const collator = configs?.collator || collators.get(locale, configs?.options);
   const isDesc = configs?.isDesc;
@@ -93,4 +134,4 @@ export const sort = <T extends object[]>(arr: T, configs?: SortConfigs) => {
       }) as T;
     }
   };
-};
+}

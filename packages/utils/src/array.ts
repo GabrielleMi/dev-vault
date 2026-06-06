@@ -3,56 +3,61 @@ import { type AssertPositive } from './types.js';
 
 /**
  * Makes sure the received value is an array. If it's not, returns an empty array.
- *
- * @example With an array
- * ```javascript
- * const arr = safeArray([ "hi" ]);
- * console.log(arr); // [ "hi" ];
- * ```
- *
- * @example With a value other than array
- * ```javascript
- * const arr = safeArray("hi");
- * console.log(arr); // [];
- * ```
- *
- * @example With an uncertain value
- * ```javascript
- * const ressources = await getRessources();
- * safeArray(ressources).map((ressource) => ...); // will never throw
+ * @remarks
+ * This function performs a loose check. It does not attempt to wrap
+ * non-array values; it simply returns an empty array if the input is not an array.
+ * @returns The original array or an empty array.
+ * @example
+ * ```typescript
+ * safeArray([ "hi" ]); // [ "hi" ]
+ * safeArray("hi");     // []
  * ```
  */
-export const safeArray = <T>(value: T) => (isArray(value) ? value : []) as T extends unknown[] ? T : [];
+export function safeArray<T>(value: T) {
+  return (isArray(value) ? value : []) as T extends unknown[] ? T : [];
+}
 
-type AssertArray<T> = T extends unknown[] ? T : T extends (null | undefined | '' | false) ? [] : (T extends number ? (T extends 0 ? [0] : ([] | [number])) : [T]);
+/**
+ * Normalizes an input type into a guaranteed array structure.
+ * - **Arrays**: Remains as `T[]`.
+ * - **Falsy values** (`null`, `undefined`, `''`, `false`): Normalizes to `[]`.
+ * - **`0`**: Normalizes to `[0]`.
+ * - **Other Numbers**: Returns `number[] | [number]`.
+ * - **Single values**: Returns `[T]`.
+ * @example
+ * ```typescript
+ * // Normalizes a single value
+ * type A = AssertArray<string>; // [string]
+ * 
+ * // Normalizes falsy values
+ * type B = AssertArray<null>; // []
+ * 
+ * // Normalizes numeric special cases
+ * type C = AssertArray<0>; // [0]
+ * type D = AssertArray<number>; // number[] | [number]
+ * ```
+ *
+ * @typeParam T - The type to normalize into an array.
+ */
+export type AssertArray<T> = T extends unknown[] ? T : T extends (null | undefined | '' | false) ? [] : (T extends number ? (T extends 0 ? [0] : ([] | [number])) : [T]);
 
 /* eslint-disable @typescript-eslint/no-explicit-any */
 /**
- * Will enforce the received value as an array.
- * If the value is null, undefined, "" or NaN the array will be empty.
- *
- * @example With arrays
- * toArray([ 1 ]); // returns [ 1 ]
- * toArray([ {} ]); // returns [ {} ]
- * toArray([ "" ]); // returns [ "" ]
- * toArray([ false ]); // returns [ false ]
- *
- * @example With numbers
- * toArray(1); // returns [ 1 ]
- * toArray(0); // returns [ 0 ]
- * toArray(NaN); // returns []
- *
- * @example With falsy values
- * toArray(null); // returns []
- * toArray(); // returns []
- * toArray(""); // returns []
- * toArray(false); // returns []
- *
- * @example With truthy values
- * toArray("hi"); // returns [ "hi" ]
- * toArray(true); // returns [ true ]
+ * Enforces the received value as an array.
+ * @remarks
+ * Unlike {@link safeArray}, this function transforms single values into
+ * single-element arrays and flattens falsy values (null, undefined, "", NaN, false) into empty arrays.
+ * @returns An array containing the value, or an empty array if falsy.
+ * @example
+ * ```typescript
+ * toArray(1);    // [ 1 ]
+ * toArray(null); // []
+ * toArray([1]);  // [ 1 ]
+ * ```
  */
-export const toArray = <T>(value: T): AssertArray<T> => {
+export function toArray<T>(
+  value: T
+): AssertArray<T> {
   if (isArray(value)) {
     return value as any;
   }
@@ -66,22 +71,39 @@ export const toArray = <T>(value: T): AssertArray<T> => {
   }
 
   return [value] as any;
-};
+}
 /* eslint-enable @typescript-eslint/no-explicit-any */
 
 /**
- * Checks if a value is included in an array. Will check equivalence, not by reference.
+ * Checks if a value is included in an array using deep equivalence.
+ *
+ * @param value The value to search for
+ * @param arr The array to search in
+ * @returns `true` if the value is found, `false` otherwise.
  */
-export const isIncluded = (value: unknown, arr: unknown[]) => {
+export function isIncluded(
+  value: unknown,
+  arr: unknown[]
+) {
   return arr.some((arrValue) => isEquivalent(arrValue, value));
-};
+}
 
 /**
- * Splits a given array into chunks of a specified size.
+ * Splits an array into smaller chunks of a specified size.
+ * @param value the array to split
+ * @param chunkSize The size of each chunk (must be positive)
+ * @returns An array of arrays.
+ * @example
+ * ```typescript
+ * splitInChunks([1, 2, 3, 4], 2); // [[1, 2], [3, 4]]
+ * ```
  *
  * @examplesFromTests ../test/array.test.js
  */
-export const splitInChunks = <T extends unknown[], N extends number>(value: T, chunkSize: AssertPositive<N>): Array<T> => {
+export function splitInChunks<T extends unknown[], N extends number>(
+  value: T,
+  chunkSize: AssertPositive<N>
+): Array<T> {
   if (!value || chunkSize <= 0) {
     return value ? [value] : [];
   }
@@ -93,4 +115,4 @@ export const splitInChunks = <T extends unknown[], N extends number>(value: T, c
   }
 
   return chunks;
-};
+}

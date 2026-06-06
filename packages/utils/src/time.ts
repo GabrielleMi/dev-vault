@@ -5,21 +5,23 @@ export type ConvertableTimeUnit = typeof MILLISECOND | typeof SECOND | typeof MI
 /**
  * Converts a time value.
  *
- * @param value A number to convert
- * @param fromUnit The unit of the number to convert
- * @param toUnit The targeted unit
- *
- * @see Constants </br>
- * {@link MILLISECOND}</br>
- * {@link SECOND}</br>
- * {@link MINUTE}</br>
- * {@link HOUR}</br>
- * {@link DAY}</br>
- * {@link WEEK}
+ * @param value - The numeric time value to convert
+ * @returns The converted time value.
+ * @see Constants  
+ * - {@link MILLISECOND}
+ * - {@link SECOND}
+ * - {@link MINUTE}
+ * - {@link HOUR}
+ * - {@link DAY}
+ * - {@link WEEK}
  *
  * @examplesFromTests ../test/time.test.js
  */
-export function convertTimeUnit(value: number, fromUnit: ConvertableTimeUnit, toUnit: ConvertableTimeUnit) {
+export function convertTimeUnit(
+  value: number,
+  fromUnit: ConvertableTimeUnit,
+  toUnit: ConvertableTimeUnit
+): number {
   if (fromUnit === toUnit) {
     console.warn(`Nothing to convert (from ${fromUnit} to ${toUnit})`);
 

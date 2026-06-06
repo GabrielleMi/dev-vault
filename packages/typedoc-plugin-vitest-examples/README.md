@@ -70,6 +70,8 @@ Maintenance-Free: If tests change, your documentation updates automatically on t
 
 ## Roadmap
 - Nested describe blocks: Add support for deep test hierarchy.
+- Invalid tag warnings: Fix them out of the box
 - describe block extraction: Allow using `@isTestExample` on describe blocks to extract multiple tests at once.
 - Extended Vitest API: Support for more matchers and the `.not` assertion statement.
+- Output display: Display value when the expected output is a var instead of // Output: var
 - Consistent Ordering: Ensure that extracted examples appear in the documentation in the same order as they are defined in the test file.

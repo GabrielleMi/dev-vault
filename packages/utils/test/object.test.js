@@ -15,7 +15,7 @@ describe('getDeepEntry', () => {
       arr: [
         'apple',
         { name: 'banana', price: 1.50 },
-        ['nested', 'array']
+        [ 'nested', 'array' ]
       ],
       nestedArr: [
         { id: 10, data: 'itemA' },
@@ -57,7 +57,7 @@ describe('getDeepEntry', () => {
 
   // @isTestExample Using array syntax
   it('should retrieve an item from a top-level array using array syntax', () => {
-    const objWithArray = { data: ['one', 'two'] };
+    const objWithArray = { data: [ 'one', 'two' ] };
     expect(getDeepEntry(objWithArray, 'data[0]')).toBe('one');
     expect(getDeepEntry(objWithArray, 'data[1]')).toBe('two');
   });

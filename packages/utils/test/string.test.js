@@ -22,42 +22,42 @@ describe('isStrEqualCi', () => {
 describe('safeJoin', () => {
   // @isTestExample Joining a simple array of strings
   it('should join an array of strings without a splitter if none is provided', () => {
-    expect(safeJoin(['one', 'two', 'three'])).toBe('onetwothree');
+    expect(safeJoin([ 'one', 'two', 'three' ])).toBe('onetwothree');
   });
 
   // @isTestExample Joining with a splitter
   it('should join an array of strings with a given splitter', () => {
-    expect(safeJoin(['one', 'two', 'three'], '-')).toBe('one-two-three');
+    expect(safeJoin([ 'one', 'two', 'three' ], '-')).toBe('one-two-three');
   });
 
   // @isTestExample Joining falsy values
   it('should skip null values', () => {
-    expect(['one', null, 'two'].join('-')).toBe('one--two');
-    expect(safeJoin(['one', null, 'two'], '-')).toBe('one-two');
+    expect([ 'one', null, 'two' ].join('-')).toBe('one--two');
+    expect(safeJoin([ 'one', null, 'two' ], '-')).toBe('one-two');
   });
 
   // @isTestExample Joining falsy values
   it('should skip undefined values', () => {
-    expect(['one', null, 'two'].join('-')).toBe('one--two');
-    expect(safeJoin(['one', undefined, 'two'], '-')).toBe('one-two');
+    expect([ 'one', null, 'two' ].join('-')).toBe('one--two');
+    expect(safeJoin([ 'one', undefined, 'two' ], '-')).toBe('one-two');
   });
 
   // @isTestExample Joining falsy values
   it('should skip false boolean values', () => {
-    expect(safeJoin(['one', false, 'two'], '-')).toBe('one-two');
+    expect(safeJoin([ 'one', false, 'two' ], '-')).toBe('one-two');
   });
 
   it('should skip empty string values when they are not the only values', () => {
-    expect(safeJoin(['one', '', 'two'], '-')).toBe('one-two');
+    expect(safeJoin([ 'one', '', 'two' ], '-')).toBe('one-two');
   });
 
   it('should skip 0 (zero) values', () => {
-    expect(safeJoin(['one', 0, 'two'], '-')).toBe('one-two');
+    expect(safeJoin([ 'one', 0, 'two' ], '-')).toBe('one-two');
   });
 
   it('should skip NaN values', () => {
-    expect(safeJoin(['one', NaN, 'two'], '-')).toBe('one-two');
-    expect(safeJoin([null, undefined, false, '', 0, NaN], '-')).toBe('');
+    expect(safeJoin([ 'one', NaN, 'two' ], '-')).toBe('one-two');
+    expect(safeJoin([ null, undefined, false, '', 0, NaN ], '-')).toBe('');
   });
 
   it('should return an empty string for an empty input array', () => {
@@ -78,8 +78,8 @@ describe('safeJoin', () => {
   });
 
   it('should handle mixed truthy and falsy values with various splitters', () => {
-    expect(safeJoin(['a', null, 'b', undefined, 'c'], ' | ')).toBe('a | b | c');
-    expect(safeJoin(['first', '', 'second', false, 'third'], '$$')).toBe('first$$second$$third');
+    expect(safeJoin([ 'a', null, 'b', undefined, 'c' ], ' | ')).toBe('a | b | c');
+    expect(safeJoin([ 'first', '', 'second', false, 'third' ], '$$')).toBe('first$$second$$third');
   });
 });
 
