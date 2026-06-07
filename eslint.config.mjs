@@ -116,7 +116,7 @@ export default defineConfig([
       'jsdoc/sort-tags': [
         'error',
         {
-          tagSequence: [{ tags: [ 'group', 'category', 'remarks', 'alpha', 'template', 'param', 'returns', 'throws', 'example', 'see' ] }],
+          tagSequence: [{ tags: [ 'group', 'category', 'remarks', 'alpha', 'template', 'param', 'yields', 'returns', 'throws', 'example', 'see' ] }],
           alphabetizeExtras: true
         }
       ]
