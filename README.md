@@ -36,7 +36,47 @@ A new file will be generated in the `.changeset/` folder.
 
 Commit this file along with your code changes.
 
-## 3. Submission and Release
+## 3. Testing the changes
+Before submitting your Pull Request, ensure your modifications meet the project's quality standards:
+
+### Code Validation
+Check that your code adheres to the defined linting rules:
+
+```bash
+pnpm lint
+```
+
+### Build Verification
+Ensure the monorepo builds correctly to verify all dependencies and workspace configurations:
+
+```bash
+pnpm build
+```
+
+### Documentation Verification
+#### Build Validation
+Always verify that the documentation builds correctly without errors:
+
+```bash
+pnpm docs:build
+```
+
+#### Local Preview
+Use the following to iterate and verify your changes in real-time:
+
+```bash
+pnpm dev:docs
+```
+
+### Running Tests
+Execute the test suite to guarantee no regressions:
+
+```bash
+pnpm test
+```
+Note: GitHub Actions will automatically validate these steps when you open your Pull Request. PRs will not be eligible for merging if any of these checks fail.
+
+## 4. Submission and Release
 GitHub Actions handles the deployment process automatically.
 
 Pushing changes to the main branch:

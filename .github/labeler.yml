@@ -1,0 +1,30 @@
+"package: core":
+  - changed-files:
+    - any-glob-to-any-file: 'packages/core/**/*'
+"package: async":
+  - changed-files:
+    - any-glob-to-any-file: 'packages/async/**/*'
+"package: typedoc-plugin":
+  - changed-files:
+    - any-glob-to-any-file: 'packages/typedoc-plugin-vitest-examples/**/*'
+documentation:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'README.md'
+      - 'landing.md'
+      - 'typedoc.json'
+      - 'packages/**/README.md'
+      - 'packages/**/typedoc.json'
+      - 'docs-src/**/*'
+tests:
+  - changed-files:
+    - any-glob-to-any-file:
+      - '**/test/**/*'
+      - '**/*.test.ts'
+      - '**/*.spec.ts'
+dependencies:
+  - changed-files:
+    - any-glob-to-any-file:
+      - 'package-lock.json'
+      - 'pnpm-lock.yaml'
+      - '**/package.json'
