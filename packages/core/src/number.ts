@@ -1,7 +1,9 @@
 /**
  * Returns 0 when a number or the other is 0 or non-finite before performing a division.
  * This prevents `NaN`, `Infinity`, or `-Infinity` results.
- *
+ * 
+ * @param a The dividend
+ * @param b The divisor
  * @returns The result of the division, or 0 if unsafe.
  * @example Standard Division
  * ```typescript
@@ -22,9 +24,7 @@
  * ```
  */
 export function safeDivide(
-  /** The dividend */
   a: number,
-  /** The divisor */
   b: number
 ) {
   if (
