@@ -9,6 +9,7 @@ on:
       - './packages/**.md'
       - 'docs/**'
       - '.github/workflows/**'
+      - '! .github/workflows/publish.yml'
 
 permissions:
   contents: read
