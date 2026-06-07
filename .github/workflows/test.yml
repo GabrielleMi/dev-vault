@@ -3,6 +3,9 @@ name: Test Suite
 on:
   pull_request:
     branches: [main]
+    paths:
+      - 'packages/**'
+      - 'pnpm-workspace.yaml'
 
 jobs:
   test:
