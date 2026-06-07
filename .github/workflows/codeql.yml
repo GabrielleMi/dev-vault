@@ -5,6 +5,10 @@ on:
     branches: [ "main" ]
   pull_request:
     branches: [ "main" ]
+    paths-ignore:
+      - '**.md'
+      - 'docs/**'
+      - '.github/workflows/**'
   schedule:
     - cron: '30 1 * * 0'
 
