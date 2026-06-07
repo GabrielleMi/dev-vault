@@ -1,4 +1,9 @@
 {
-    "name": "Async",
-    "entryPoints": ["src/index.ts"]
+  "name": "Async",
+  "entryPoints": ["src/index.ts"],
+  "out": "docs",
+  "groupOrder": [],
+  "categorizeByGroup": false,
+  "defaultCategory": "Utils",
+  "hideGenerator": true
 }

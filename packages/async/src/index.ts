@@ -8,5 +8,15 @@
  */
 
 export {
-  ChainPromise
-} from './chaining';
+  streamPromises,
+  streamSettledPromises,
+  Sequential
+} from './sequences';
+
+export {
+  delay,
+  debounce,
+  throttle,
+
+  type CancellableFunction
+} from './timers';
