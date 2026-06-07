@@ -4,12 +4,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - './**.md'
-      - './packages/**.md'
-      - 'docs/**'
-      - '.github/workflows/**'
-      - '! .github/workflows/publish.yml'
+    paths:
+      - '.changeset/**'
+      - 'packages/**'
+      - 'package.json'
+      - '.github/workflows/publish.yml'
 
 permissions:
   contents: read
