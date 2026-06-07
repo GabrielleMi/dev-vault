@@ -3,6 +3,12 @@ name: Check Docs Build
 on:
   pull_request:
     types: [opened, synchronize, reopened]
+    paths:
+      - 'packages/**'
+      - 'doc-src/**'
+      - 'landing.md'
+      - 'package.json'
+      - 'pnpm-workspace.yaml'
 
 permissions:
   contents: read
