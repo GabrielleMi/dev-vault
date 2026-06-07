@@ -51,7 +51,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
       - name: Build modified workspace packages
-        run: pnpm build --filter "...[origin/main]"
+        run: pnpm --filter "...[origin/main]" build
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
