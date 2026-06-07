@@ -4,10 +4,11 @@ on:
   push:
     branches:
       - main
-    paths-ignore:
-      - '**.md'
-      - 'docs/**'
-      - '.github/workflows/**'
+    paths:
+      - '.changeset/**'
+      - 'packages/**'
+      - 'package.json'
+      - '.github/workflows/publish.yml'
 
 permissions:
   contents: read
@@ -51,7 +52,7 @@ jobs:
           NODE_AUTH_TOKEN: ${{ secrets.GITHUB_TOKEN  }}
 
       - name: Build modified workspace packages
-        run: pnpm build --filter "...[origin/main]"
+        run: pnpm --filter "...[origin/main]" build
 
       - name: Create Release Pull Request or Publish
         uses: changesets/action@v1
