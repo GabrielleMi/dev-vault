@@ -5,7 +5,8 @@
     "noEmit": true
   },
   "include": [
-    "packages/utils/src/**/*.ts",
+    "packages/async/src/**/*.ts",
+    "packages/core/src/**/*.ts",
     "packages/typedoc-plugin-vitest-examples/src/**/*.ts"
   ],
   "exclude": [
@@ -15,7 +16,8 @@
     "**/fixtures"
   ],
   "references": [
-    { "path": "./packages/utils" },
+    { "path": "./packages/async" },
+    { "path": "./packages/core" },
     { "path": "./packages/typedoc-plugin-vitest-examples" }
   ]
 }

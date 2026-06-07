@@ -3,7 +3,7 @@ A collection of utility functions and constants designed for personal projects. 
 ## Installation
 
 ```bash
-pnpm add @GabrielleMi/utils
+pnpm add @GabrielleMi/core
 ```
 
 ## Features

@@ -1,4 +1,4 @@
 {
-    "name": "Javascript Utils",
+    "name": "Async",
     "entryPoints": ["src/index.ts"]
 }

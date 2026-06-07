@@ -1,4 +1,4 @@
-import { ChainPromise } from '../src/promises';
+import { ChainPromise } from '../src';
 
 const reject = () => Promise.reject(new Error('error'));
 const fulfill = () => Promise.resolve('success');

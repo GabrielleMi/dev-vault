@@ -22,11 +22,7 @@ const chainSettlePromises = async (promises: (() => Promise<unknown>)[]) => {
 };
 
 /**
- * @category Async ops
- *
- * @categoryDescription Async ops
- * 
- * Provides utilities for chaining asynchronous operations.
+ * @category Utilities
  */
 export const ChainPromise = {
   /**

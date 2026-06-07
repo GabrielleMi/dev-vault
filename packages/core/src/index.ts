@@ -100,10 +100,6 @@ export {
   getDeepEntry
 } from './object.js';
 
-export {
-  ChainPromise
-} from './promises.js';
-
 /** @category Search */
 export {
   search,

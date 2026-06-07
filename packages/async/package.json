@@ -1,0 +1,47 @@
+{
+  "name": "@GabrielleMi/async",
+  "version": "0.0.0",
+  "description": "Async tools for my playground.",
+  "main": "dist/index.js",
+  "publishConfig": {
+    "registry": "https://npm.pkg.github.com",
+    "access": "public"
+  },
+  "type": "module",
+  "files": [
+    "dist",
+    "README.md"
+  ],
+  "module": "./dist/index.js",
+  "types": "dist/index.d.ts",
+  "source": "src/index.ts",
+  "sideEffects": false,
+  "exports": {
+    ".": {
+      "types": "./dist/index.d.ts",
+      "import": "./dist/index.js",
+      "require": "./dist/index.js"
+    }
+  },
+  "scripts": {
+    "build": "tsc -b",
+    "prepare": "pnpm build",
+    "clean": "rm -rf dist tsconfig.tsbuildinfo",
+    "test": "vitest",
+    "test:watch": "vitest watch",
+    "test:ci": "vitest run --coverage"
+  },
+  "keywords": [
+    "utilities",
+    "async",
+    "typescript",
+    "vitest",
+    "monorepo"
+  ],
+  "license": "MIT",
+  "devDependencies": {
+    "@vitest/coverage-v8": "^4.1.8",
+    "typescript": "^6.0.3",
+    "vitest": "^4.1.8"
+  }
+}

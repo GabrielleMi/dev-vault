@@ -8,5 +8,10 @@
     "declaration": true,
     "declarationMap": true,
     "esModuleInterop": true
-  }
+  },
+  "exclude": [
+    "**/node_modules", 
+    "**/dist", 
+    "**/test"
+  ]
 }
