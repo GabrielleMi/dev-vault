@@ -9,6 +9,7 @@
     "build": "pnpm --filter \"@GabrielleMi/*\" run build",
     "clean": "tsc -b --clean",
     "test": "pnpm -r test",
+    "update": " pnpm up --interactive --latest -r",
     "docs:build": "typedoc",
     "docs:clean": "node -e \"const fs = require('fs'); ['docs', 'node_modules/.cache/typedoc'].forEach(p => fs.rmSync(p, { recursive: true, force: true }));\"",
     "docs:watch": "typedoc --entryPointStrategy expand --watch",
@@ -27,14 +28,14 @@
     "@eslint/json": "^2.0.0",
     "@stylistic/eslint-plugin": "^5.10.0",
     "browser-sync": "^3.0.4",
-    "concurrently": "^10.0.1",
-    "eslint": "^10.4.1",
+    "concurrently": "^10.0.3",
+    "eslint": "^10.5.0",
     "eslint-plugin-jsdoc": "^63.0.2",
     "globals": "^17.6.0",
     "typedoc": "^0.28.19",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.60.1"
+    "typescript-eslint": "^8.61.0"
   }
 }
