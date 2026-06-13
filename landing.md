@@ -5,6 +5,7 @@ Welcome to the official documentation for **Dev Vault**. This space centralizes 
 ## 📦 Packages
 Each module is documented individually. The sections below to access technical details:
 
+* **[@Gabrielle/async](packages/aync/README.md)**: A collection of async utility functions.
 * **[@Gabrielle/core](packages/core/README.md)**: A collection of transversal utility functions.
 * **[@Gabrielle/typedoc-plugin-vitest-examples](packages/typedoc-plugin-vitest-examples/README.md)**: A plugin for extracting and validating Vitest code examples directly within the documentation.
 

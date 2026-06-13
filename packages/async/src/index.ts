@@ -8,6 +8,10 @@
  */
 
 export {
+  ftch
+} from './fetch';
+
+export {
   streamPromises,
   streamSettledPromises,
   Sequential
