@@ -1,5 +1,11 @@
 # @GabrielleMi/core
 
+## 0.2.0
+
+### Minor Changes
+
+- c1528bd: Add new HTTP and method code constants
+
 ## 0.1.0
 
 ### Minor Changes
