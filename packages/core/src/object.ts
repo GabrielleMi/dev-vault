@@ -11,7 +11,7 @@ import { isObject } from './is.js';
 export function getDeepEntry<T extends object>(
   /** The source object to query. */
   object: T,
-  /** The path string using dot notation (e.g., `'user.address.street'`, `'items[0].name'`). */
+  /** The path string using dot notation (e.g., `'user.address.street'`, `'items[0].name'`, `items.0.name`). */
   key: string
 ): T | unknown | undefined {
   if (!key) {

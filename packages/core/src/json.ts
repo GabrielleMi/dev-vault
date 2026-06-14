@@ -1,5 +1,6 @@
-import { isBigInt, isFn, isObject, isString } from './is.js';
+import { isBigInt, isFn, isString } from './is.js';
 import { getDeepEntry } from './object.js';
+import { OBJECT } from './constants.js';
 
 /**
  * @internal
@@ -30,47 +31,35 @@ const isCircularPath = (value: unknown): value is `${typeof CIRCULAR_PATH_PREFIX
  * Custom replacer for JSON.stringify to handle circular dependencies and BigInt.
  */
 function handleReplace(replacer?: StringifyParams[1] | ((key: string, value: unknown) => unknown)) {
-  const objectPaths = new Map();
-  const visitedObjects = new Map();
-  let init: unknown = null;
+  const visited = new Map<unknown, string>();
 
-  const replace = (key: string, value: unknown) => {
+  const applyReplacer = (key: string, value: unknown) => {
     if (Array.isArray(replacer)) {
-      return replacer.includes(key) ? undefined : value;
+      return key === '' || replacer.includes(key) ? value : undefined;
     }
     return isFn(replacer) ? replacer(key, value) : value;
   };
 
-  return function (this: object, key: string, value: unknown) {
-    const parentPath = objectPaths.get(this) || '';
-    const currentPath = Array.isArray(this) ? `${parentPath}[${key}]` : `${parentPath ? `${parentPath}.` : ''}${key}`;
-    const isObj = isObject(value);
+  return function (this: Record<string, unknown>, key: string, value: unknown) {
+    let finalValue = applyReplacer(key, value);
 
-    if (isObj) {
-      objectPaths.set(value, currentPath);
-    }
+    if (typeof finalValue === OBJECT && finalValue !== null) {
+      const parentPath = visited.get(this);
+      const currentPath = parentPath ? `${parentPath}.${key}` : key;
 
-    const existingPath = visitedObjects.get(value);
+      const existingPath = visited.get(finalValue);
+      if (existingPath !== undefined) {
+        return `${CIRCULAR_PATH_PREFIX}${existingPath ? '.' : ''}${existingPath}`;
+      }
 
-    let finalValue = value;
-
-    if (existingPath) {
-      finalValue = `${CIRCULAR_PATH_PREFIX}${existingPath.startsWith('[') ? '' : '.'}${existingPath}`;
-    } else if (isObj) {
-      visitedObjects.set(value, currentPath);
-    }
-
-    if (!init) {
-      init = value;
-    } else if (finalValue === init) {
-      finalValue = CIRCULAR_PATH_PREFIX;
+      visited.set(finalValue, currentPath);
     }
 
     if (isBigInt(finalValue)) {
       finalValue = `BigInt(${finalValue.toString()})`;
     }
 
-    return replace(key, finalValue);
+    return finalValue;
   };
 }
 
@@ -98,7 +87,7 @@ export function safeStringify(
   replacer?: StringifyParams[1] | ((key: string, value: unknown) => unknown),
   space?: StringifyParams[2]
 ): undefined | string {
-  if (!value) {
+  if (value === undefined) {
     return;
   }
 
@@ -117,18 +106,23 @@ function resolveReferences(root: Record<string, unknown>) {
   const visited = new WeakSet();
 
   function walk(obj: unknown) {
-    if (!obj || !isObject(obj) || visited.has(obj)) {
+    if (!obj || typeof obj !== OBJECT || visited.has(obj)) {
       return;
     }
 
     visited.add(obj);
 
-    for (const key of Object.keys(obj)) {
-      const val = (obj as Record<string, unknown>)[key];
+    const target = obj as Record<string, unknown>;
+
+    for (const key of Object.keys(target)) {
+      const val = target[key];
 
       if (isCircularPath(val)) {
-        const path = val.replace(CIRCULAR_PATH_PREFIX, '');
-        obj[key] = path ? getDeepEntry(root, path) : root;
+        let path = val.replace(CIRCULAR_PATH_PREFIX, '');
+        if (path.startsWith('.')) {
+          path = path.slice(1);
+        }
+        target[key] = path ? getDeepEntry(root, path) : root;
       } else {
         walk(val);
       }
@@ -184,8 +178,8 @@ export function safeParse(
   try {
     const parsed = JSON.parse(value, handleRevive(reviver));
 
-    if (value.includes(CIRCULAR_PATH_PREFIX)) {
-      resolveReferences(parsed);
+    if (typeof parsed === OBJECT && parsed !== null && value.includes(CIRCULAR_PATH_PREFIX)) {
+      resolveReferences(parsed as Record<string, unknown>);
     }
 
     return parsed;
