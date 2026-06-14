@@ -1,5 +1,11 @@
 # @GabrielleMi/core
 
+## 0.2.1
+
+### Patch Changes
+
+- 0d58e40: Fix an issue where `safeStringify` did not correctly ignore keys filtered out by the `replacer` function or whitelist array.
+
 ## 0.2.0
 
 ### Minor Changes
