@@ -21,4 +21,22 @@ describe('buildCSP', () => {
 
     expect(buildCSP(config)).toBe('script-src \'self\'');
   });
+
+  it('should handle boolean true values by appending only the policy name', () => {
+    const config = {
+      'block-all-mixed-content': true,
+      'upgrade-insecure-requests': true
+    };
+
+    expect(buildCSP(config)).toBe('block-all-mixed-content; upgrade-insecure-requests');
+  });
+
+  it('should handle single string values instead of arrays', () => {
+    const config = {
+      'default-src': '\'self\'',
+      'frame-ancestors': 'https://example.com'
+    };
+
+    expect(buildCSP(config)).toBe('default-src \'self\'; frame-ancestors https://example.com');
+  });
 });

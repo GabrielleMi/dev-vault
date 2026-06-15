@@ -1,5 +1,5 @@
+import { isIncluded, splitInChunks } from '../src/array.js';
 import { safeArray, toArray } from '../src/index.js';
-import { splitInChunks } from '../src/array.js';
 
 describe('safeArray', () => {
   it('should return the array itself if the value is an array', () => {
@@ -178,5 +178,40 @@ describe('splitInChunks', () => {
     const arr = [ 1, 'two', true, { four: 4 } ];
     const expected = [ [ 1, 'two' ], [ true, { four: 4 } ] ];
     expect(splitInChunks(arr, 2)).toEqual(expected);
+  });
+});
+
+describe('isIncluded', () => {
+  it('should return true for primitive values present in the array', () => {
+    expect(isIncluded(1, [ 1, 2, 3 ])).toBe(true);
+    expect(isIncluded('hello', [ 'hi', 'hello' ])).toBe(true);
+    expect(isIncluded(true, [ false, true ])).toBe(true);
+  });
+
+  it('should return false for primitive values not present in the array', () => {
+    expect(isIncluded(4, [ 1, 2, 3 ])).toBe(false);
+    expect(isIncluded('world', [ 'hi', 'hello' ])).toBe(false);
+  });
+
+  it('should handle object equivalence (if isEquivalent supports it)', () => {
+    const obj = { a: 1 };
+    // Test avec la référence exacte
+    expect(isIncluded(obj, [ { b: 2 }, obj ])).toBe(true);
+
+    // Test avec une équivalence structurelle (dépend de votre fonction isEquivalent)
+    expect(isIncluded({ a: 1 }, [ { a: 1 }, { b: 2 } ])).toBe(true);
+  });
+
+  it('should handle array equivalence', () => {
+    expect(isIncluded([ 1, 2 ], [ [ 1, 2 ], [ 3, 4 ] ])).toBe(true);
+  });
+
+  it('should return false for empty arrays', () => {
+    expect(isIncluded(1, [])).toBe(false);
+  });
+
+  it('should handle null and undefined', () => {
+    expect(isIncluded(null, [ null, 1 ])).toBe(true);
+    expect(isIncluded(undefined, [ 1, undefined ])).toBe(true);
   });
 });

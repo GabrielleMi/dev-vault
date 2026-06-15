@@ -1,11 +1,15 @@
-import { describe, expect, it } from 'vitest';
+import { beforeAll, describe, expect, it } from 'vitest';
+import { DeclarationReflection, type ProjectReflection } from 'typedoc';
 import { createTestApp } from './test-utils';
-import { DeclarationReflection } from 'typedoc';
 
 describe('Full Plugin Integration Flow', () => {
-  it('should successfully inject examples into TypeDoc reflection', async () => {
-    const project = await createTestApp();
+  let project: ProjectReflection;
 
+  beforeAll(async () => {
+    project = await createTestApp();
+  }, 15000);
+
+  it('should successfully inject examples into TypeDoc reflection', async () => {
     const reflection = project?.getChildByName('addNumbers');
     expect(reflection).toBeDefined();
 
@@ -21,8 +25,7 @@ describe('Full Plugin Integration Flow', () => {
   });
 
   it('should successfully inject examples using bracket syntax', async () => {
-    const project = await createTestApp();
-    const reflection = project.getChildByName('concatStrings');
+    const reflection = project?.getChildByName('concatStrings');
     expect(reflection).toBeDefined();
 
     if (reflection instanceof DeclarationReflection) {

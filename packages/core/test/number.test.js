@@ -1,4 +1,4 @@
-import { safeDivide } from '../src';
+import { clamp, safeDivide } from '../src';
 
 describe('safeDivide', () => {
   it('should return the correct quotient for positive numbers', () => {
@@ -70,5 +70,33 @@ describe('safeDivide', () => {
     expect(safeDivide(5, null)).toBe(0);
     expect(safeDivide(undefined, 5)).toBe(0);
     expect(safeDivide(5, undefined)).toBe(0);
+  });
+});
+
+describe('clamp', () => {
+  it('should return the value if it is within the range', () => {
+    expect(clamp(5, 0, 10)).toBe(5);
+    expect(clamp(0, -5, 5)).toBe(0);
+  });
+
+  it('should return the min value if the value is below the range', () => {
+    expect(clamp(-10, 0, 10)).toBe(0);
+    expect(clamp(-6, -5, 5)).toBe(-5);
+  });
+
+  it('should return the max value if the value is above the range', () => {
+    expect(clamp(20, 0, 10)).toBe(10);
+    expect(clamp(6, -5, 5)).toBe(5);
+  });
+
+  it('should handle boundary values exactly', () => {
+    expect(clamp(0, 0, 10)).toBe(0);
+    expect(clamp(10, 0, 10)).toBe(10);
+  });
+
+  it('should work with floating point numbers', () => {
+    expect(clamp(5.5, 0, 10)).toBe(5.5);
+    expect(clamp(-1.5, -1, 1)).toBe(-1);
+    expect(clamp(2.5, -1, 2)).toBe(2);
   });
 });

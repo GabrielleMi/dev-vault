@@ -154,7 +154,7 @@ export function search<T extends object[]>(
   /** The array of objects to search. */
   arr: T,
   /** Configuration object defining keys to search, threshold for fuzzy matching, etc. */
-  configs: {
+  configs?: {
     /** The keys to search. */
     keys: SearchKey[];
     /** Whether the search should be case-sensitive. */
@@ -201,7 +201,7 @@ export function search<T extends object[]>(
 
   return {
     with: function (...searchInputs: string[]) {
-      if (isEmpty(arr) || searchInputs.length === 0 || keysToSearch.length === 0) {
+      if (isEmpty(arr) || searchInputs.length === 0) {
         return [...(arr || [])] as T;
       }
 
@@ -216,7 +216,7 @@ export function search<T extends object[]>(
 
         for (const searchKey of keysToSearch) {
           const keyConfig = getKeyConfig(searchKey);
-          const keyValue = isObject(item) ? getDeepEntry(item, keyConfig.key) : item;
+          const keyValue = getDeepEntry(item, keyConfig.key);
 
           if (!isNil(keyValue)) {
             return searchStr(

@@ -17,6 +17,28 @@ describe('ChainPromise', () => {
         .toThrow('error');
     });
   });
+
+  describe('allSettled', () => {
+    test('should wait until all promises are resolved', async () => {
+      await expect(Sequential.allSettled([ fulfill, fulfill ]))
+        .resolves
+        .toEqual([
+          {
+            status: 'fulfilled',
+            value: 'success'
+          },
+          {
+            status: 'fulfilled',
+            value: 'success'
+          }
+        ]);
+    });
+
+    test('should not throw when one of the promise fails', async () => {
+      await expect(Sequential.allSettled([ fulfill, reject ]))
+        .resolves.not.toThrow();
+    });
+  });
 });
 
 describe('Stream utilities', () => {

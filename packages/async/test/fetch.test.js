@@ -81,4 +81,30 @@ describe('ftch()', () => {
       expect(error).toBe(networkError);
     }
   });
+
+  it('should throw HTTP Error with custom message if json parsing fails', async () => {
+    // Mock d'une réponse 404 qui renvoie du texte invalide au lieu de JSON
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue({
+      ok: false,
+      status: 404,
+      statusText: 'Not Found',
+      json: vi.fn().mockRejectedValue(new Error('Invalid JSON'))
+    }));
+
+    await expect(ftch('https://api.test/data')).rejects.toThrow('HTTP Error : 404 Not Found');
+  });
+
+  it('should throw TypeError when a non-Error object is thrown', async () => {
+    // Mock pour déclencher une erreur "inconnue" dans le try
+    vi.stubGlobal('fetch', vi.fn().mockRejectedValue('String error'));
+
+    await expect(ftch('https://api.test/data')).rejects.toThrow('An unknown network error occurred.');
+
+    // Vérification que l'erreur possède bien la cause originale
+    try {
+      await ftch('https://api.test/data');
+    } catch (e) {
+      expect(e.cause).toBe('String error');
+    }
+  });
 });

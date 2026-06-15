@@ -148,4 +148,10 @@ describe('getDeepEntry', () => {
   it('should return undefined if array access is attempted on a non-array object', () => {
     expect(getDeepEntry(testObject, 'b.d[0]')).toBeUndefined();
   });
+
+  it('should return undefined when the key contains no valid property path characters', () => {
+    expect(getDeepEntry(testObject, '...')).toBeUndefined();
+    expect(getDeepEntry(testObject, '!!!')).toBeUndefined();
+    expect(getDeepEntry(testObject, '%%%')).toBeUndefined();
+  });
 });
