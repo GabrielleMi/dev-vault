@@ -28,7 +28,7 @@ jobs:
         run: pnpm install
 
       - name: Run Tests
-        run: pnpm test --filter "...[origin/main]" -- --coverage
+        run: pnpm exec vitest run --changed origin/main --coverage
 
       - name: Report Coverage
         uses: davelosert/vitest-coverage-report-action@v2
