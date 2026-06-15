@@ -19,12 +19,15 @@ export function load(app: Application) {
   const tagsSet = new Set(currentTags);
 
   tagsToDeclare.forEach((tag) => {
-    app.options.addDeclaration({
-      name: tag.name,
-      help: tag.help,
-      type: ParameterType.String
-    });
-    tagsSet.add(tag.name);
+    if (!app.options.getDeclaration(tag.name)) {
+      app.options.addDeclaration({
+        name: tag.name,
+        help: tag.help,
+        type: ParameterType.String
+      });
+
+      tagsSet.add(tag.name);
+    }
   });
 
   app.options.setValue('blockTags', Array.from(tagsSet));

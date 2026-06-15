@@ -45,6 +45,12 @@ describe('sort', () => {
       { a: 2 },
       { a: 1 }
     ]);
+
+    expect(sort(test, { isDesc: true }).by({ key: 'a' })).toEqual([
+      { a: 5 },
+      { a: 2 },
+      { a: 1 }
+    ]);
   });
 
   // @isTestExample Sorting descending for a specific key
@@ -53,5 +59,38 @@ describe('sort', () => {
 
     expect(sort(test).by({ key: 'score', isDesc: true }, 'name'))
       .toEqual([ { score: 12, name: 'Alicia' }, { score: 12, name: 'John' }, { score: 10, name: 'Joe' } ]);
+  });
+
+  it('should return 0 when values are identical (stability/equality check)', () => {
+    const test = [ { a: 1 }, { a: 1 } ];
+    expect(sort(test).by('a')).toEqual([ { a: 1 }, { a: 1 } ]);
+  });
+
+  it('should prioritize local isDesc over global isDesc', () => {
+    const test = [ { a: 1 }, { a: 2 } ];
+    const result = sort(test, { isDesc: undefined }).by({ key: 'a', isDesc: true });
+
+    expect(result).toEqual([ { a: 2 }, { a: 1 } ]);
+  });
+
+  it('should fallback to global isDesc when local isDesc is not defined', () => {
+    const test = [ { a: 1 }, { a: 2 } ];
+
+    const result = sort(test, { isDesc: true }).by('a');
+
+    expect(result).toEqual([ { a: 2 }, { a: 1 } ]);
+  });
+
+  it('should prioritize key.isDesc when defined', () => {
+    const data = [
+      { id: 1, name: 'Alice' },
+      { id: 2, name: 'Bob' }
+    ];
+
+    const result = sort(data, { isDesc: true })
+      .by({ key: 'name', isDesc: false });
+
+    expect(result[0].name).toBe('Alice');
+    expect(result[1].name).toBe('Bob');
   });
 });

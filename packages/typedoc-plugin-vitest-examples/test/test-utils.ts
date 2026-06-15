@@ -1,3 +1,4 @@
+// test/test-utils.ts
 import * as path from 'node:path';
 import { Application } from 'typedoc';
 import { fileURLToPath } from 'node:url';
@@ -8,10 +9,13 @@ const __dirname = path.dirname(fileURLToPath(import.meta.url));
 export async function createTestApp() {
   const entryPoint = path.resolve(__dirname, 'fixtures/source.ts').replace(/\\/g, '/');
   const tsconfig = path.resolve(__dirname, './tsconfig.json').replace(/\\/g, '/');
+  const packageRoot = path.resolve(__dirname, '..').replace(/\\/g, '/');
 
   const app = await Application.bootstrapWithPlugins({
     entryPoints: [entryPoint],
-    tsconfig: tsconfig
+    tsconfig: tsconfig,
+    entryPointStrategy: 'expand',
+    basePath: packageRoot
   });
 
   load(app);

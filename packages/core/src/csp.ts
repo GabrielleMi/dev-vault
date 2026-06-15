@@ -31,7 +31,7 @@ export interface CSP {
    * Fallback for other CSP fetch directives.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/default-src | MDN}
    */
-  'default-src'?: CSPDirectiveList;
+  'default-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Restricts the URLs which can be used in a document's `<base>` element.
@@ -39,26 +39,26 @@ export interface CSP {
    *
    * @default Allows any URI.
    */
-  'base-uri'?: CSPDirectiveList;
+  'base-uri'?: CSPDirectiveList | CSPSource;
 
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/block-all-mixed-content | MDN}
    *
    * @deprecated This feature is no longer recommended.
    */
-  'block-all-mixed-content'?: true;
+  'block-all-mixed-content'?: boolean;
 
   /**
    * Defines valid sources for web workers and nested browsing contexts.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/child-src | MDN}
    */
-  'child-src'?: CSPDirectiveList;
+  'child-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Restricts the URLs which can be loaded using script interfaces (fetch, XHR, WebSockets).
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/connect-src | MDN}
    */
-  'connect-src'?: CSPDirectiveList;
+  'connect-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/fenced-frame-src | MDN}
@@ -66,55 +66,60 @@ export interface CSP {
    * @experimental
    * Specifies valid sources for nested browsing contexts loaded into `<fencedframe>` elements.
    */
-  'fenced-frame-src'?: CSPDirectiveList;
+  'fenced-frame-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies valid sources for fonts loaded using `@font-face`.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/font-src | MDN}
    */
-  'font-src'?: CSPDirectiveList;
+  'font-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Restricts the URLs which can be used as the target of form submissions.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/form-action | MDN}
    */
-  'form-action'?: CSPDirectiveList;
+  'form-action'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies valid parents that may embed a page.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-ancestors | MDN}
    */
-  'frame-ancestors'?: FrameAncestorSource[];
+  'frame-ancestors'?: FrameAncestorSource | FrameAncestorSource[];
 
   /**
    * Specifies valid sources for nested browsing contexts (`<frame>`, `<iframe>`).
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/frame-src | MDN}
    */
-  'frame-src'?: CSPDirectiveList;
+  'frame-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies valid sources of images and favicons.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/img-src | MDN}
    */
-  'img-src'?: CSPDirectiveList;
+  'img-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies which manifest can be applied to the resource.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/manifest-src | MDN}
    */
-  'manifest-src'?: CSPDirectiveList;
+  'manifest-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies valid sources for JavaScript.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/script-src | MDN}
    */
-  'script-src'?: CSPDirectiveList;
+  'script-src'?: CSPDirectiveList | CSPSource;
 
   /**
    * Specifies valid sources for stylesheets.
    * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/style-src | MDN}
    */
-  'style-src'?: CSPDirectiveList;
+  'style-src'?: CSPDirectiveList | CSPSource;
+  /**
+   * Instructs user agents to treat all of a site's insecure URLs (those served over HTTP) as though they have been replaced with secure URLs
+   * @see {@link https://developer.mozilla.org/en-US/docs/Web/HTTP/Headers/Content-Security-Policy/upgrade-insecure-requests | MDN}
+   */
+  'upgrade-insecure-requests'?: boolean;
 }
 
 /**
