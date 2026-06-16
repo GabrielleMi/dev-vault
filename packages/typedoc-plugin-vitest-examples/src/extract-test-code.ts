@@ -30,11 +30,9 @@ export function extractTestCode(sourceFile: ts.SourceFile, testFileContent: stri
     }
 
     const match = line.match(/^\s*/);
-    if (match) {
-      return Math.min(minIdentation, match[0].length);
-    }
-
-    return minIdentation;
+    // eslint-disable-next-line @typescript-eslint/ban-ts-comment
+    // @ts-ignore
+    return Math.min(minIdentation, match[0].length);
   }, rawLines.length === 0 ? 0 : Infinity);
 
   const originalLineIndentations = new Map<string, string>();

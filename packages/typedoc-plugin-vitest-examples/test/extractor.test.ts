@@ -85,8 +85,26 @@ describe('extractTestCode', () => {
     const { sourceFile, body } = createBody(code);
     const result = extractTestCode(sourceFile, code, body);
 
-    // Vérifie que le commentaire est multi-lignes
     expect(result).toContain('/* Output: {');
     expect(result).toContain('*/');
+  });
+
+  it('should handle empty blocks and return zero indentation', () => {
+    const code = `() => {}`;
+    const { sourceFile, body } = createBody(code);
+    const result = extractTestCode(sourceFile, code, body);
+
+    expect(result).toBe('');
+  });
+
+  it('should fallback to default case for unsupported matchers', () => {
+    const code = `() => {
+      const isValid = true;
+      expect(isValid).toBeTruthy();
+    }`;
+    const { sourceFile, body } = createBody(code);
+    const result = extractTestCode(sourceFile, code, body);
+
+    expect(result).toContain('expect(isValid).toBeTruthy();');
   });
 });

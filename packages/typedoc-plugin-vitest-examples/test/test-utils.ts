@@ -11,11 +11,14 @@ export async function createTestApp() {
   const tsconfig = path.resolve(__dirname, './tsconfig.json').replace(/\\/g, '/');
   const packageRoot = path.resolve(__dirname, '..').replace(/\\/g, '/');
 
-  const app = await Application.bootstrapWithPlugins({
+  const app = await Application.bootstrap({
     entryPoints: [entryPoint],
     tsconfig: tsconfig,
     entryPointStrategy: 'expand',
-    basePath: packageRoot
+    basePath: packageRoot,
+    skipErrorChecking: true,
+    logLevel: 'None',
+    cleanOutputDir: false
   });
 
   load(app);
