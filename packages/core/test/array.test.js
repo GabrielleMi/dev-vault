@@ -195,10 +195,8 @@ describe('isIncluded', () => {
 
   it('should handle object equivalence (if isEquivalent supports it)', () => {
     const obj = { a: 1 };
-    // Test avec la référence exacte
     expect(isIncluded(obj, [ { b: 2 }, obj ])).toBe(true);
 
-    // Test avec une équivalence structurelle (dépend de votre fonction isEquivalent)
     expect(isIncluded({ a: 1 }, [ { a: 1 }, { b: 2 } ])).toBe(true);
   });
 
