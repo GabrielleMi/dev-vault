@@ -1,4 +1,4 @@
-import { getDeepEntry } from '../src';
+import { getDeepEntry, pick } from '../src';
 
 describe('getDeepEntry', () => {
   const testObject = {
@@ -153,5 +153,62 @@ describe('getDeepEntry', () => {
     expect(getDeepEntry(testObject, '...')).toBeUndefined();
     expect(getDeepEntry(testObject, '!!!')).toBeUndefined();
     expect(getDeepEntry(testObject, '%%%')).toBeUndefined();
+  });
+});
+
+describe('pick', () => {
+  // @isTestExample Extracting specified keys
+  it('extracts the specified keys from an object', () => {
+    const user = { id: 1, name: 'Alice', email: 'alice@example.com', active: true };
+    const result = pick(user, [ 'name', 'email' ]);
+
+    expect(result).toEqual({ name: 'Alice', email: 'alice@example.com' });
+  });
+
+  it('returns an empty object if the keys array is empty', () => {
+    const user = { id: 1, name: 'Alice' };
+    const result = pick(user, []);
+
+    expect(result).toEqual({});
+  });
+
+  it('ignores requested keys that do not exist in the source object', () => {
+    const user = { id: 1, name: 'Alice' };
+
+    // @ts-expect-error Age does not exist
+    const result = pick(user, [ 'id', 'age' ]);
+
+    expect(result).toEqual({ id: 1 });
+    expect(result).not.toHaveProperty('age');
+  });
+
+  it('does not copy properties inherited from the prototype', () => {
+    const proto = { inheritedKey: 'prototype' };
+    const obj = Object.create(proto);
+    obj.ownKey = 'instance';
+
+    const result = pick(obj, [ 'ownKey', 'inheritedKey' ]);
+
+    expect(result).toEqual({ ownKey: 'instance' });
+  });
+
+  it('returns the initial argument if it is not an object (runtime safety)', () => {
+    expect(pick(null, ['id'])).toBeNull();
+
+    // @ts-expect-error Strings do not work
+    expect(pick('not an object', ['id'])).toBe('not an object');
+
+    const arrayInput = [ 1, 2, 3 ];
+    // @ts-expect-error Arrays do not work
+    expect(pick(arrayInput, ['0'])).toEqual(arrayInput);
+  });
+
+  it('ensures immutability (does not modify the source object)', () => {
+    const user = { id: 1, name: 'Alice' };
+    const result = pick(user, ['id']);
+
+    result.id = 99;
+
+    expect(user.id).toBe(1);
   });
 });
