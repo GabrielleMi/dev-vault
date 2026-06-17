@@ -28,5 +28,5 @@ export async function createTestApp() {
     throw new Error('TypeDoc conversion failed. Check your paths and ts configs.');
   }
 
-  return project;
+  return [ project, app ] as const;
 }

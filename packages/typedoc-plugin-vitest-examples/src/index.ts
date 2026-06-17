@@ -1,7 +1,7 @@
 import * as fs from 'node:fs';
 import * as path from 'node:path';
 import { Application, CommentDisplayPart, Context, Converter, DeclarationReflection, ParameterType, Reflection } from 'typedoc';
-import { EXAMPLE_ALLOWED_TAG, EXAMPLE_FROM_TESTS_TAG, log } from './utils.js';
+import { clearSourceFileCache, EXAMPLE_ALLOWED_TAG, EXAMPLE_FROM_TESTS_TAG, log } from './utils.js';
 import { processReflectionTests } from './process-reflection-tests.js';
 
 const removeTestTag = (declarationReflection: DeclarationReflection) => {
@@ -33,6 +33,7 @@ export function load(app: Application) {
   app.options.setValue('blockTags', Array.from(tagsSet));
 
   app.converter.on(Converter.EVENT_BEGIN, async (_context: Context) => {
+    clearSourceFileCache();
     app.logger.info(log(`Plugin loaded. Starting conversion.`));
   });
 
@@ -42,22 +43,26 @@ export function load(app: Application) {
     }
 
     const declarationReflection = reflection as DeclarationReflection;
-    const examplesFromTestsTag = declarationReflection.comment?.blockTags.find((tag) => tag.tag === EXAMPLE_FROM_TESTS_TAG);
+    const examplesFromTestsTags = declarationReflection.comment?.blockTags.filter((tag) => tag.tag === EXAMPLE_FROM_TESTS_TAG) || [];
 
     app.logger.verbose(log(`Resolving reflection: ${declarationReflection.name} (Kind: ${declarationReflection.kind.toString()})`));
 
-    if (examplesFromTestsTag) {
+    if (examplesFromTestsTags.length === 0) {
+      return;
+    }
+
+    const sourceFileDir = declarationReflection.sources?.[0].fullFileName ? path.dirname(declarationReflection.sources[0].fullFileName) : '';
+
+    if (!sourceFileDir) {
+      app.logger.warn(log(`This plugin cannot be used with "disableSources": true. Skipping all tags for ${declarationReflection.name}.`));
+      return;
+    }
+
+    examplesFromTestsTags.forEach((examplesFromTestsTag) => {
       const relativeTestFilePath = examplesFromTestsTag.content.map((part: CommentDisplayPart) => part.text).join('').trim();
 
       if (!relativeTestFilePath) {
         app.logger.warn(log(`${declarationReflection.name} has no path specified. Skipping.`));
-        return;
-      }
-
-      const sourceFileDir = declarationReflection.sources?.[0].fullFileName ? path.dirname(declarationReflection.sources[0].fullFileName) : '';
-
-      if (!sourceFileDir) {
-        app.logger.warn(log(`This plugin cannot be used with "disableSources": true. Skipping tag.`));
         return;
       }
 
@@ -78,7 +83,12 @@ export function load(app: Application) {
       } else {
         app.logger.warn(log(`No ${EXAMPLE_ALLOWED_TAG} tests found for "${declarationReflection.name}" in "${absoluteTestFilePath}". Ensure test file path and tags are correct.`));
       }
-    }
+    });
+  });
+
+  app.converter.on(Converter.EVENT_END, () => {
+    clearSourceFileCache();
+    app.logger.verbose(log(`Cache cleared after conversion.`));
   });
 }
 
