@@ -1,5 +1,17 @@
 # @GabrielleMi/core
 
+## 0.3.0
+
+### Minor Changes
+
+- 6bca355: Add omit object utility function
+- f2d49f7: Add pick object utility function
+- e6c1f06: Add clamp utility function & add upgrade-insecure-requests in CSP types
+
+### Patch Changes
+
+- 0d58e40: Fix an issue where `safeStringify` did not correctly ignore keys filtered out by the `replacer` function or whitelist array.
+
 ## 0.2.0
 
 ### Minor Changes
