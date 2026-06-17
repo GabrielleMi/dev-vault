@@ -78,11 +78,10 @@ const _cloneDeep = <T>(value: T, hash = new WeakMap()): T => {
     const clone = Object.create(Object.getPrototypeOf(value));
     hash.set(value as object, clone);
 
-    for (const key in value) {
-      if (Object.prototype.hasOwnProperty.call(value, key)) {
-        clone[key] = _cloneDeep(value[key], hash);
-      }
-    }
+    Object.keys(value as object).forEach((key) => {
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      clone[key] = _cloneDeep((value as Record<string, any>)[key], hash);
+    });
 
     return clone as T;
   }

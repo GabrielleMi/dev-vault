@@ -1,4 +1,4 @@
-import { isEmpty, isEquivalent, isObject, isPrimitive } from '../src/index.js';
+import { isBool, isEmpty, isEquivalent, isObject, isPrimitive } from '../src/index.js';
 
 describe('isEmpty', () => {
   describe('when value is an array', () => {
@@ -444,5 +444,23 @@ describe('isEquivalent', () => {
     expect(isEquivalent(data1, data3)).toBe(false);
     expect(isEquivalent(data1, data4)).toBe(false);
     expect(isEquivalent(data1, data5)).toBe(false);
+  });
+});
+
+describe('isBool', () => {
+  it('should return true for boolean values', () => {
+    expect(isBool(true)).toBe(true);
+    expect(isBool(false)).toBe(true);
+  });
+
+  it('should return false for non-boolean values', () => {
+    expect(isBool(1)).toBe(false);
+    expect(isBool(0)).toBe(false);
+    expect(isBool('true')).toBe(false);
+    expect(isBool(null)).toBe(false);
+    expect(isBool(undefined)).toBe(false);
+    expect(isBool({})).toBe(false);
+    expect(isBool([])).toBe(false);
+    expect(isBool(NaN)).toBe(false);
   });
 });

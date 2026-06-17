@@ -107,6 +107,7 @@ export {
 
 /** @category Math */
 export {
+  clamp,
   safeDivide
 } from './number.js';
 

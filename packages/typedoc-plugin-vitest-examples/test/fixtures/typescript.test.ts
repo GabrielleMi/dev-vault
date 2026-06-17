@@ -14,6 +14,12 @@ describe('addNumbers', () => {
 
     expect(result).toBe(5);
   });
+
+  // @isTestExample Usage of addNumbers
+  it('should handle negative numbers', () => {
+    const result = addNumbers(-1, -2);
+    expect(result).toBe(-3);
+  });
 });
 
 // @isTestExample [concatStrings] Merging two strings
@@ -23,5 +29,9 @@ it('should add two numbers correctly', () => {
   // eslint-disable-next-line
     console.log('concatening...');
 
-  expect(result).toBe('3');
+  expect(result).toBe('12');
 });
+
+const emptyCallback = undefined;
+// @isTestExample [addNumbers] Invalid Callback Example
+it('should fail gracefully', emptyCallback);

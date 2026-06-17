@@ -1,8 +1,7 @@
-import * as fs from 'node:fs';
 import * as path from 'node:path';
 import * as ts from 'typescript';
 import { Application, Comment, CommentTag, DeclarationReflection } from 'typedoc';
-import { EXAMPLE_ALLOWED_TAG, log } from './utils.js';
+import { EXAMPLE_ALLOWED_TAG, getOrCreateSourceFile, log } from './utils.js';
 import { extractTestCode } from './extract-test-code.js';
 
 const getCodeLanguage = (filePath: string) => {
@@ -42,13 +41,7 @@ export function processReflectionTests(
 
   app.logger.verbose(log(`Entering addExamplesFromTests for ${functionName}. Scanning single file: ${testFilePath}.`));
 
-  const testFileContent = fs.readFileSync(testFilePath, 'utf-8');
-  const sourceFile = ts.createSourceFile(
-    testFilePath,
-    testFileContent,
-    ts.ScriptTarget.Latest,
-    true
-  );
+  const [ sourceFile, testFileContent ] = getOrCreateSourceFile(testFilePath);
 
   const codeLanguage = getCodeLanguage(testFilePath);
   let hasDescribe = false;
@@ -136,7 +129,9 @@ export function processReflectionTests(
       }
     }
 
-    ts.forEachChild(node, visit);
+    if (ts.isSourceFile(node) || ts.isBlock(node) || ts.isExpressionStatement(node)) {
+      ts.forEachChild(node, visit);
+    }
   });
 
   return examplesAdded;

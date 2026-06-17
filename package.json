@@ -8,7 +8,8 @@
     "release": "pnpm build && changeset publish",
     "build": "pnpm --filter \"@GabrielleMi/*\" run build",
     "clean": "tsc -b --clean",
-    "test": "pnpm -r test",
+    "test": "vitest run",
+    "test:coverage": "vitest run --coverage",
     "update": " pnpm up --interactive --latest -r",
     "docs:build": "typedoc",
     "docs:clean": "node -e \"const fs = require('fs'); ['docs', 'node_modules/.cache/typedoc'].forEach(p => fs.rmSync(p, { recursive: true, force: true }));\"",
@@ -27,6 +28,7 @@
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^2.0.0",
     "@stylistic/eslint-plugin": "^5.10.0",
+    "@vitest/coverage-v8": "^4.1.8",
     "browser-sync": "^3.0.4",
     "concurrently": "^10.0.3",
     "eslint": "^10.5.0",
@@ -36,6 +38,7 @@
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.0"
+    "typescript-eslint": "^8.61.0",
+    "vitest": "^4.1.8"
   }
 }

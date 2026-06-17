@@ -7,7 +7,7 @@ import { safeStringify } from './json.js';
  */
 export interface SortKeyConfig {
   /** Enables descending order for this specific key. */
-  isDesc?: true;
+  isDesc?: boolean;
   /** The object path to sort by. */
   key: string;
   /** A specific collator to override the global one. */
@@ -103,7 +103,7 @@ export function sort<T extends object[]>(
 
     return {
       ...key,
-      dir: getDirection(key.isDesc || isDesc)
+      dir: getDirection(key.isDesc ?? isDesc)
     };
   };
 

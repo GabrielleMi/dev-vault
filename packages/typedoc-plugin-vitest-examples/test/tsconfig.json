@@ -16,6 +16,6 @@
     "**/*.js",
     "../src/**/*.ts",
     "../src/**/*.js"
-  ],
+, "fixtures/empty.test.tsx"  ],
   "exclude": ["node_modules", "dist"]
 }

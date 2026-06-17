@@ -13,6 +13,10 @@ describe('stringify', () => {
     expect(safeStringify({ test: { test: 1 } })).toBeDefined();
   });
 
+  it('should return undefined when sending undefined', () => {
+    expect(safeStringify()).toBeUndefined();
+  });
+
   it('should stringify bigints', () => {
     expect(() => JSON.stringify(BigInt(9007199254740991))).toThrow();
     expect(() => safeStringify(BigInt(9007199254740991))).not.toThrow();
@@ -63,6 +67,18 @@ describe('stringify', () => {
 
     const result = safeStringify(obj, doubleReplacer);
     expect(result).toBe(JSON.stringify(obj, doubleReplacer));
+  });
+
+  it('should return undefined when JSON.stringify throws an error', () => {
+    const malformedObject = {
+      get faultyGetter() {
+        throw new Error('Boom!');
+      }
+    };
+
+    const result = safeStringify(malformedObject);
+
+    expect(result).toBeUndefined();
   });
 });
 
