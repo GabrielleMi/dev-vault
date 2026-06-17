@@ -113,7 +113,8 @@ export {
 
 /** @category Objects */
 export {
-  getDeepEntry
+  getDeepEntry,
+  pick
 } from './object.js';
 
 /** @category Search */
