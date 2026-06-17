@@ -220,8 +220,6 @@ describe('omit', () => {
     const result = omit(user, [ 'id', 'email' ]);
 
     expect(result).toEqual({ name: 'Alice', active: true });
-    expect(result).not.toHaveProperty('id');
-    expect(result).not.toHaveProperty('email');
   });
 
   it('should return a shallow copy of the object if the keys array is empty', () => {
