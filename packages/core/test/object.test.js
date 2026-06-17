@@ -1,4 +1,4 @@
-import { getDeepEntry, pick } from '../src';
+import { getDeepEntry, omit, pick } from '../src';
 
 describe('getDeepEntry', () => {
   const testObject = {
@@ -210,5 +210,63 @@ describe('pick', () => {
     result.id = 99;
 
     expect(user.id).toBe(1);
+  });
+});
+
+describe('omit', () => {
+  // @isTestExample Removing keys
+  it('should remove the specified keys from an object', () => {
+    const user = { id: 1, name: 'Alice', email: 'alice@example.com', active: true };
+    const result = omit(user, [ 'id', 'email' ]);
+
+    expect(result).toEqual({ name: 'Alice', active: true });
+    expect(result).not.toHaveProperty('id');
+    expect(result).not.toHaveProperty('email');
+  });
+
+  it('should return a shallow copy of the object if the keys array is empty', () => {
+    const user = { id: 1, name: 'Alice' };
+    const result = omit(user, []);
+
+    expect(result).toEqual({ id: 1, name: 'Alice' });
+    expect(result).not.toBe(user);
+  });
+
+  it('should ignore keys to omit that do not exist in the source object', () => {
+    const user = { id: 1, name: 'Alice' };
+    // @ts-expect-error Invalid keys
+    const result = omit(user, [ 'age', 'role' ]);
+
+    expect(result).toEqual({ id: 1, name: 'Alice' });
+  });
+
+  it('should not copy inherited properties from the prototype chain', () => {
+    const proto = { inheritedKey: 'prototype' };
+    const obj = Object.create(proto);
+    obj.ownKey = 'instance';
+
+    const result = omit(obj, ['someOtherKey']);
+
+    expect(result).toEqual({ ownKey: 'instance' });
+    expect(result).not.toHaveProperty('inheritedKey');
+  });
+
+  // @isTestExample Ignoring non object types
+  it('should return the initial argument if it is not a valid object (runtime safety)', () => {
+    expect(omit(null, ['id'])).toBeNull();
+    // @ts-expect-error Not an object
+    expect(omit('not an object', ['id'])).toBe('not an object');
+    // @ts-expect-error Not an object
+    expect(omit(42, ['id'])).toBe(42);
+  });
+
+  // @isTestExample Immutability
+  it('should guarantee immutability and not modify the original object', () => {
+    const user = { id: 1, name: 'Alice' };
+    const result = omit(user, ['id']);
+
+    result.name = 'Bob';
+
+    expect(user.name).toBe('Alice');
   });
 });

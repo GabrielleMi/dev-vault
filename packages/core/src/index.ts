@@ -114,7 +114,8 @@ export {
 /** @category Objects */
 export {
   getDeepEntry,
-  pick
+  pick,
+  omit
 } from './object.js';
 
 /** @category Search */
