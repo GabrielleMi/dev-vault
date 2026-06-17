@@ -80,3 +80,38 @@ export function pick<T extends Record<string, unknown>, K extends keyof T>(
 
   return n;
 }
+
+/**
+ * Creates a new object composed of the properties of the source object that are not omitted.
+ *
+ * This function extracts all enumerable own properties from the source object,
+ * excluding the specific keys provided in the `keys` array. Inherited properties 
+ * from the prototype chain are naturally ignored.
+ *
+ * @template T - The type of the source object, conforming to a record structure.
+ * @template K - The literal keys to omit from the source object.
+ * @param {T} obj - The source object to omit properties from.
+ * @param {K[]} keys - An array of property keys to exclude from the resulting object.
+ * @returns {Omit<T, K>} A new object containing all keys from the source object except the omitted ones.
+ * 
+ * @examplesFromTests ../test/object.test.js
+ **/
+export function omit<T extends Record<string, unknown>, K extends keyof T>(
+  obj: T,
+  keys: K[]
+): Omit<T, K> {
+  if (!isObject(obj)) {
+    return obj;
+  }
+
+  const n = {} as Record<string, unknown>;
+  const keysToOmit = new Set<K>(keys);
+
+  for (const key of Object.keys(obj)) {
+    if (!keysToOmit.has(key as K)) {
+      n[key] = obj[key];
+    }
+  }
+
+  return n as Omit<T, K>;
+}
