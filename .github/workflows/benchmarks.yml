@@ -34,32 +34,7 @@ jobs:
         run: pnpm exec vitest bench --run --outputJson=vitest-raw.json
 
       - name: Format Benchmark Results
-        run: |
-          node -e "
-          const fs = require('fs');
-          const raw = JSON.parse(fs.readFileSync('vitest-raw.json', 'utf8'));
-          const formatted = [];
-          
-          if (raw.files) {
-            raw.files.forEach(file => {
-              if (file.groups) {
-                file.groups.forEach(group => {
-                  if (group.benchmarks) {
-                    group.benchmarks.forEach(bench => {
-                      formatted.push({
-                        name: bench.name,
-                        value: Math.round(bench.hz),
-                        unit: 'hz'
-                      });
-                    });
-                  }
-                });
-              }
-            });
-          }
-          
-          fs.writeFileSync('bench-results.json', JSON.stringify(formatted, null, 2));
-          "
+        run: node .github/scripts/format-benchmarks.js
 
       - name: Compare and Comment PR
         uses: benchmark-action/github-action-benchmark@v1
