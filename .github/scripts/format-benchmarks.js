@@ -20,7 +20,6 @@ try {
           if (group.benchmarks) {
             group.benchmarks.forEach((bench) => {
               const fullName = group.name ? `${group.name} > ${bench.name}` : bench.name;
-
               formatted.push({
                 name: fullName,
                 value: Math.round(bench.hz),
@@ -29,8 +28,36 @@ try {
             });
           }
         });
+      } else if (file.tasks) {
+        file.tasks.forEach((task) => {
+          if (task.type === 'suite' && task.tasks) {
+            const groupName = task.name;
+            task.tasks.forEach((subTask) => {
+              if (subTask.type === 'benchmark' && subTask.result?.benchmark) {
+                formatted.push({
+                  name: `${groupName} > ${subTask.name}`,
+                  value: Math.round(subTask.result.benchmark.hz),
+                  unit: 'hz'
+                });
+              }
+            });
+          } else if (task.type === 'benchmark' && task.result?.benchmark) {
+            formatted.push({
+              name: task.name,
+              value: Math.round(task.result.benchmark.hz),
+              unit: 'hz'
+            });
+          }
+        });
       }
     });
+  }
+
+  if (formatted.length === 0) {
+    console.warn('Warning: No benchmarks were formatted. Here is the raw structure keys:', Object.keys(raw));
+    if (raw.files && raw.files[0]) {
+      console.warn('First file keys:', Object.keys(raw.files[0]));
+    }
   }
 
   fs.writeFileSync(outputPath, JSON.stringify(formatted, null, 2));
