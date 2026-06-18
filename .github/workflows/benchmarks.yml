@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Vitest Benchmarks
-        run: pnpm exec vitest bench --run --benchmark.outputJson=vitest-raw.json
+        run: pnpm exec vitest bench --run --benchmark-outputJson=vitest-raw.json
 
       - name: Format Benchmark Results
         run: |
