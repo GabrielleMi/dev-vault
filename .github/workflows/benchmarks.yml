@@ -31,7 +31,7 @@ jobs:
         run: pnpm install --frozen-lockfile
 
       - name: Run Vitest Benchmarks
-        run: pnpm exec vitest bench --run --reporter=json --outputFile=vitest-raw.json
+        run: pnpm exec vitest bench --run --json=vitest-raw.json
 
       - name: Format Benchmark Results
         run: |
@@ -40,18 +40,26 @@ jobs:
           const raw = JSON.parse(fs.readFileSync('vitest-raw.json', 'utf8'));
           const formatted = [];
           
-          // Parcours des fichiers et des suites pour extraire les tâches de bench
-          if (raw.files) {
-            raw.files.forEach(file => {
-              file.tasks.forEach(task => {
-                if (task.type === 'benchmark' && task.result && task.result.benchmark) {
-                  formatted.push({
-                    name: task.name,
-                    value: Math.round(task.result.benchmark.hz),
-                    unit: 'hz'
-                  });
-                }
-              });
+          // Le format `--json` de Vitest bench produit un tableau plat de fichiers
+          if (Array.isArray(raw)) {
+            raw.forEach(file => {
+              if (file.files) {
+                file.files.forEach(f => {
+                  if (f.groups) {
+                    f.groups.forEach(g => {
+                      if (g.benchmarks) {
+                        g.benchmarks.forEach(b => {
+                          formatted.push({
+                            name: b.name,
+                            value: Math.round(b.hz),
+                            unit: 'hz'
+                          });
+                        });
+                      }
+                    });
+                  }
+                });
+              }
             });
           }
           

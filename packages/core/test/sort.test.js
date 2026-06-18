@@ -84,13 +84,15 @@ describe('sort', () => {
   it('should prioritize key.isDesc when defined', () => {
     const data = [
       { id: 1, name: 'Alice' },
-      { id: 2, name: 'Bob' }
+      { id: 2, name: 'Alice' },
+      { id: 3, name: 'Bob' }
     ];
 
     const result = sort(data, { isDesc: true })
       .by({ key: 'name', isDesc: false });
 
     expect(result[0].name).toBe('Alice');
-    expect(result[1].name).toBe('Bob');
+    expect(result[1].name).toBe('Alice');
+    expect(result[2].name).toBe('Bob');
   });
 });
