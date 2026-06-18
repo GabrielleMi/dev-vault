@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781783432754,
+  "lastUpdate": 1781783576963,
   "repoUrl": "https://github.com/GabrielleMi/dev-vault",
   "entries": {
     "Vitest Performance Run": [
@@ -139,6 +139,146 @@ window.BENCHMARK_DATA = {
           {
             "name": "With custom sensitivity options (Cache key generation)",
             "value": 9967,
+            "unit": "hz"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "committer": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "id": "618f1c25912d0e2db17f68e21c6f2eaa11cf7a0c",
+          "message": "chore: benchmarks",
+          "timestamp": "2026-06-17T16:53:01Z",
+          "url": "https://github.com/GabrielleMi/dev-vault/pull/28/commits/618f1c25912d0e2db17f68e21c6f2eaa11cf7a0c"
+        },
+        "date": 1781783576668,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "Simple access (1 level)",
+            "value": 7429457,
+            "unit": "hz"
+          },
+          {
+            "name": "Deep nested path (4 levels)",
+            "value": 5766714,
+            "unit": "hz"
+          },
+          {
+            "name": "Array access",
+            "value": 6146028,
+            "unit": "hz"
+          },
+          {
+            "name": "Deep complex mixed path",
+            "value": 5601984,
+            "unit": "hz"
+          },
+          {
+            "name": "Early failure (Non-existent path in the middle)",
+            "value": 6381954,
+            "unit": "hz"
+          },
+          {
+            "name": "Edge case (Empty string key)",
+            "value": 12461798,
+            "unit": "hz"
+          },
+          {
+            "name": "Exact Match - Simple key",
+            "value": 23192,
+            "unit": "hz"
+          },
+          {
+            "name": "Exact Match - Deep path (3 levels)",
+            "value": 19775,
+            "unit": "hz"
+          },
+          {
+            "name": "Fuzzy Match (Levenshtein) - Threshold 0.8",
+            "value": 12956,
+            "unit": "hz"
+          },
+          {
+            "name": "Multi-term Search - Exact match",
+            "value": 18520,
+            "unit": "hz"
+          },
+          {
+            "name": "Exact Match - Linear scan flat key",
+            "value": 243,
+            "unit": "hz"
+          },
+          {
+            "name": "Exact Match - Linear scan deep path",
+            "value": 253,
+            "unit": "hz"
+          },
+          {
+            "name": "Case Sensitive vs Normalized scan",
+            "value": 634,
+            "unit": "hz"
+          },
+          {
+            "name": "Fuzzy Match - High execution cost scale",
+            "value": 107,
+            "unit": "hz"
+          },
+          {
+            "name": "Simple property sort (String path)",
+            "value": 16987,
+            "unit": "hz"
+          },
+          {
+            "name": "Multi-criteria sort (Multi-keys)",
+            "value": 9007,
+            "unit": "hz"
+          },
+          {
+            "name": "Deep nested path sort (Deep path)",
+            "value": 12753,
+            "unit": "hz"
+          },
+          {
+            "name": "Specific key configuration sort (SortKeyConfig)",
+            "value": 14047,
+            "unit": "hz"
+          },
+          {
+            "name": "Custom callback function sort (SortKeyFn)",
+            "value": 119746,
+            "unit": "hz"
+          },
+          {
+            "name": "Simple property sort (String path)",
+            "value": 94,
+            "unit": "hz"
+          },
+          {
+            "name": "Multi-criteria sort (Multi-keys)",
+            "value": 40,
+            "unit": "hz"
+          },
+          {
+            "name": "Specific key configuration sort (SortKeyConfig)",
+            "value": 92,
+            "unit": "hz"
+          },
+          {
+            "name": "Without global options (Uses default cache)",
+            "value": 14236,
+            "unit": "hz"
+          },
+          {
+            "name": "With custom sensitivity options (Cache key generation)",
+            "value": 10834,
             "unit": "hz"
           }
         ]
