@@ -88,10 +88,7 @@ export {
   isNumber,
   isPrimitive,
   isString,
-  isEquivalent,
-
-  type Primitive,
-  type Falsy
+  isEquivalent
 } from './is.js';
 
 /** @category Serialization */
@@ -113,7 +110,8 @@ export {
 
 /** @category Objects */
 export {
-  getDeepEntry,
+  getEntry,
+  getEntryAt,
   pick,
   omit
 } from './object.js';
@@ -154,5 +152,7 @@ export {
 /** @category Types */
 export {
   type Positive,
-  type AssertPositive
+  type AssertPositive,
+  type Primitive,
+  type Falsy
 } from './types.js';

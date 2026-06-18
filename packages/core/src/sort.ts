@@ -1,6 +1,5 @@
-import { isFn, isString } from './is.js';
-import { getDeepEntry } from './object.js';
-import { safeStringify } from './json.js';
+import { isFn, isNumber, isString } from './is.js';
+import { getEntryAt } from './object.js';
 
 /**
  * Configuration for a specific sort key.
@@ -46,6 +45,12 @@ export interface SortConfigs {
   options?: Intl.CollatorOptions;
 }
 
+const buildCacheKey = (locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions) => {
+  const locKey = Array.isArray(locales) ? locales.join(',') : (locales as string) || 'def';
+
+  return `${locKey}-${options?.sensitivity}-${options?.numeric}-${options?.caseFirst}`;
+};
+
 /**
  * @internal
  * Internal cache for reusable Collator instances.
@@ -58,7 +63,7 @@ class CollatorCache {
   }
 
   get(locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions) {
-    const key = `${locales}-${safeStringify(options || '0')}`;
+    const key = buildCacheKey(locales, options);
     if (!this.cache.has(key)) {
       this.cache.set(key, new Intl.Collator(locales, options));
     }
@@ -93,43 +98,53 @@ export function sort<T extends object[]>(
   const collator = configs?.collator || collators.get(locale, configs?.options);
   const isDesc = configs?.isDesc;
 
-  const getKeyFull = (key: SortKeyStr | SortKeyConfig): { key: SortKeyStr; dir: 1 | -1; collator?: Intl.Collator } => {
-    if (isString(key)) {
-      return {
-        key,
-        dir: getDirection(isDesc)
-      };
+  const compileKeyToComparator = (key: SortKey<(T[number])>): SortKeyFn<T[number]> => {
+    if (isFn(key)) {
+      return key;
     }
 
-    return {
-      ...key,
-      dir: getDirection(key.isDesc ?? isDesc)
+    const isStr = isString(key);
+    const path = isStr ? key : key.key;
+    const pathParts = path.split('.');
+    const dir = getDirection(isStr ? isDesc : (key.isDesc ?? isDesc));
+    const currentCollator = (isStr ? undefined : key.collator) || collator;
+
+    const getter = pathParts.length === 1
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      ? (obj: T[number]) => (obj as any)[path]
+      : (obj: T[number]) => getEntryAt(obj, pathParts);
+
+    return (a: T[number], b: T[number]): number => {
+      const valueA = getter(a);
+      const valueB = getter(b);
+
+      if (isNumber(valueA) && isNumber(valueB)) {
+        return (valueA - valueB) * dir;
+      }
+
+      const strA = valueA == null ? '' : String(valueA);
+      const strB = valueB == null ? '' : String(valueB);
+
+      return currentCollator.compare(strA, strB) * dir;
     };
-  };
-
-  const compare = (byKey: SortKey<(T[number])>, a: T[number], b: T[number]) => {
-    if (isFn(byKey)) {
-      return byKey(a, b);
-    }
-
-    const { key, dir, collator: keyCollator } = getKeyFull(byKey);
-    const valueA = getDeepEntry(a, key);
-    const valueB = getDeepEntry(b, key);
-
-    return (keyCollator || collator).compare(String(valueA), String(valueB)) * dir;
   };
 
   return {
     by: function (...keys: SortKey<(T[number])>[]) {
-      return arr.slice().sort((a, b) => {
-        for (let i = 0; i < keys.length; i++) {
-          const order = compare(keys[i], a, b);
+      const comparators = keys.map(compileKeyToComparator);
+      const len = comparators.length;
 
+      if (len === 1) {
+        return arr.slice().sort(comparators[0]) as T;
+      }
+
+      return arr.slice().sort((a, b) => {
+        for (let i = 0; i < len; i++) {
+          const order = comparators[i](a, b);
           if (order !== 0) {
             return order;
           }
         }
-
         return 0;
       }) as T;
     }

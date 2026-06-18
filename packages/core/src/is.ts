@@ -1,7 +1,5 @@
 import { BIGINT, BOOLEAN, FUNCTION, NUMBER, OBJECT, STRING } from './constants.js';
-
-export type Primitive = string | number | boolean | bigint | symbol | null | undefined;
-export type Falsy = null | undefined | '' | false | 0;
+import { Primitive } from './types.js';
 
 /**
  * Checks if the provided value is an object.

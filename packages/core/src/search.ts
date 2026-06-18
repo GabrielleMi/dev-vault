@@ -1,5 +1,5 @@
 import { isEmpty, isNil, isNumber, isObject, isString } from './is.js';
-import { getDeepEntry } from './object.js';
+import { getEntry } from './object.js';
 import { normalizeStr } from './string.js';
 import { safeDivide } from './number.js';
 
@@ -216,7 +216,7 @@ export function search<T extends object[]>(
 
         for (const searchKey of keysToSearch) {
           const keyConfig = getKeyConfig(searchKey);
-          const keyValue = getDeepEntry(item, keyConfig.key);
+          const keyValue = getEntry(item, keyConfig.key);
 
           if (!isNil(keyValue)) {
             return searchStr(

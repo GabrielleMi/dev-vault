@@ -1,17 +1,49 @@
 import { isObject } from './is.js';
 
 /**
+ * Retrieves a nested value from an object using an array of keys.
+ * This function sequentially traverses the object's properties matching the order 
+ * of the provided keys array.
+ *
+ * @template T - The type of the source object.
+ * @param {T} object - The source object to query.
+ * @param {(string | number)[]} keys - An array of property keys representing the deep path.
+ * @returns {unknown} The value at the specified path, or `undefined` if the path cannot be resolved.
+ * @example
+ * const user = { profile: { name: 'Alice', roles: ['admin'] } };
+ * getEntryAt(user, ['profile', 'name']); // => 'Alice'
+ * getEntryAt(user, ['profile', 'roles', 0]); // => 'admin'
+ * getEntryAt(user, ['profile', 'invalid', 'key']); // => undefined
+ */
+export function getEntryAt<T extends object>(
+  object: T,
+  keys: (string | number)[]
+) {
+  // eslint-disable-next-line @typescript-eslint/no-explicit-any
+  let val: any = object;
+
+  for (let i = 0; i < keys.length; i++) {
+    if (val == null) {
+      return undefined;
+    }
+    val = val[keys[i]];
+  }
+
+  return val;
+}
+
+/**
  * Retrieves a nested value from an object using a dot-notation string.
- * Supports both standard property access (`a.b.c`) and array index access (`a.b[0]`).
+ * Supports both standard property access (`a.b.c`) and array index access (`a.b.0`).
  *
  * @returns The found value, or `undefined` if the path does not exist.
  *
  * @examplesFromTests ../test/object.test.js
  */
-export function getDeepEntry<T extends object>(
+export function getEntry<T extends object>(
   /** The source object to query. */
   object: T,
-  /** The path string using dot notation (e.g., `'user.address.street'`, `'items[0].name'`, `items.0.name`). */
+  /** The path string using dot notation (e.g., `'user.address.street'`, `items.0.name`). */
   key: string
 ): T | unknown | undefined {
   if (!key) {
@@ -22,31 +54,7 @@ export function getDeepEntry<T extends object>(
     return;
   }
 
-  const keyMatches = Array.from(`${key}`.matchAll(/(\w+)|\[(\d+)\]/g));
-  let val = object;
-
-  if (keyMatches.length === 0) {
-    return;
-  }
-
-  for (const [ , match1, match2 ] of keyMatches) {
-    const key = match1 || match2;
-    let nextVal;
-
-    if (isObject(val)) {
-      nextVal = val[key];
-    } else if (Array.isArray(val)) {
-      nextVal = val[parseInt(key)];
-    }
-
-    val = nextVal;
-
-    if (val === undefined) {
-      return;
-    }
-  }
-
-  return val;
+  return getEntryAt(object, key.split('.'));
 }
 
 /**

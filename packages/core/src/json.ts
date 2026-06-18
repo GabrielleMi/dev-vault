@@ -1,5 +1,5 @@
 import { isBigInt, isFn, isString } from './is.js';
-import { getDeepEntry } from './object.js';
+import { getEntry } from './object.js';
 import { OBJECT } from './constants.js';
 
 /**
@@ -122,7 +122,7 @@ function resolveReferences(root: Record<string, unknown>) {
         if (path.startsWith('.')) {
           path = path.slice(1);
         }
-        target[key] = path ? getDeepEntry(root, path) : root;
+        target[key] = path ? getEntry(root, path) : root;
       } else {
         walk(val);
       }
