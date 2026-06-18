@@ -89,7 +89,7 @@ describe('sort', () => {
     ];
 
     const result = sort(data, { isDesc: true })
-      .by({ key: 'name', isDesc: false });
+      .by({ key: 'name', isDesc: false }, 'id');
 
     expect(result[0].name).toBe('Alice');
     expect(result[1].name).toBe('Alice');
