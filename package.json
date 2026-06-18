@@ -10,6 +10,7 @@
     "clean": "tsc -b --clean",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
+    "test:bench": "vitest bench",
     "update": " pnpm up --interactive --latest -r",
     "docs:build": "typedoc",
     "docs:clean": "node -e \"const fs = require('fs'); ['docs', 'node_modules/.cache/typedoc'].forEach(p => fs.rmSync(p, { recursive: true, force: true }));\"",
