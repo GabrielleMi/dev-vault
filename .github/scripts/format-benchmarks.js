@@ -15,6 +15,18 @@ const getHz = (benchmarkLike) => {
   return Number.isFinite(value) ? value : null;
 };
 
+const decodeHtmlEntities = (value) => {
+  if (typeof value !== 'string') {
+    return '';
+  }
+
+  return value
+    .replace(/&gt;/g, '>')
+    .replace(/&lt;/g, '<')
+    .replace(/&amp;/g, '&')
+    .trim();
+};
+
 try {
   const rawPath = path.resolve('vitest-raw.json');
   const outputPath = path.resolve('bench-results.json');
@@ -52,7 +64,6 @@ try {
     }
 
     tasks.forEach((task) => {
-      console.debug("task", task);
       if (!task || typeof task !== 'object') {
         return;
       }
@@ -78,19 +89,11 @@ try {
         walkTasks(file.tasks, file.name ? [ file.name ] : []);
       } else if (file.groups) {
         file.groups.forEach((group, groupIndex) => {
-          console.debug("group", group);
           if (group.benchmarks) {
             group.benchmarks.forEach((bench) => {
-              console.debug("bench", bench);
-              const hz = getHz(bench);
-              const fileScope = file.name || file.filepath;
-              const groupScope = group.name || `group-${groupIndex + 1}`;
-              const fullName =
-                joinName(fileScope, groupScope, bench.name)
-                || bench.fullName
-                || joinName(groupScope, bench.name)
-                || bench.name;
-              pushBenchmark(fullName, hz);
+              const groupFullName = decodeHtmlEntities(group.fullName);
+              const fullName = joinName(groupFullName, bench.name);
+              pushBenchmark(fullName, getHz(bench));
             });
           }
         });
