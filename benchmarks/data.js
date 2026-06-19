@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1781832172909,
+  "lastUpdate": 1781832460882,
   "repoUrl": "https://github.com/GabrielleMi/dev-vault",
   "entries": {
     "Vitest Performance Run": [
@@ -419,6 +419,146 @@ window.BENCHMARK_DATA = {
           {
             "name": "With custom sensitivity options (Cache key generation)",
             "value": 10530,
+            "unit": "hz"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "committer": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "id": "d9505b0f108d37b063f45440d0c6f4ad9cbdfca6",
+          "message": "chore: benchmarks",
+          "timestamp": "2026-06-17T16:53:01Z",
+          "url": "https://github.com/GabrielleMi/dev-vault/pull/28/commits/d9505b0f108d37b063f45440d0c6f4ad9cbdfca6"
+        },
+        "date": 1781832460636,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Simple access (1 level)",
+            "value": 6887473,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Deep nested path (4 levels)",
+            "value": 4992644,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Array access",
+            "value": 5441694,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Deep complex mixed path",
+            "value": 5061071,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Early failure (Non-existent path in the middle)",
+            "value": 5503053,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/object.bench.ts > group-1 > Edge case (Empty string key)",
+            "value": 10725922,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-1 > Exact Match - Simple key",
+            "value": 17044,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-1 > Exact Match - Deep path (3 levels)",
+            "value": 14810,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-1 > Fuzzy Match (Levenshtein) - Threshold 0.8",
+            "value": 10504,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-1 > Multi-term Search - Exact match",
+            "value": 13071,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-2 > Exact Match - Linear scan flat key",
+            "value": 175,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-2 > Exact Match - Linear scan deep path",
+            "value": 181,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-2 > Case Sensitive vs Normalized scan",
+            "value": 498,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/search.bench.ts > group-2 > Fuzzy Match - High execution cost scale",
+            "value": 96,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-1 > Simple property sort (String path)",
+            "value": 14788,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-1 > Multi-criteria sort (Multi-keys)",
+            "value": 8837,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-1 > Deep nested path sort (Deep path)",
+            "value": 12866,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-1 > Specific key configuration sort (SortKeyConfig)",
+            "value": 12977,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-1 > Custom callback function sort (SortKeyFn)",
+            "value": 113934,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-2 > Simple property sort (String path)",
+            "value": 91,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-2 > Multi-criteria sort (Multi-keys)",
+            "value": 40,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-2 > Specific key configuration sort (SortKeyConfig)",
+            "value": 88,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-3 > Without global options (Uses default cache)",
+            "value": 13267,
+            "unit": "hz"
+          },
+          {
+            "name": "/home/runner/work/dev-vault/dev-vault/packages/core/test/sort.bench.ts > group-3 > With custom sensitivity options (Cache key generation)",
+            "value": 9855,
             "unit": "hz"
           }
         ]
