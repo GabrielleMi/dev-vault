@@ -52,6 +52,7 @@ try {
     }
 
     tasks.forEach((task) => {
+      console.debug("task", task);
       if (!task || typeof task !== 'object') {
         return;
       }
@@ -73,22 +74,26 @@ try {
 
   if (raw.files) {
     raw.files.forEach((file) => {
-      if (file.groups) {
-        file.groups.forEach((group) => {
+      if (file.tasks) {
+        walkTasks(file.tasks, file.name ? [ file.name ] : []);
+      } else if (file.groups) {
+        file.groups.forEach((group, groupIndex) => {
+          console.debug("group", group);
           if (group.benchmarks) {
             group.benchmarks.forEach((bench) => {
+              console.debug("bench", bench);
               const hz = getHz(bench);
+              const fileScope = file.name || file.filepath;
+              const groupScope = group.name || `group-${groupIndex + 1}`;
               const fullName =
-                joinName(file.name, group.name, bench.name)
-                || joinName(file.filepath, group.name, bench.name)
+                joinName(fileScope, groupScope, bench.name)
                 || bench.fullName
+                || joinName(groupScope, bench.name)
                 || bench.name;
               pushBenchmark(fullName, hz);
             });
           }
         });
-      } else if (file.tasks) {
-        walkTasks(file.tasks, file.name ? [ file.name ] : []);
       }
     });
   }
