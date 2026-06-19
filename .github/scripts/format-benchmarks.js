@@ -26,20 +26,21 @@ try {
 
   const raw = JSON.parse(fs.readFileSync(rawPath, 'utf8'));
   const formatted = [];
-  const seenNames = new Set();
+  const seenNameCount = new Map();
 
   const pushBenchmark = (name, hz) => {
     if (!name || !Number.isFinite(hz)) {
       return;
     }
 
-    if (seenNames.has(name)) {
-      throw new Error(`Duplicate benchmark name detected: "${name}". Ensure benchmark names are unique across suites.`);
-    }
+    const currentCount = seenNameCount.get(name) ?? 0;
+    const nextCount = currentCount + 1;
+    seenNameCount.set(name, nextCount);
 
-    seenNames.add(name);
+    const uniqueName = nextCount === 1 ? name : `${name} [${nextCount}]`;
+
     formatted.push({
-      name,
+      name: uniqueName,
       value: Math.round(hz),
       unit: 'hz'
     });
@@ -77,7 +78,11 @@ try {
           if (group.benchmarks) {
             group.benchmarks.forEach((bench) => {
               const hz = getHz(bench);
-              const fullName = joinName(group.name, bench.name) || bench.fullName || bench.name;
+              const fullName =
+                joinName(file.name, group.name, bench.name)
+                || joinName(file.filepath, group.name, bench.name)
+                || bench.fullName
+                || bench.name;
               pushBenchmark(fullName, hz);
             });
           }
