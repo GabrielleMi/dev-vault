@@ -1,5 +1,11 @@
 # @dev-vault/typedoc-plugin-vitest-examples
 
+## 0.1.2
+
+### Patch Changes
+
+- e6c1f06: Fix of multiple @examplesFromTests being ignored + improve performance
+
 ## 0.1.1
 
 ### Patch Changes
