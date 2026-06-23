@@ -1,6 +1,6 @@
-import { getDeepEntry, omit, pick } from '../src';
+import { getEntry, omit, pick } from '../src';
 
-describe('getDeepEntry', () => {
+describe('getEntry', () => {
   const testObject = {
     a: 1,
     b: {
@@ -32,127 +32,127 @@ describe('getDeepEntry', () => {
   };
 
   it('should retrieve a top-level property', () => {
-    expect(getDeepEntry(testObject, 'a')).toBe(1);
+    expect(getEntry(testObject, 'a')).toBe(1);
   });
 
   it('should retrieve a nested property', () => {
-    expect(getDeepEntry(testObject, 'b.c')).toBe('hello');
+    expect(getEntry(testObject, 'b.c')).toBe('hello');
   });
 
   it('should retrieve a deeply nested property', () => {
-    expect(getDeepEntry(testObject, 'b.d.e')).toBe(true);
+    expect(getEntry(testObject, 'b.d.e')).toBe(true);
   });
 
   it('should retrieve a BigInt property', () => {
-    expect(getDeepEntry(testObject, 'b.d.h')).toBe(123n);
+    expect(getEntry(testObject, 'b.d.h')).toBe(123n);
   });
 
   it('should retrieve a Symbol property', () => {
-    expect(getDeepEntry(testObject, 'b.d.i')).toBe(testObject.b.d.i);
+    expect(getEntry(testObject, 'b.d.i')).toBe(testObject.b.d.i);
   });
 
   it('should retrieve outer-level property after deep path', () => {
-    expect(getDeepEntry(testObject, 'x')).toBe('outer');
+    expect(getEntry(testObject, 'x')).toBe('outer');
   });
 
   // @isTestExample Using array syntax
   it('should retrieve an item from a top-level array using array syntax', () => {
     const objWithArray = { data: [ 'one', 'two' ] };
-    expect(getDeepEntry(objWithArray, 'data[0]')).toBe('one');
-    expect(getDeepEntry(objWithArray, 'data[1]')).toBe('two');
+    expect(getEntry(objWithArray, 'data.0')).toBe('one');
+    expect(getEntry(objWithArray, 'data.1')).toBe('two');
   });
 
   it('should retrieve an item from a nested array using array syntax', () => {
-    expect(getDeepEntry(testObject, 'b.arr[0]')).toBe('apple');
+    expect(getEntry(testObject, 'b.arr.0')).toBe('apple');
   });
 
   it('should retrieve an object within a nested array', () => {
-    expect(getDeepEntry(testObject, 'b.arr[1]')).toEqual({ name: 'banana', price: 1.50 });
+    expect(getEntry(testObject, 'b.arr.1')).toEqual({ name: 'banana', price: 1.50 });
   });
 
   it('should retrieve a property of an object within a nested array', () => {
-    expect(getDeepEntry(testObject, 'b.arr[1].name')).toBe('banana');
+    expect(getEntry(testObject, 'b.arr.1.name')).toBe('banana');
   });
 
   it('should retrieve an item from a deeply nested array', () => {
-    expect(getDeepEntry(testObject, 'b.arr[2][0]')).toBe('nested');
+    expect(getEntry(testObject, 'b.arr.2.0')).toBe('nested');
   });
 
   it('should retrieve an item from an array of objects using array syntax', () => {
-    expect(getDeepEntry(testObject, 'b.nestedArr[0].data')).toBe('itemA');
-    expect(getDeepEntry(testObject, 'b.nestedArr[1].id')).toBe(20);
+    expect(getEntry(testObject, 'b.nestedArr.0.data')).toBe('itemA');
+    expect(getEntry(testObject, 'b.nestedArr.1.id')).toBe(20);
   });
 
   it('should retrieve item from array nested inside an object property', () => {
-    expect(getDeepEntry(testObject, 'b.deepArr.items[1].value')).toBe(200);
+    expect(getEntry(testObject, 'b.deepArr.items.1.value')).toBe(200);
   });
 
   it('should return undefined for a non-existent top-level key', () => {
-    expect(getDeepEntry(testObject, 'z')).toBeUndefined();
+    expect(getEntry(testObject, 'z')).toBeUndefined();
   });
 
   it('should return undefined for a non-existent nested key', () => {
-    expect(getDeepEntry(testObject, 'b.nonExistent.key')).toBeUndefined();
+    expect(getEntry(testObject, 'b.nonExistent.key')).toBeUndefined();
   });
 
   it('should return undefined if a part of the path is not an object', () => {
-    expect(getDeepEntry(testObject, 'a.someProp')).toBeUndefined();
+    expect(getEntry(testObject, 'a.someProp')).toBeUndefined();
   });
 
   it('should return undefined for an out-of-bounds array index', () => {
-    expect(getDeepEntry(testObject, 'b.arr[99]')).toBeUndefined();
+    expect(getEntry(testObject, 'b.arr[99]')).toBeUndefined();
   });
 
   it('should return undefined if property before array is not an array', () => {
-    expect(getDeepEntry(testObject, 'b.c[0]')).toBeUndefined();
+    expect(getEntry(testObject, 'b.c[0]')).toBeUndefined();
   });
 
   it('should return undefined if the initial object is null', () => {
-    expect(getDeepEntry(null, 'a')).toBeUndefined();
+    expect(getEntry(null, 'a')).toBeUndefined();
   });
 
   it('should return undefined if the initial object is undefined', () => {
-    expect(getDeepEntry(undefined, 'a')).toBeUndefined();
+    expect(getEntry(undefined, 'a')).toBeUndefined();
   });
 
   it('should return undefined if the initial object is a primitive', () => {
     // @ts-expect-error testing
-    expect(getDeepEntry(123, 'a')).toBeUndefined();
+    expect(getEntry(123, 'a')).toBeUndefined();
     // @ts-expect-error testing
-    expect(getDeepEntry('string', 'a')).toBeUndefined();
+    expect(getEntry('string', 'a')).toBeUndefined();
     // @ts-expect-error testing
-    expect(getDeepEntry(true, 'a')).toBeUndefined();
+    expect(getEntry(true, 'a')).toBeUndefined();
   });
 
   it('should return null if the target value is null', () => {
-    expect(getDeepEntry(testObject, 'b.d.f')).toBeNull();
+    expect(getEntry(testObject, 'b.d.f')).toBeNull();
   });
 
   it('should return undefined if the target value is undefined', () => {
-    expect(getDeepEntry(testObject, 'b.d.g')).toBeUndefined();
+    expect(getEntry(testObject, 'b.d.g')).toBeUndefined();
   });
 
   it('should handle an empty key string (return the object itself)', () => {
-    expect(getDeepEntry(testObject, '')).toBe(testObject);
+    expect(getEntry(testObject, '')).toBe(testObject);
   });
 
   it('should handle a single-level key without dots', () => {
-    expect(getDeepEntry(testObject, 'x')).toBe('outer');
+    expect(getEntry(testObject, 'x')).toBe('outer');
   });
 
   it('should handle a key with only an array index (e.g., for root array)', () => {
     const rootArray = [{ id: 1 }];
-    expect(getDeepEntry(rootArray, '[0].id')).toBe(1);
+    expect(getEntry(rootArray, '0.id')).toBe(1);
   });
 
   it('should return undefined if array access is attempted on a non-array object', () => {
-    expect(getDeepEntry(testObject, 'b.d[0]')).toBeUndefined();
+    expect(getEntry(testObject, 'b.d[0]')).toBeUndefined();
   });
 
   it('should return undefined when the key contains no valid property path characters', () => {
-    expect(getDeepEntry(testObject, '...')).toBeUndefined();
-    expect(getDeepEntry(testObject, '!!!')).toBeUndefined();
-    expect(getDeepEntry(testObject, '%%%')).toBeUndefined();
+    expect(getEntry(testObject, '...')).toBeUndefined();
+    expect(getEntry(testObject, '!!!')).toBeUndefined();
+    expect(getEntry(testObject, '%%%')).toBeUndefined();
   });
 });
 

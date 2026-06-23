@@ -1,7 +1,6 @@
-import { isEmpty, isNil, isNumber, isObject, isString } from './is.js';
-import { getDeepEntry } from './object.js';
+import { EMPTY_ARRAY, EMPTY_OBJECT } from './constants.js';
+import { getEntry } from './object.js';
 import { normalizeStr } from './string.js';
-import { safeDivide } from './number.js';
 
 /**
  * Configuration for a specific key in a search operation.
@@ -27,6 +26,20 @@ export interface SearchKeyConfig {
 }
 
 /**
+ * Configuration for the search operation, including keys to search, case sensitivity, fuzzy matching threshold, and locale.
+ */
+export interface SearchConfigs {
+  /** The keys to search. */
+  keys: SearchKey[];
+  /** Whether the search should be case-sensitive. */
+  isCaseSensitive?: boolean;
+  /** The threshold for fuzzy matching (between 0 and 1). */
+  threshold?: number;
+  /** The locale for normalization. */
+  locale?: Intl.LocalesArgument;
+}
+
+/**
  * A search key defined either as a string path or a {@link SearchKeyConfig}.
  */
 export type SearchKey = SearchKeyConfig | string;
@@ -40,36 +53,36 @@ export type SearchKey = SearchKeyConfig | string;
  * @author Gustav Anderson
  * @internal
  */
-export function getLevenshteinDistance(s: string, t: string): number {
-  if (s === t) {
+export function getLevenshteinDistance(source: string, target: string): number {
+  if (source === target) {
     return 0;
   }
 
-  const n = s.length, m = t.length;
-  if (n === 0 || m === 0) {
-    return n + m;
+  const sLen = source.length, tLen = target.length;
+  if (sLen === 0 || tLen === 0) {
+    return sLen + tLen;
   }
 
   let x = 0, y, a, b, c, d, g, h;
-  const p = new Uint16Array(n);
-  const u = new Uint32Array(n);
+  const p = new Uint16Array(sLen);
+  const u = new Uint32Array(sLen);
 
-  for (y = 0; y < n;) {
-    u[y] = s.charCodeAt(y);
+  for (y = 0; y < sLen;) {
+    u[y] = source.charCodeAt(y);
     p[y] = ++y;
   }
 
-  for (; (x + 3) < m; x += 4) {
-    const e1 = t.charCodeAt(x);
-    const e2 = t.charCodeAt(x + 1);
-    const e3 = t.charCodeAt(x + 2);
-    const e4 = t.charCodeAt(x + 3);
+  for (; (x + 3) < tLen; x += 4) {
+    const e1 = target.charCodeAt(x);
+    const e2 = target.charCodeAt(x + 1);
+    const e3 = target.charCodeAt(x + 2);
+    const e4 = target.charCodeAt(x + 3);
     c = x;
     b = x + 1;
     d = x + 2;
     g = x + 3;
     h = x + 4;
-    for (y = 0; y < n; y++) {
+    for (y = 0; y < sLen; y++) {
       a = p[y];
       if (a < c || b < c) {
         c = (a > b ? b + 1 : a + 1);
@@ -102,11 +115,11 @@ export function getLevenshteinDistance(s: string, t: string): number {
     }
   }
 
-  for (; x < m;) {
-    const e = t.charCodeAt(x);
+  for (; x < tLen;) {
+    const e = target.charCodeAt(x);
     c = x;
     d = ++x;
-    for (y = 0; y < n; y++) {
+    for (y = 0; y < sLen; y++) {
       a = p[y];
       if (a < c || d < c) {
         d = (a > d ? d + 1 : a + 1);
@@ -126,7 +139,7 @@ export function getLevenshteinDistance(s: string, t: string): number {
  * @internal
  */
 const getKeyConfig = (searchKey: SearchKey) => {
-  if (isString(searchKey)) {
+  if (typeof searchKey === 'string') {
     return {
       key: searchKey,
       weight: 1
@@ -137,6 +150,40 @@ const getKeyConfig = (searchKey: SearchKey) => {
     ...searchKey,
     weight: searchKey.weight ?? 1
   };
+};
+
+/**
+ * @internal
+ */
+const fuzzySearchStr = (
+  strToSearch: string,
+  searchTerms: string[],
+  threshold: number
+) => {
+  for (const searchTerm of searchTerms) {
+    const maxLength = Math.max(strToSearch.length, searchTerm.length);
+    const levenshteinDist = getLevenshteinDistance(strToSearch, searchTerm);
+    const similarity = 1 - (levenshteinDist / maxLength);
+
+    if (similarity >= threshold) {
+      return true;
+    }
+  }
+
+  return false;
+};
+
+/**
+ * @internal
+ */
+const searchStr = (strToSearch: string, searchTerms: string[]) => {
+  for (const searchTerm of searchTerms) {
+    if (strToSearch.includes(searchTerm)) {
+      return true;
+    }
+  }
+
+  return false;
 };
 
 /**
@@ -154,16 +201,7 @@ export function search<T extends object[]>(
   /** The array of objects to search. */
   arr: T,
   /** Configuration object defining keys to search, threshold for fuzzy matching, etc. */
-  configs?: {
-    /** The keys to search. */
-    keys: SearchKey[];
-    /** Whether the search should be case-sensitive. */
-    isCaseSensitive?: boolean;
-    /** The threshold for fuzzy matching (between 0 and 1). */
-    threshold?: number;
-    /** The locale for normalization. */
-    locale?: Intl.LocalesArgument;
-  }
+  configs?: SearchConfigs
 ): {
   /**
    * Provides the search inputs and returns the filtered array.
@@ -172,57 +210,53 @@ export function search<T extends object[]>(
    */
   with(...searchInputs: string[]): T;
 } {
-  const keysToSearch = configs?.keys || [];
-  const isFuzzy = isNumber(configs?.threshold) && configs.threshold > 0;
-  const isGlobalCaseSensitive = configs?.isCaseSensitive;
+  const c = (configs || EMPTY_OBJECT) as SearchConfigs;
+  const threshold = c.threshold ?? 0;
+  const keysToSearch = c.keys || EMPTY_ARRAY;
+  const isGlobalCaseSensitive = c.isCaseSensitive;
+  const locale = c.locale;
 
-  const searchStr = (strToSearch: string, searchTerms: string[], isSensitive?: boolean) => {
-    const finalStrToSearch = String(isSensitive ? strToSearch : normalizeStr(strToSearch));
+  const matchFn = threshold > 0
+    ? (t: string, s: string[]) => fuzzySearchStr(t, s, threshold)
+    : searchStr;
 
-    if (isFuzzy) {
-      for (const searchTerm of searchTerms) {
-        const finalSearchTerm = isSensitive ? searchTerm : normalizeStr(searchTerm);
-        const maxLength = Math.max(finalStrToSearch.length, finalSearchTerm.length);
-        const levenshteinDist = getLevenshteinDistance(finalStrToSearch, finalSearchTerm);
-        const similarity = 1 - safeDivide(levenshteinDist, maxLength);
-
-        if (similarity >= (configs.threshold as number)) {
-          return true;
-        }
-      }
-
-      return false;
-    }
-
-    return searchTerms.some((searchTerm) => {
-      return finalStrToSearch.includes(isSensitive ? searchTerm : normalizeStr(searchTerm));
-    });
-  };
+  const precompiledGetters = keysToSearch.map((searchKey) => {
+    const config = getKeyConfig(searchKey);
+    return {
+      ...config,
+      getValue: (item: T[number]) => getEntry(item, config.key)
+    };
+  });
 
   return {
     with: function (...searchInputs: string[]) {
-      if (isEmpty(arr) || searchInputs.length === 0) {
-        return [...(arr || [])] as T;
+      if (!arr || arr.length === 0 || !searchInputs || searchInputs.length === 0) {
+        return [...(arr || EMPTY_ARRAY)] as T;
       }
 
+      const normalizedSearchInputs = searchInputs.map((s) => normalizeStr(s, locale));
+
       return arr.filter((item) => {
-        if (!isObject(item)) {
-          if (!isEmpty(keysToSearch)) {
+        if (typeof item !== 'object' || item === null) {
+          if (keysToSearch.length > 0) {
             console.warn('Keys are not used when the array contains primitive values.');
           }
 
-          return searchStr(String(item), searchInputs, isGlobalCaseSensitive);
+          return matchFn(
+            isGlobalCaseSensitive ? String(item) : normalizeStr(String(item), locale),
+            isGlobalCaseSensitive ? searchInputs : normalizedSearchInputs
+          );
         }
 
-        for (const searchKey of keysToSearch) {
-          const keyConfig = getKeyConfig(searchKey);
-          const keyValue = getDeepEntry(item, keyConfig.key);
+        for (const keyConfig of precompiledGetters) {
+          const keyValue = keyConfig.getValue(item);
 
-          if (!isNil(keyValue)) {
-            return searchStr(
-              String(keyValue),
-              searchInputs,
-              keyConfig.isCaseSensitive ?? isGlobalCaseSensitive
+          if (keyValue !== null && keyValue !== undefined) {
+            const isCaseSensitive = keyConfig.isCaseSensitive ?? isGlobalCaseSensitive;
+            const strValue = String(keyValue);
+            return matchFn(
+              isCaseSensitive ? strValue : normalizeStr(strValue, locale),
+              isCaseSensitive ? searchInputs : normalizedSearchInputs
             );
           }
         }

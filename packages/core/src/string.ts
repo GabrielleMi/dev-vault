@@ -35,6 +35,18 @@ export function isStrEqualCi(a: string, b: string) {
   return a.localeCompare(b, undefined, { sensitivity: 'accent' }) === 0;
 }
 
+const DIACRITICS_RE = /[\u0300-\u036f]/g;
+
+const isAsciiOnly = (value: string): boolean => {
+  for (let i = 0; i < value.length; i++) {
+    if (value.charCodeAt(i) > 0x7F) {
+      return false;
+    }
+  }
+
+  return true;
+};
+
 /**
  * Normalizes a string by removing diacritics (accents), trimming whitespace, and converting to lowercase.
  *
@@ -44,10 +56,13 @@ export function isStrEqualCi(a: string, b: string) {
  * normalizeStr('  Héllö Wörld  '); // "hello world"
  * ```
  */
-export function normalizeStr(str: string) {
-  return str
-    .normalize('NFD')
-    .replace(/[\u0300-\u036f]/g, '')
-    .toLowerCase()
-    .trim();
+export function normalizeStr(str: string, locale?: Intl.LocalesArgument) {
+  const trimmed = str.trim();
+  const s = locale ? trimmed.toLocaleLowerCase(locale) : trimmed.toLowerCase();
+
+  if (isAsciiOnly(s)) {
+    return s;
+  }
+
+  return s.normalize('NFD').replace(DIACRITICS_RE, '');
 }

@@ -10,7 +10,8 @@
     "clean": "tsc -b --clean",
     "test": "vitest run",
     "test:coverage": "vitest run --coverage",
-    "update": " pnpm up --interactive --latest -r",
+    "test:bench": "vitest bench",
+    "update": "pnpm up --i --latest -r",
     "docs:build": "typedoc",
     "docs:clean": "node -e \"const fs = require('fs'); ['docs', 'node_modules/.cache/typedoc'].forEach(p => fs.rmSync(p, { recursive: true, force: true }));\"",
     "docs:watch": "typedoc --entryPointStrategy expand --watch",
@@ -28,17 +29,17 @@
     "@eslint/js": "^10.0.1",
     "@eslint/json": "^2.0.0",
     "@stylistic/eslint-plugin": "^5.10.0",
-    "@vitest/coverage-v8": "^4.1.8",
+    "@vitest/coverage-v8": "^4.1.9",
     "browser-sync": "^3.0.4",
     "concurrently": "^10.0.3",
     "eslint": "^10.5.0",
-    "eslint-plugin-jsdoc": "^63.0.2",
+    "eslint-plugin-jsdoc": "^63.0.6",
     "globals": "^17.6.0",
     "typedoc": "^0.28.19",
     "typedoc-plugin-mdn-links": "^5.1.1",
     "typedoc-plugin-merge-modules": "^7.0.0",
     "typescript": "^6.0.3",
-    "typescript-eslint": "^8.61.0",
-    "vitest": "^4.1.8"
+    "typescript-eslint": "^8.61.1",
+    "vitest": "^4.1.9"
   }
 }

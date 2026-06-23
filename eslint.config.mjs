@@ -69,7 +69,7 @@ export default defineConfig([
       'max-depth': [ 'error', 4 ],
       'max-params': [ 'error', 3 ],
       'no-alert': 'error',
-      'no-console': [ 'error', { allow: [ 'warn', 'error' ] } ],
+      'no-console': [ 'error', { allow: [ 'warn', 'error', 'debug' ] } ],
       'no-duplicate-imports': 'error',
       'no-else-return': 'error',
       'no-lonely-if': 'error',

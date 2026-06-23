@@ -7,6 +7,13 @@
  * @packageDocumentation
  */
 
+export {
+  LRUCache,
+  CollatorsCache,
+  IntlCache,
+  NumberFormatsCache
+} from './cache';
+
 /** @category Constants */
 export {
   STRING,
@@ -49,8 +56,10 @@ export {
   HTTP_OK,
   HTTP_UNAUTHORIZED,
   HTTP_UNPROCESSABLE_ENTITY,
+  HTTP_CODES,
 
-  HTTP_CODES
+  EMPTY_OBJECT,
+  EMPTY_ARRAY
 } from './constants.js';
 
 /** @category Array */
@@ -88,10 +97,7 @@ export {
   isNumber,
   isPrimitive,
   isString,
-  isEquivalent,
-
-  type Primitive,
-  type Falsy
+  isEquivalent
 } from './is.js';
 
 /** @category Serialization */
@@ -113,7 +119,8 @@ export {
 
 /** @category Objects */
 export {
-  getDeepEntry,
+  getEntry,
+  getEntryAt,
   pick,
   omit
 } from './object.js';
@@ -154,5 +161,7 @@ export {
 /** @category Types */
 export {
   type Positive,
-  type AssertPositive
+  type AssertPositive,
+  type Primitive,
+  type Falsy
 } from './types.js';

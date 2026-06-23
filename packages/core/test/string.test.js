@@ -141,4 +141,17 @@ describe('normalizeStr', () => {
     expect(normalizeStr('  你好 世界  ')).toBe('你好 世界'); // Chinese characters
     expect(normalizeStr('  €£$  ')).toBe('€£$'); // Currency symbols
   });
+
+  it('should support locale-aware lowercase (Turkish dotted/dotless i)', () => {
+    expect(normalizeStr('I', 'tr')).toBe('ı');
+    expect(normalizeStr('İ', 'tr')).toBe('i');
+  });
+
+  it('should keep default lowercase behavior when locale is not provided', () => {
+    expect(normalizeStr('I')).toBe('i');
+  });
+
+  it('should keep ASCII strings unchanged apart from trim/lowercase', () => {
+    expect(normalizeStr('  HELLO-123 _WORLD_  ')).toBe('hello-123 _world_');
+  });
 });

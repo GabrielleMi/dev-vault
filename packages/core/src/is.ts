@@ -1,7 +1,5 @@
 import { BIGINT, BOOLEAN, FUNCTION, NUMBER, OBJECT, STRING } from './constants.js';
-
-export type Primitive = string | number | boolean | bigint | symbol | null | undefined;
-export type Falsy = null | undefined | '' | false | 0;
+import { Primitive } from './types.js';
 
 /**
  * Checks if the provided value is an object.
@@ -13,7 +11,7 @@ export function isObject(value: unknown): value is Record<string, unknown> {
 }
 
 /**
- * Checks if a value is null of undefined
+ * Checks if a value is null or undefined
  */
 export function isNil(value: unknown): value is null | undefined {
   return value === undefined || value === null;
@@ -42,6 +40,13 @@ export function isBigInt(value: unknown): value is bigint {
 
 export function isBool(value: unknown): value is boolean {
   return typeof value === BOOLEAN;
+}
+
+/**
+ * Returns true if the value is not undefined.
+ */
+export function isDefined<T>(value: T | undefined): value is T {
+  return value !== undefined;
 }
 
 /**

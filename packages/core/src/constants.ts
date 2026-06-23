@@ -158,3 +158,6 @@ export const HTTP_CODES = Object.freeze({
      */
   INTERNAL_SERVER_ERROR: HTTP_INTERNAL_SERVER_ERROR
 });
+
+export const EMPTY_OBJECT = Object.freeze({});
+export const EMPTY_ARRAY = Object.freeze([]);
