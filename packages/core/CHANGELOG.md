@@ -1,5 +1,18 @@
 # @GabrielleMi/core
 
+## 0.4.0
+
+### Minor Changes
+
+- b92df87: Rename getDeepEntry() to getEntry() and improve performance
+  Add getEntryAt() utility function
+  Improve sort() performance
+  Improve search() performance
+  Add isDefined() utility function
+  Add IntlCache namespace with NumberFormat and Collator
+  Add an empty object constant
+  Add an empty array constant
+
 ## 0.3.0
 
 ### Minor Changes
