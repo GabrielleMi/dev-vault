@@ -7,6 +7,13 @@
  * @packageDocumentation
  */
 
+export {
+  LRUCache,
+  CollatorsCache,
+  IntlCache,
+  NumberFormatsCache
+} from './cache';
+
 /** @category Constants */
 export {
   STRING,
@@ -49,8 +56,10 @@ export {
   HTTP_OK,
   HTTP_UNAUTHORIZED,
   HTTP_UNPROCESSABLE_ENTITY,
+  HTTP_CODES,
 
-  HTTP_CODES
+  EMPTY_OBJECT,
+  EMPTY_ARRAY
 } from './constants.js';
 
 /** @category Array */

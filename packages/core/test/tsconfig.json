@@ -10,6 +10,7 @@
     "rootDir": "../"
   },
   "include": [
+    "./utils.ts",
     "**/*.test.ts",
     "**/*.test.js",
     "**/*.bench.ts",

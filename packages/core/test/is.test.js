@@ -1,4 +1,5 @@
 import { isBool, isEmpty, isEquivalent, isObject, isPrimitive } from '../src/index.js';
+import { isDefined, isNil } from '../src/is.js';
 
 describe('isEmpty', () => {
   describe('when value is an array', () => {
@@ -462,5 +463,39 @@ describe('isBool', () => {
     expect(isBool({})).toBe(false);
     expect(isBool([])).toBe(false);
     expect(isBool(NaN)).toBe(false);
+  });
+});
+
+describe('isDefined', () => {
+  it('should return true for defined values', () => {
+    expect(isDefined(0)).toBe(true);
+    expect(isDefined('')).toBe(true);
+    expect(isDefined(false)).toBe(true);
+    expect(isDefined([])).toBe(true);
+    expect(isDefined({})).toBe(true);
+  });
+
+  it('should return false for undefined values', () => {
+    expect(isDefined(undefined)).toBe(false);
+    expect(isDefined(void 0)).toBe(false);
+    // @ts-expect-error Testing undefined variable
+    expect(isDefined()).toBe(false);
+  });
+});
+
+describe('isNil', () => {
+  it('should return true for null or undefined', () => {
+    expect(isNil(null)).toBe(true);
+    expect(isNil(undefined)).toBe(true);
+    expect(isNil(void 0)).toBe(true);
+    expect(isNil()).toBe(true);
+  });
+
+  it('should return false for any other value', () => {
+    expect(isNil(0)).toBe(false);
+    expect(isNil('')).toBe(false);
+    expect(isNil(false)).toBe(false);
+    expect(isNil([])).toBe(false);
+    expect(isNil({})).toBe(false);
   });
 });

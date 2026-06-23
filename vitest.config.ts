@@ -16,6 +16,9 @@ export default defineConfig({
         'docs-src',
         '**/dist/**'
       ]
+    },
+    benchmark: {
+      reporters: ['default']
     }
   }
 });

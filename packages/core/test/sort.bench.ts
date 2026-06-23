@@ -1,79 +1,49 @@
 import { bench, describe } from 'vitest';
+import { datasets } from './utils';
 import { sort } from '../src';
 
-interface User {
-  id: number;
-  name: string;
-  age: number;
-  metadata: {
-    role: string;
-    score: number;
-  };
-}
+const frBaseNumericCollator = new Intl.Collator('fr', { sensitivity: 'base', numeric: true });
 
-const generateData = (count: number): User[] => {
-  const roles = [ 'admin', 'user', 'guest', 'maintainer' ];
-  const names = [ 'Gabrielle', 'Alice', 'Bob', 'Charlie', 'Zoe', 'Xavier', 'Alex', 'Chantal' ];
+datasets.forEach((dataset, index) => {
+  describe(`sort() - Dataset ${index + 1} (${dataset.length} items)`, () => {
+    bench('Simple property sort (String path)', () => {
+      sort(dataset).by('name');
+    });
 
-  return Array.from({ length: count }, (_, i) => ({
-    id: i,
-    name: `${names[i % names.length]}_${i}`,
-    age: Math.floor(Math.random() * 80) + 18,
-    metadata: {
-      role: roles[i % roles.length],
-      score: Math.random() * 1000
-    }
-  }));
-};
+    bench('Multi-criteria sort (Multi-keys)', () => {
+      sort(dataset).by('metadata.role', 'age');
+    });
 
-const smallDataset = generateData(100);
-const largeDataset = generateData(10000);
+    bench('Deep nested path sort (Deep path)', () => {
+      sort(dataset).by('metadata.score');
+    }, {
+      time: 2000,
+      iterations: 200
+    });
 
-describe('Sort - Small Dataset (100 items)', () => {
-  bench('Simple property sort (String path)', () => {
-    sort(smallDataset).by('name');
-  });
+    bench('Specific key configuration sort (SortKeyConfig)', () => {
+      sort(dataset).by({ key: 'name', isDesc: true });
+    });
 
-  bench('Multi-criteria sort (Multi-keys)', () => {
-    sort(smallDataset).by('metadata.role', 'age');
-  });
+    bench('Custom callback function sort (SortKeyFn)', () => {
+      sort(dataset).by((a, b) => a.age - b.age);
+    });
 
-  bench('Deep nested path sort (Deep path)', () => {
-    sort(smallDataset).by('metadata.score');
-  });
+    bench('With explicit collator instance', () => {
+      sort(dataset, { collator: frBaseNumericCollator }).by('name');
+    }, {
+      time: 2000,
+      iterations: 200
+    });
 
-  bench('Specific key configuration sort (SortKeyConfig)', () => {
-    sort(smallDataset).by({ key: 'name', isDesc: true });
-  });
-
-  bench('Custom callback function sort (SortKeyFn)', () => {
-    sort(smallDataset).by((a, b) => a.age - b.age);
-  });
-});
-
-describe('Sort - Large Dataset (10,000 items)', () => {
-  bench('Simple property sort (String path)', () => {
-    sort(largeDataset).by('name');
-  });
-
-  bench('Multi-criteria sort (Multi-keys)', () => {
-    sort(largeDataset).by('metadata.role', 'age');
-  });
-
-  bench('Specific key configuration sort (SortKeyConfig)', () => {
-    sort(largeDataset).by({ key: 'name', isDesc: true });
-  });
-});
-
-describe('Sort - Cache & Collator Performance', () => {
-  bench('Without global options (Uses default cache)', () => {
-    sort(smallDataset).by('name');
-  });
-
-  bench('With custom sensitivity options (Cache key generation)', () => {
-    sort(smallDataset, {
-      locale: 'fr',
-      options: { sensitivity: 'base', numeric: true }
-    }).by('name');
+    bench('With custom sensitivity options (Cache key generation)', () => {
+      sort(dataset, {
+        locale: 'fr',
+        options: { sensitivity: 'base', numeric: true }
+      }).by('name');
+    }, {
+      time: 2000,
+      iterations: 200
+    });
   });
 });

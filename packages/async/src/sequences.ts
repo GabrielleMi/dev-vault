@@ -40,7 +40,7 @@ export async function* streamPromises<T>(promises: (() => Promise<T>)[]) {
 /**
  * Executes an array of promise-returning functions sequentially, yielding the status 
  * of each promise (fulfilled or rejected) as soon as it completes.
- * * This is the streaming equivalent of {@link Promise.allSettled}.
+ * This is the streaming equivalent of {@link Promise.allSettled}.
  * @template T - The type of the resolved value.
  * @param promises - An array of functions, each returning a promise.
  * @yields An object representing the outcome of the promise (fulfilled or rejected).

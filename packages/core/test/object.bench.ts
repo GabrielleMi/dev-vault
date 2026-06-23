@@ -19,7 +19,7 @@ const testObject = {
   }
 };
 
-describe('getEntry - Performance Suite', () => {
+describe('getEntry()', () => {
   bench('Simple access (1 level)', () => {
     getEntry(testObject, 'simple');
   });
