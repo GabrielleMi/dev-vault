@@ -1,5 +1,11 @@
 # @GabrielleMi/core
 
+## 0.4.1
+
+### Patch Changes
+
+- fd3b40b: Fix broken function exports
+
 ## 0.4.0
 
 ### Minor Changes
