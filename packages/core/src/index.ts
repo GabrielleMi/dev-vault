@@ -12,7 +12,7 @@ export {
   CollatorsCache,
   IntlCache,
   NumberFormatsCache
-} from './cache';
+} from './cache.js';
 
 /** @category Constants */
 export {

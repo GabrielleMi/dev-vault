@@ -1,4 +1,4 @@
-import { CollatorsCache, LRUCache } from './cache';
+import { CollatorsCache, LRUCache } from './cache.js';
 
 /**
  * Configuration for a specific sort key.

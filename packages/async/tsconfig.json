@@ -3,8 +3,11 @@
   "compilerOptions": {
     "types": ["@js-temporal/polyfill"],
     "forceConsistentCasingInFileNames": true,
+    "module": "NodeNext",
+    "moduleResolution": "NodeNext",
     "outDir": "./dist",
-    "rootDir": "./src"
+    "rootDir": "./src",
+    "verbatimModuleSyntax": true
   },
   "include": ["src/**/*.ts"]
 }
