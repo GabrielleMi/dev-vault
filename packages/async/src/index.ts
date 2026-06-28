@@ -9,13 +9,13 @@
 
 export {
   ftch
-} from './fetch';
+} from './fetch.js';
 
 export {
   streamPromises,
   streamSettledPromises,
   Sequential
-} from './sequences';
+} from './sequences.js';
 
 export {
   delay,
@@ -23,4 +23,4 @@ export {
   throttle,
 
   type CancellableFunction
-} from './timers';
+} from './timers.js';

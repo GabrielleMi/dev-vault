@@ -1,4 +1,4 @@
-import { EMPTY_OBJECT } from './constants';
+import { EMPTY_OBJECT } from './constants.js';
 
 /**
  * @template V - The type of values stored in the cache.

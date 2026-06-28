@@ -1,5 +1,5 @@
 import { BIGINT, BOOLEAN, FUNCTION, NUMBER, OBJECT, STRING } from './constants.js';
-import { Primitive } from './types.js';
+import type { Primitive } from './types.js';
 
 /**
  * Checks if the provided value is an object.
