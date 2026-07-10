@@ -1,6 +1,6 @@
 {
   "name": "@GabrielleMi/core",
-  "version": "0.4.1",
+  "version": "0.5.0",
   "description": "Helper functions and tools for my playground.",
   "main": "dist/index.js",
   "publishConfig": {
