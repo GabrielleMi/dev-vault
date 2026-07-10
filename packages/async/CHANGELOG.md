@@ -1,5 +1,19 @@
 # @GabrielleMi/async
 
+## 0.3.0
+
+### Minor Changes
+
+- c741bce: Add Ftcher class to create a small HTTP client bound to a fixed origin.
+  Add serializeQuery utiliy function.
+  Add buildRequestBody utility function.
+  Update ftch wrapper to return the full response and the parsed data.
+
+### Patch Changes
+
+- Updated dependencies [c741bce]
+  - @GabrielleMi/core@0.5.0
+
 ## 0.2.1
 
 ### Patch Changes

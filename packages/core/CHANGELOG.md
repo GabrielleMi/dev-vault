@@ -1,5 +1,13 @@
 # @GabrielleMi/core
 
+## 0.5.0
+
+### Minor Changes
+
+- c741bce: Add NOOP utility constant.
+  Add merge object utility function.
+  Add isDefined utility function.
+
 ## 0.4.1
 
 ### Patch Changes

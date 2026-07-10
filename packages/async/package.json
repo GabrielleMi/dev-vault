@@ -1,6 +1,6 @@
 {
   "name": "@GabrielleMi/async",
-  "version": "0.2.1",
+  "version": "0.3.0",
   "description": "Async tools for my playground.",
   "main": "dist/index.js",
   "publishConfig": {
