@@ -1,4 +1,4 @@
-import { getEntry, omit, pick } from '../src';
+import { getEntry, merge, omit, pick } from '../src/index.js';
 
 describe('getEntry', () => {
   const testObject = {
@@ -116,11 +116,11 @@ describe('getEntry', () => {
   });
 
   it('should return undefined if the initial object is a primitive', () => {
-    // @ts-expect-error testing
+    // @ts-expect-error Testing with a number
     expect(getEntry(123, 'a')).toBeUndefined();
-    // @ts-expect-error testing
+    // @ts-expect-error Testing with a string
     expect(getEntry('string', 'a')).toBeUndefined();
-    // @ts-expect-error testing
+    // @ts-expect-error Testing with a boolean
     expect(getEntry(true, 'a')).toBeUndefined();
   });
 
@@ -266,5 +266,133 @@ describe('omit', () => {
     result.name = 'Bob';
 
     expect(user.name).toBe('Alice');
+  });
+});
+
+describe('merge', () => {
+  it('should deep merge nested objects', () => {
+    const target = {
+      id: 1,
+      profile: {
+        name: 'Alice',
+        settings: {
+          theme: 'light',
+          alerts: true
+        }
+      }
+    };
+
+    const source = {
+      profile: {
+        settings: {
+          alerts: false,
+          locale: 'fr'
+        }
+      }
+    };
+
+    const result = merge(target, source);
+
+    expect(result).toEqual({
+      id: 1,
+      profile: {
+        name: 'Alice',
+        settings: {
+          theme: 'light',
+          alerts: false,
+          locale: 'fr'
+        }
+      }
+    });
+  });
+
+  it('should overwrite non-object values from source', () => {
+    const target = {
+      profile: {
+        name: 'Alice',
+        settings: {
+          alerts: true
+        }
+      }
+    };
+
+    const source = {
+      profile: 'overwritten'
+    };
+
+    const result = merge(target, source);
+
+    expect(result).toEqual({
+      profile: 'overwritten'
+    });
+  });
+
+  it('should clone source object when target value at the same key is not an object', () => {
+    const target = {
+      profile: 'legacy'
+    };
+
+    const source = {
+      profile: {
+        settings: {
+          locale: 'fr'
+        }
+      }
+    };
+
+    const result = merge(target, source);
+
+    expect(result).toEqual({
+      profile: {
+        settings: {
+          locale: 'fr'
+        }
+      }
+    });
+    expect(result.profile).not.toBe(source.profile);
+    expect(result.profile.settings).not.toBe(source.profile.settings);
+  });
+
+  it('should not mutate source or target objects', () => {
+    const target = {
+      profile: {
+        settings: {
+          alerts: true
+        }
+      }
+    };
+
+    const source = {
+      profile: {
+        settings: {
+          locale: 'fr'
+        }
+      }
+    };
+
+    const result = merge(target, source);
+
+    expect(result).not.toBe(target);
+    expect(result.profile).not.toBe(target.profile);
+    expect(result.profile.settings).not.toBe(target.profile.settings);
+    expect(target).toEqual({
+      profile: {
+        settings: {
+          alerts: true
+        }
+      }
+    });
+    expect(source).toEqual({
+      profile: {
+        settings: {
+          locale: 'fr'
+        }
+      }
+    });
+  });
+
+  it('should throw if one of the inputs is not an object', () => {
+    expect(() => merge(null, {})).toThrow('Both target and source must be objects.');
+    expect(() => merge({}, null)).toThrow('Both target and source must be objects.');
   });
 });

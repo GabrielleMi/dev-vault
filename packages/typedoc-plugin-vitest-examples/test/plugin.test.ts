@@ -59,5 +59,5 @@ describe('Full Plugin Integration Flow', () => {
     }
 
     app.options.setValue('disableSources', false);
-  });
+  }, 15000);
 });

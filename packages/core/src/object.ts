@@ -123,3 +123,55 @@ export function omit<T extends Record<string, unknown>, K extends keyof T>(
 
   return n as Omit<T, K>;
 }
+
+/**
+ * @internal
+ */
+const deepMergeObjects = (
+  left: Record<string, unknown>,
+  right: Record<string, unknown>
+): Record<string, unknown> => {
+  const result = { ...left };
+
+  Object.keys(right).forEach((key) => {
+    const rightValue = right[key];
+    const leftValue = result[key];
+
+    if (isObject(leftValue) && isObject(rightValue)) {
+      result[key] = deepMergeObjects(leftValue, rightValue);
+      return;
+    }
+
+    if (isObject(rightValue)) {
+      result[key] = deepMergeObjects({}, rightValue);
+      return;
+    }
+
+    result[key] = rightValue;
+  });
+
+  return result;
+};
+
+/**
+ * @template T - The type of the target object.
+ * @template U - The type of the source object.
+ * Merges properties from the source object into the target object.
+ * @returns A new object containing properties from both the target and source objects.
+ *
+ * @description Deep merges two objects, combining their properties.
+ *  If a property exists in both objects, the value from the source object will overwrite the value in the target object.
+ * 
+ */
+export function merge<T extends object, const U extends object>(
+  /** Object to be merged into */
+  target: T,
+  /** Object to merge from. Will overwrite properties in the target if they exist in the source. */
+  source: U
+): T & U {
+  if (!isObject(target) || !isObject(source)) {
+    throw new Error('Both target and source must be objects.');
+  }
+
+  return deepMergeObjects(target, source) as T & U;
+}
