@@ -278,4 +278,117 @@ describe('sort', () => {
 
     expect(result).toEqual([ { value: '2' }, { value: '10' } ]);
   });
+
+  it('places nullish shallow values last when compared against defined values', () => {
+    const data = [
+      { id: 1, rank: null },
+      { id: 2, rank: 1 }
+    ];
+
+    expect(sort(data).by('rank').map((x) => x.id)).toEqual([ 2, 1 ]);
+  });
+
+  it('handles deep boolean sorting paths with equality and nullish values in both directions', () => {
+    const data = [
+      { id: 1, meta: { flag: false } },
+      { id: 2, meta: { flag: true } },
+      { id: 3, meta: { flag: undefined } },
+      { id: 4, meta: { flag: false } }
+    ];
+
+    expect(sort(data).by({ key: 'meta.flag', isDesc: true }).map((x) => x.id)).toEqual([ 2, 1, 4, 3 ]);
+    expect(sort(data).by('meta.flag').map((x) => x.id)).toEqual([ 1, 4, 2, 3 ]);
+  });
+
+  it('uses stable index tie-breaker in multi-criteria mode after equal string comparisons', () => {
+    const data = [
+      { id: 1, group: 'A', name: 'Same' },
+      { id: 2, group: 'A', name: 'Same' },
+      { id: 3, group: 'A', name: 'Zed' },
+      { id: 4, group: undefined, name: 'Any' }
+    ];
+
+    const result = sort(data).by('group', 'name');
+    expect(result.map((x) => x.id)).toEqual([ 1, 2, 3, 4 ]);
+  });
+
+  it('continues to next criterion when collator treats different strings as equal in multi-criteria mode', () => {
+    const data = [
+      { id: 1, name: 'A' },
+      { id: 2, name: 'a' }
+    ];
+
+    const collator = new Intl.Collator('en', { sensitivity: 'base' });
+    const result = sort(data, { collator }).by('name', 'id');
+    expect(result.map((x) => x.id)).toEqual([ 1, 2 ]);
+  });
+
+  it('handles nullish ordering for first criterion in multi-criteria mode', () => {
+    const data = [
+      { id: 1, group: undefined, name: 'A' },
+      { id: 2, group: 'A', name: undefined },
+      { id: 3, group: 'A', name: 'B' }
+    ];
+
+    expect(sort(data).by('group', 'name').map((x) => x.id)).toEqual([ 3, 2, 1 ]);
+  });
+
+  it('uses compareSortItems fallback paths when function criteria are mixed with key criteria', () => {
+    const data = [
+      { id: 1, name: 'Bob', score: 2 },
+      { id: 2, name: 'Bob', score: 1 },
+      { id: 3, name: 'Bob', score: 1 }
+    ];
+
+    const result = sort(data).by('name', () => 0, 'score');
+    expect(result.map((x) => x.id)).toEqual([ 2, 3, 1 ]);
+  });
+
+  it('continues after collator-equivalent strings in compareSortItems when mixed with function criteria', () => {
+    const data = [
+      { id: 2, name: 'a', score: 1 },
+      { id: 1, name: 'A', score: 1 }
+    ];
+
+    const collator = new Intl.Collator('en', { sensitivity: 'base' });
+    const result = sort(data, { collator }).by('name', () => 0, 'id');
+    expect(result.map((x) => x.id)).toEqual([ 1, 2 ]);
+  });
+
+  it('sorts with a single shallow SortKeyConfig entry', () => {
+    const data = [
+      { id: 1, score: 2 },
+      { id: 2, score: 1 }
+    ];
+
+    const result = sort(data).by({ key: 'score' });
+    expect(result.map((x) => x.id)).toEqual([ 2, 1 ]);
+  });
+
+  it('uses key-specific collator inside buildSortCriteria for multi-criteria sorting', () => {
+    const data = [
+      { id: 1, value: '10', label: 'b' },
+      { id: 2, value: '2', label: 'a' },
+      { id: 3, value: '2', label: 'b' }
+    ];
+
+    const globalLexical = new Intl.Collator('en', { numeric: false });
+    const localNumeric = new Intl.Collator('en', { numeric: true });
+
+    const result = sort(data, { collator: globalLexical })
+      .by({ key: 'value', collator: localNumeric }, 'label');
+
+    expect(result.map((x) => x.id)).toEqual([ 2, 3, 1 ]);
+  });
+
+  it('handles comparisons where valA is nullish in shallow single-criterion sorting', () => {
+    const data = [
+      { id: 1, rank: 1 },
+      { id: 2, rank: null },
+      { id: 3, rank: 2 }
+    ];
+
+    const result = sort(data).by('rank');
+    expect(result.map((x) => x.id)).toEqual([ 1, 3, 2 ]);
+  });
 });

@@ -8,7 +8,21 @@
  */
 
 export {
-  ftch
+  ftch,
+  Ftcher,
+  constructURL,
+  serializeQuery,
+  buildRequestBody,
+
+  type QueryObject,
+  type QueryValue,
+  type BodyInput,
+  type BodyFormat,
+  type BodyValue,
+  type SerializerOptions,
+  type BodySerializerOptions,
+  type SharedSerializerOptions,
+  type FtcherOptions
 } from './fetch.js';
 
 export {

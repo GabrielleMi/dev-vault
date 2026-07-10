@@ -514,9 +514,7 @@ export function sort<T extends object[]>(
           key: path,
           desc,
           collator,
-          resolve: isDeep
-            ? compileGetter(path)
-            : (obj: T[number]) => (obj as Record<string, unknown>)[path]
+          resolve: compileGetter(path)
         });
       }
 
@@ -527,10 +525,6 @@ export function sort<T extends object[]>(
       }
 
       const valueCriteria = criteria as SortValueCriterion<T[number]>[];
-      if (valueCriteria.length === 1) {
-        return sortSingleCriterion(arr, valueCriteria[0]);
-      }
-
       return sortManyCriteria(arr, valueCriteria);
     }
   };

@@ -59,7 +59,8 @@ export {
   HTTP_CODES,
 
   EMPTY_OBJECT,
-  EMPTY_ARRAY
+  EMPTY_ARRAY,
+  NOOP
 } from './constants.js';
 
 /** @category Array */
@@ -87,6 +88,7 @@ export {
 
 /** @category Validation */
 export {
+  isDefined,
   isObject,
   isEmpty,
   isArray,
@@ -122,7 +124,8 @@ export {
   getEntry,
   getEntryAt,
   pick,
-  omit
+  omit,
+  merge
 } from './object.js';
 
 /** @category Search */

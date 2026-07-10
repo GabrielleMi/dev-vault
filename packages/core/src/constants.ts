@@ -161,3 +161,4 @@ export const HTTP_CODES = Object.freeze({
 
 export const EMPTY_OBJECT = Object.freeze({});
 export const EMPTY_ARRAY = Object.freeze([]);
+export const NOOP = Object.freeze(() => {});
