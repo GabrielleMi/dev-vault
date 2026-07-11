@@ -14,8 +14,6 @@ export type ConvertableTimeUnit = typeof MILLISECOND | typeof SECOND | typeof MI
  * - {@link HOUR}
  * - {@link DAY}
  * - {@link WEEK}
- *
- * @examplesFromTests ../test/time.test.js
  */
 export function convertTimeUnit(
   value: number,
@@ -30,3 +28,15 @@ export function convertTimeUnit(
 
   return (value * TIME_UNIT_CONVERSION[fromUnit]) / TIME_UNIT_CONVERSION[toUnit];
 }
+
+/**
+ * Converts a time value using a fluent interface.
+ * @remarks Function wrapper of {@link convertTimeUnit}
+ *
+ * @examplesFromTests ../test/time.test.js
+ */
+export const convertTime = (value: number) => ({
+  from: (fromUnit: ConvertableTimeUnit) => ({
+    to: (unit: ConvertableTimeUnit) => convertTimeUnit(value, fromUnit, unit)
+  })
+});
