@@ -1,5 +1,11 @@
 # @GabrielleMi/core
 
+## 0.6.0
+
+### Minor Changes
+
+- 65e5f24: Add convertTime interface for better readability
+
 ## 0.5.0
 
 ### Minor Changes
