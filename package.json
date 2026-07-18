@@ -33,7 +33,7 @@
     "browser-sync": "^3.0.4",
     "concurrently": "^10.0.3",
     "eslint": "^10.7.0",
-    "eslint-plugin-jsdoc": "^63.0.13",
+    "eslint-plugin-jsdoc": "^63.0.14",
     "globals": "^17.7.0",
     "typedoc": "^0.28.20",
     "typedoc-plugin-mdn-links": "^5.1.1",
