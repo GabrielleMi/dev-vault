@@ -6,7 +6,11 @@ import { load } from '../src';
 
 const __dirname = path.dirname(fileURLToPath(import.meta.url));
 
-export async function createTestApp() {
+type TestAppOptions = {
+  disableSources?: boolean;
+};
+
+export async function createTestApp(options: TestAppOptions = {}) {
   const entryPoint = path.resolve(__dirname, 'fixtures/source.ts').replace(/\\/g, '/');
   const tsconfig = path.resolve(__dirname, './tsconfig.json').replace(/\\/g, '/');
   const packageRoot = path.resolve(__dirname, '..').replace(/\\/g, '/');
@@ -18,7 +22,8 @@ export async function createTestApp() {
     basePath: packageRoot,
     skipErrorChecking: true,
     logLevel: 'None',
-    cleanOutputDir: false
+    cleanOutputDir: false,
+    disableSources: options.disableSources
   });
 
   load(app);

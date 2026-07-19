@@ -1,4 +1,5 @@
 import { clamp, safeDivide } from '../src';
+import { toNumber } from '../src/number.js';
 
 describe('safeDivide', () => {
   it('should return the correct quotient for positive numbers', () => {
@@ -98,5 +99,26 @@ describe('clamp', () => {
     expect(clamp(5.5, 0, 10)).toBe(5.5);
     expect(clamp(-1.5, -1, 1)).toBe(-1);
     expect(clamp(2.5, -1, 2)).toBe(2);
+  });
+});
+
+describe('toNumber', () => {
+  it('should convert valid number strings to numbers', () => {
+    expect(toNumber('42')).toBe(42);
+    expect(toNumber('3,14')).toBe(3.14);
+    expect(toNumber('3.14')).toBe(3.14);
+    expect(toNumber('-7')).toBe(-7);
+  });
+
+  it('should return NaN for invalid number strings', () => {
+    expect(toNumber('abc')).toBeNaN();
+    expect(toNumber('12a')).toBeNaN();
+    expect(toNumber('')).toBeNaN();
+  });
+
+  it('should return a number for valid number inputs', () => {
+    expect(toNumber(42)).toBe(42);
+    expect(toNumber(-7)).toBe(-7);
+    expect(toNumber(3.14)).toBe(3.14);
   });
 });

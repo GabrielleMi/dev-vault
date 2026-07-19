@@ -1,3 +1,5 @@
+import { isString } from './is.js';
+
 /**
  * Returns 0 when a number or the other is 0 or non-finite before performing a division.
  * This prevents `NaN`, `Infinity`, or `-Infinity` results.
@@ -58,4 +60,20 @@ export function clamp(
   max: number
 ) {
   return Math.min(Math.max(nb, min), max);
+}
+
+/**
+ * Converts a value to a number. If cannot be converted, will fallback to NaN.
+ */
+export function toNumber(
+  /** The value to convert */
+  numberish?: unknown
+) {
+  if (numberish === '') {
+    return NaN;
+  }
+
+  const parsed = Number(isString(numberish) ? numberish.replace(',', '.') : numberish);
+
+  return Number.isFinite(parsed) ? parsed : NaN;
 }

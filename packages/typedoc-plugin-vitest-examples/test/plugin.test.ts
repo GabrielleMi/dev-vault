@@ -42,8 +42,7 @@ describe('Full Plugin Integration Flow', () => {
   });
 
   it('should skip processing if sources are missing (disableSources: true)', async () => {
-    app.options.setValue('disableSources', true);
-    const disabledSourcesProject = await app.convert();
+    const [disabledSourcesProject] = await createTestApp({ disableSources: true });
     expect(disabledSourcesProject).toBeDefined();
 
     const reflection = disabledSourcesProject?.getChildByName('addNumbers');
