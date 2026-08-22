@@ -1,5 +1,12 @@
 # @GabrielleMi/core
 
+## 0.6.0
+
+### Minor Changes
+
+- 4f26aeb: Add toNumber utility function and DateTimeFormat intl cache
+- 65e5f24: Add convertTime interface for better readability
+
 ## 0.5.0
 
 ### Minor Changes
