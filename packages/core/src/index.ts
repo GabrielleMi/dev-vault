@@ -11,7 +11,8 @@ export {
   LRUCache,
   CollatorsCache,
   IntlCache,
-  NumberFormatsCache
+  NumberFormatsCache,
+  DateTimeFormatsCache
 } from './cache.js';
 
 /** @category Constants */
@@ -116,7 +117,8 @@ export {
 /** @category Math */
 export {
   clamp,
-  safeDivide
+  safeDivide,
+  toNumber
 } from './number.js';
 
 /** @category Objects */

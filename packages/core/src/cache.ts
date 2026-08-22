@@ -41,14 +41,12 @@ const buildLocKey = (locales?: Intl.LocalesArgument) => Array.isArray(locales) ?
 /**
  * @internal
  */
-class CollatorCache {
-  private readonly cache = new Map<string, Intl.Collator>();
-
-  constructor() {
-    this.cache = new Map();
+class CollatorCache extends LRUCache<Intl.Collator> {
+  constructor(max?: number) {
+    super(max);
   }
 
-  get(locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions) {
+  override get(locales?: Intl.LocalesArgument, options?: Intl.CollatorOptions) {
     const o = (options || EMPTY_OBJECT) as Intl.CollatorOptions;
     const k = `${buildLocKey(locales)}
     -${o.sensitivity}
@@ -58,11 +56,13 @@ class CollatorCache {
     -${o.usage}
     -${o.collation}`;
 
-    let cached = this.cache.get(k);
+    let cached = super.get(k);
+
     if (!cached) {
       cached = new Intl.Collator(locales, options);
-      this.cache.set(k, cached);
+      super.set(k, cached);
     }
+
     return cached;
   }
 }
@@ -107,10 +107,49 @@ class NumberFormatCache extends LRUCache<Intl.NumberFormat> {
 }
 
 /**
+ * @internal
+ */
+class DateTimeFormatCache extends LRUCache<Intl.DateTimeFormat> {
+  constructor(max?: number) {
+    super(max);
+  }
+
+  override get(locales?: Intl.LocalesArgument, options?: Intl.DateTimeFormatOptions) {
+    const o = (options || EMPTY_OBJECT) as Intl.DateTimeFormatOptions;
+    const k = `${buildLocKey(locales)}
+      -${o.calendar}
+      -${o.dateStyle}
+      -${o.day}
+      -${o.dayPeriod}
+      -${o.localeMatcher}
+      -${o.era}
+      -${o.formatMatcher}
+      -${o.fractionalSecondDigits}
+      -${o.hour12}
+      -${o.hour}
+      -${o.hourCycle}
+      -${o.numberingSystem}
+      -${o.minute}
+      -${o.month}
+      -${o.second}
+      -${o.timeStyle}
+      -${o.timeZone}`;
+    let cached = super.get(k);
+
+    if (!cached) {
+      cached = new Intl.DateTimeFormat(locales, options);
+      super.set(k, cached);
+    }
+
+    return cached;
+  }
+}
+
+/**
  * @example
  * ```ts
- * const collator1 = IntlCache.Collator('en-US', { sensitivity: 'base' });
- * const collator2 = IntlCache.Collator('en-US', { sensitivity: 'base' });
+ * const collator1 = IntlCache.Collator('fr-CA', { sensitivity: 'base' });
+ * const collator2 = IntlCache.Collator('fr-CA', { sensitivity: 'base' });
  * console.log(collator1 === collator2); // true
  * ```
  */
@@ -119,22 +158,33 @@ export const CollatorsCache = new CollatorCache();
 /**
  * @example
  * ```ts
- * const nf1 = IntlCache.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
- * const nf2 = IntlCache.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+ * const nf1 = IntlCache.NumberFormat('fr-CA', { style: 'currency', currency: 'USD' });
+ * const nf2 = IntlCache.NumberFormat('fr-CA', { style: 'currency', currency: 'USD' });
  * console.log(nf1 === nf2); // true
  * ```
  */
 export const NumberFormatsCache = new NumberFormatCache();
 
 /**
+ * @example
+ * ```ts
+ * const dtf1 = IntlCache.DateTimeFormat('fr-CA', { dateStyle: 'long' });
+ * const dtf2 = IntlCache.DateTimeFormat('fr-CA', { dateStyle: 'long' });
+ * console.log(dtf1 === dtf2); // true
+ * ```
+ */
+export const DateTimeFormatsCache = new DateTimeFormatCache();
+
+/**
  * @borrows NumberFormatsCache.get as NumberFormat
  * @borrows CollatorsCache.get as Collator
+ * @borrows DateTimeFormat.get as DateTimeFormat
  * @namespace
  * Based on the {@link https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Global_Objects/Intl Intl} API
- * This namespace object provides access to cached instances of `Intl.Collator` and `Intl.NumberFormat`.
- * 
+ * This namespace object provides access to cached instances of `Intl.Collator`, `Intl.DateTimeFormat` and `Intl.NumberFormat`.
  */
 export const IntlCache = Object.freeze({
   NumberFormat: NumberFormatsCache.get.bind(NumberFormatsCache),
-  Collator: CollatorsCache.get.bind(CollatorsCache)
+  Collator: CollatorsCache.get.bind(CollatorsCache),
+  DateTimeFormat: DateTimeFormatsCache.get.bind(DateTimeFormatsCache)
 });

@@ -29,14 +29,20 @@ describe('LRUCache', () => {
 
 describe('IntlCache', () => {
   it('caches collators', () => {
-    const collator1 = IntlCache.Collator('en-US', { sensitivity: 'base' });
-    const collator2 = IntlCache.Collator('en-US', { sensitivity: 'base' });
+    const collator1 = IntlCache.Collator('fr-CA', { sensitivity: 'base' });
+    const collator2 = IntlCache.Collator('fr-CA', { sensitivity: 'base' });
     expect(collator1).toBe(collator2);
   });
 
   it('caches number formats', () => {
-    const nf1 = IntlCache.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
-    const nf2 = IntlCache.NumberFormat('en-US', { style: 'currency', currency: 'USD' });
+    const nf1 = IntlCache.NumberFormat('fr-CA', { style: 'currency', currency: 'USD' });
+    const nf2 = IntlCache.NumberFormat('fr-CA', { style: 'currency', currency: 'USD' });
     expect(nf1).toBe(nf2);
+  });
+
+  it('caches datetime formats', () => {
+    const dtf1 = IntlCache.DateTimeFormat('fr-CA', { dateStyle: 'long' });
+    const dtf2 = IntlCache.DateTimeFormat('fr-CA', { dateStyle: 'long' });
+    expect(dtf1).toBe(dtf2);
   });
 });
