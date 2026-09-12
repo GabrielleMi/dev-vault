@@ -1,5 +1,5 @@
 window.BENCHMARK_DATA = {
-  "lastUpdate": 1789173284782,
+  "lastUpdate": 1789173294159,
   "repoUrl": "https://github.com/GabrielleMi/dev-vault",
   "entries": {
     "Vitest Performance Run": [
@@ -6819,6 +6819,186 @@ window.BENCHMARK_DATA = {
           {
             "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > With custom sensitivity options (Cache key generation)",
             "value": 106,
+            "unit": "hz"
+          }
+        ]
+      },
+      {
+        "commit": {
+          "author": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "committer": {
+            "name": "GabrielleMi",
+            "username": "GabrielleMi"
+          },
+          "id": "1fa8b38d3b7e5fe77fe6feded4ee5283a4c69e4b",
+          "message": "chore(deps-dev): bump eslint from 10.9.0 to 10.10.0",
+          "timestamp": "2026-08-22T19:09:53Z",
+          "url": "https://github.com/GabrielleMi/dev-vault/pull/76/commits/1fa8b38d3b7e5fe77fe6feded4ee5283a4c69e4b"
+        },
+        "date": 1789173293481,
+        "tool": "customBiggerIsBetter",
+        "benches": [
+          {
+            "name": "test/object.bench.ts > getEntry() > Simple access (1 level)",
+            "value": 12318636,
+            "unit": "hz"
+          },
+          {
+            "name": "test/object.bench.ts > getEntry() > Deep nested path (4 levels)",
+            "value": 9110810,
+            "unit": "hz"
+          },
+          {
+            "name": "test/object.bench.ts > getEntry() > Array access",
+            "value": 9520362,
+            "unit": "hz"
+          },
+          {
+            "name": "test/object.bench.ts > getEntry() > Deep complex mixed path",
+            "value": 8730027,
+            "unit": "hz"
+          },
+          {
+            "name": "test/object.bench.ts > getEntry() > Early failure (Non-existent path in the middle)",
+            "value": 9518953,
+            "unit": "hz"
+          },
+          {
+            "name": "test/object.bench.ts > getEntry() > Edge case (Empty string key)",
+            "value": 16841774,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Exact Match - Simple key",
+            "value": 105998,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Exact Match - Deep path (3 levels)",
+            "value": 64727,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Fuzzy Match - Threshold 0.8",
+            "value": 40271,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Multi-term Search - Exact match",
+            "value": 103171,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Case Sensitive scan",
+            "value": 153075,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 1 (100 items) > Normalized scan",
+            "value": 93690,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Exact Match - Simple key",
+            "value": 918,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Exact Match - Deep path (3 levels)",
+            "value": 642,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Fuzzy Match - Threshold 0.8",
+            "value": 363,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Multi-term Search - Exact match",
+            "value": 1012,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Case Sensitive scan",
+            "value": 1552,
+            "unit": "hz"
+          },
+          {
+            "name": "test/search.bench.ts > search() - Dataset 2 (10000 items) > Normalized scan",
+            "value": 890,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > Simple property sort (String path)",
+            "value": 34097,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > Multi-criteria sort (Multi-keys)",
+            "value": 55826,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > Deep nested path sort (Deep path)",
+            "value": 148829,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > Specific key configuration sort (SortKeyConfig)",
+            "value": 37689,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > Custom callback function sort (SortKeyFn)",
+            "value": 192581,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > With explicit collator instance",
+            "value": 24478,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 1 (100 items) > With custom sensitivity options (Cache key generation)",
+            "value": 23978,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > Simple property sort (String path)",
+            "value": 236,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > Multi-criteria sort (Multi-keys)",
+            "value": 359,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > Deep nested path sort (Deep path)",
+            "value": 858,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > Specific key configuration sort (SortKeyConfig)",
+            "value": 237,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > Custom callback function sort (SortKeyFn)",
+            "value": 1288,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > With explicit collator instance",
+            "value": 166,
+            "unit": "hz"
+          },
+          {
+            "name": "test/sort.bench.ts > sort() - Dataset 2 (10000 items) > With custom sensitivity options (Cache key generation)",
+            "value": 166,
             "unit": "hz"
           }
         ]
